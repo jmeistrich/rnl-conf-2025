@@ -72,12 +72,12 @@ TODO: Tiny recap of what Saad just said
     <div class="flex items-stretch justify-center gap-4 w-full">
       <div class="flex flex-col items-center gap-3 bg-white/10 rounded-xl p-4">
         <div class="text-sm uppercase text-gray-400 pb-2">macOS app</div>
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg" alt="Swift logo" class="size-16 object-contain" />
+        <img src="/media/swift-original.svg" alt="Swift logo" class="size-16 object-contain" />
         <span class="text-base text-gray-200 text-center">Swift / Objective-C</span>
       </div>
       <div class="flex flex-col items-center gap-3 bg-white/10 rounded-xl p-4">
         <div class="text-sm uppercase text-gray-400 pb-2">Windows app</div>
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg" alt="C# logo" class="size-16 object-contain" />
+        <img src="/media/csharp-original.svg" alt="C# logo" class="size-16 object-contain" />
         <span class="text-base text-gray-200 text-center">C# / .NET</span>
       </div>
     </div>
@@ -88,11 +88,11 @@ TODO: Tiny recap of what Saad just said
       <div class="text-sm uppercase text-gray-400 pb-2">Mac / Windows app</div>
       <div class="flex items-center justify-center gap-10">
         <div class="flex flex-col items-center gap-2">
-          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/electron/electron-original.svg" alt="Electron logo" class="size-16 object-contain" />
+          <img src="/media/electron-original.svg" alt="Electron logo" class="size-16 object-contain" />
           <span class="text-base text-gray-200">Electron</span>
         </div>
         <div class="flex flex-col items-center gap-2">
-          <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/tauri/tauri-original.svg" alt="Tauri logo" class="size-16 object-contain" />
+          <img src="/media/tauri-original.svg" alt="Tauri logo" class="size-16 object-contain" />
           <span class="text-base text-gray-200">Tauri</span>
         </div>
       </div>
@@ -124,7 +124,7 @@ So why do we accept webview apps on desktop?
 
 # Electron
 
-<div class="flex flex-col lg:flex-row gap-6 mt-10 w-full">
+<div class="flex flex-row gap-6 mt-10 w-full">
   <div class="bg-white/5 rounded-3xl p-8 flex flex-col items-center gap-8 flex-2">
     <div class="text-2xl uppercase text-gray-400">Binary Size</div>
     <div class="text-4xl font-bold text-white">268&nbsp;MB</div>
@@ -149,8 +149,6 @@ So why do we accept webview apps on desktop?
   </div>
 </div>
 
-TODO: Rebuild Electron after optimized
-
 <!--
 The most popular tool for building desktop apps is Electron. Electron builds in a full chromium browser and Node.js into every app. It even bundles in ffmpeg because chromium needs it, even if your app doesn't.
 
@@ -171,7 +169,7 @@ So that adds a lot of DX and performance overhead.
 
 # Tauri
 
-<div class="flex flex-col lg:flex-row gap-6 mt-10 w-full">
+<div class="flex flex-row gap-6 mt-10 w-full">
   <div class="bg-white/5 rounded-3xl p-8 flex flex-col items-center gap-8 flex-2">
     <div class="text-2xl uppercase text-gray-400">Binary Size</div>
     <div class="text-4xl font-bold text-white">9&nbsp;MB</div>
@@ -251,15 +249,15 @@ Reverse the enshittification
     <div class="text-2xl font-medium uppercase text-gray-300 text-center">Web</div>
     <div class="flex flex-wrap gap-4 justify-center">
       <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/chrome/chrome-original.svg" alt="Web icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/chrome-original.svg" alt="Web icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">Web</span>
       </div>
       <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg" alt="iOS icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/apple-original.svg" alt="iOS icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">iOS</span>
       </div>
       <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/android/android-original.svg" alt="Android icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/android-original.svg" alt="Android icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">Android</span>
       </div>
     </div>
@@ -279,7 +277,7 @@ We've actually been here before on mobile. Native apps are more delightful but h
     <div class="text-2xl font-medium uppercase text-gray-300 text-center">Web</div>
     <div class="flex flex-wrap gap-4 justify-center">
       <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/chrome/chrome-original.svg" alt="Web icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/chrome-original.svg" alt="Web icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">Web</span>
       </div>
     </div>
@@ -288,11 +286,11 @@ We've actually been here before on mobile. Native apps are more delightful but h
     <div class="text-2xl font-medium uppercase text-gray-300 text-center">React Native</div>
     <div class="flex gap-6">
       <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg" alt="iOS icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/apple-original.svg" alt="iOS icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">iOS</span>
       </div>
       <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/android/android-original.svg" alt="Android icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/android-original.svg" alt="Android icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">Android</span>
       </div>
     </div>
@@ -312,15 +310,15 @@ But then React Native came in and saved everyone with delightful cross-platform 
     <div class="text-2xl font-medium uppercase text-gray-300 text-center">Web</div>
     <div class="flex gap-4 justify-center">
       <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/chrome/chrome-original.svg" alt="Web icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/chrome-original.svg" alt="Web icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">Web</span>
       </div>
        <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apple/apple-original.svg" alt="Mac icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/finder-icon.png" alt="Mac icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">Mac</span>
       </div>
       <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/windows8/windows8-original.svg" alt="Windows icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/windows8-original.svg" alt="Windows icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">Windows</span>
       </div>
     </div>
@@ -329,11 +327,11 @@ But then React Native came in and saved everyone with delightful cross-platform 
     <div class="text-2xl font-medium uppercase text-gray-300 text-center">React Native</div>
     <div class="flex gap-6">
       <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg" alt="iOS icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/apple-original.svg" alt="iOS icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">iOS</span>
       </div>
       <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/android/android-original.svg" alt="Android icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/android-original.svg" alt="Android icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">Android</span>
       </div>
     </div>
@@ -357,7 +355,7 @@ And we have an opportunity again for React Native to come in and save everyone.
     <div class="text-2xl font-medium uppercase text-gray-300 text-center">Web</div>
     <div class="flex gap-4 justify-center">
       <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/chrome/chrome-original.svg" alt="Web icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/chrome-original.svg" alt="Web icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">Web</span>
       </div>
     </div>
@@ -366,19 +364,19 @@ And we have an opportunity again for React Native to come in and save everyone.
     <div class="text-2xl font-medium uppercase text-gray-300 text-center">React Native</div>
     <div class="flex gap-6">
        <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apple/apple-original.svg" alt="Mac icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/finder-icon.png" alt="Mac icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">Mac</span>
       </div>
       <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/windows8/windows8-original.svg" alt="Windows icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/windows8-original.svg" alt="Windows icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">Windows</span>
       </div>
       <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg" alt="iOS icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/apple-original.svg" alt="iOS icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">iOS</span>
       </div>
       <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/android/android-original.svg" alt="Android icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/android-original.svg" alt="Android icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">Android</span>
       </div>
     </div>
@@ -399,23 +397,23 @@ So I propose since we're already building with these two separate technologies a
     <div class="text-2xl font-medium uppercase text-gray-300 text-center">React Native</div>
     <div class="flex gap-6">
       <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/chrome/chrome-original.svg" alt="Web icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/chrome-original.svg" alt="Web icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">Web</span>
       </div>
        <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apple/apple-original.svg" alt="Mac icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/finder-icon.png" alt="Mac icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">Mac</span>
       </div>
       <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/windows8/windows8-original.svg" alt="Windows icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/windows8-original.svg" alt="Windows icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">Windows</span>
       </div>
       <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg" alt="iOS icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/apple-original.svg" alt="iOS icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">iOS</span>
       </div>
       <div class="flex flex-col items-center gap-3 bg-white/10 rounded-2xl px-6 py-5 min-w-[140px]">
-        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/android/android-original.svg" alt="Android icon" class="size-12 object-contain drop-shadow" />
+        <img src="/media/android-original.svg" alt="Android icon" class="size-12 object-contain drop-shadow" />
         <span class="text-lg font-medium text-white">Android</span>
       </div>
     </div>
@@ -542,7 +540,7 @@ We can even do cool animations on windows. When the song changes this overlay at
 
 ---
 
-<SlidevVideo src="/media/overlayblur.mov" autoreset="slide" autoplay mute loop  />
+<SlidevVideo src="/media/overlayblur.mp4" autoreset="slide" autoplay mute loop  />
 
 <!--
 Let's look at that in slow motion to see how cool it is. Codex made me a native blur filter in Swift to do that in a few minutes.
@@ -699,9 +697,7 @@ We get the devtools to inspect the component tree and the nice new performance t
 
 ---
 
-# Native modules
-
-<img src="/media/codeswift.png" class="max-h-[560px] rounded-lg" />
+<img src="/media/codeswift.png" class="max-h-[520px] rounded-lg" />
 
 <!--
 I don't know how to write native modules, but if I want to do something natively, I just ask AI to make me a native module. And then my javascript code can do native things. I don't have to manage the communication across the IPC and call it from the main process, then post it back. It's just functions I can call from anywhere.
@@ -709,15 +705,11 @@ I don't know how to write native modules, but if I want to do something natively
 
 ---
 
-# Storybook
-
-<SlidevVideo src="/media/storybook.mp4" autoreset="slide" autoplay mute loop  />
+<SlidevVideo src="/media/storybook.mp4" autoreset="slide" autoplay mute loop class="rounded-lg"  />
 
 <!--
 We can even use React Native Storybook to work with our component system.
 -->
-
-
 
 ---
 
@@ -746,6 +738,9 @@ But this is where we get into both pros and cons. JS-only libraries mostly just 
 
 # Some Expo Libraries
 
+<div class="flex gap-x-16">
+    <div>
+
 - @expo/log-box
 - expo-asset
 - expo-constants
@@ -754,6 +749,10 @@ But this is where we get into both pros and cons. JS-only libraries mostly just 
 - expo-file-system
 - expo-font
 - expo-keep-awake
+
+</div>
+<div>
+
 - expo-linking
 - expo-local-authentication
 - expo-manifests
@@ -762,6 +761,9 @@ But this is where we get into both pros and cons. JS-only libraries mostly just 
 - expo-sqlite
 - expo-updates
 - expo-web-browser
+
+</div>
+</div>
 
 <!--
 A lot of Expo modules work on mac already. I specifically love expo file system, it's super fast. But there's a lot that aren't supported yet.
@@ -825,11 +827,11 @@ So let's crack some eggs and get this ecosystem going.
 
 - Try making apps
 
-- Talk to me
+- Talk to me or Sadd
 
 <!--
-Talk to me if you're interested and I'll help or connect you to the right people
- -->
+Talk to me or Saad if you're interested and I'll help or connect you to the right people
+-->
 
 
 <!--

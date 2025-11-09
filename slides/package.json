@@ -5,7 +5,8 @@
     "scripts": {
         "build": "slidev build",
         "start": "slidev ./slides.md",
-        "export": "slidev export"
+        "export": "slidev export --dark",
+        "pptx": "slidev export --format pptx --dark bun pptx --executable-path \"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\""
     },
     "dependencies": {
         "@slidev/cli": "^0.49.16",

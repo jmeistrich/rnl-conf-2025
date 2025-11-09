@@ -50,8 +50,8 @@ I got so excited about this that I joined Expo to explore if there's an opportun
 <!--
 With all the recent updates it's now just about caught up with the latest React Native version
 
-TOOD: Tiny recap of what Saad just said
- -->
+TODO: Tiny recap of what Saad just said
+-->
 
 ---
 
@@ -695,11 +695,13 @@ We get the devtools to inspect the component tree and the nice new performance t
 
 <!--
 We get the devtools to inspect the component tree and the nice new performance tab to optimize everything.
- -->
+-->
 
 ---
 
 # Native modules
+
+<img src="/media/codeswift.png" class="max-h-[560px] rounded-lg" />
 
 <!--
 I don't know how to write native modules, but if I want to do something natively, I just ask AI to make me a native module. And then my javascript code can do native things. I don't have to manage the communication across the IPC and call it from the main process, then post it back. It's just functions I can call from anywhere.
@@ -708,6 +710,8 @@ I don't know how to write native modules, but if I want to do something natively
 ---
 
 # Storybook
+
+<SlidevVideo src="/media/storybook.mp4" autoreset="slide" autoplay mute loop  />
 
 <!--
 We can even use React Native Storybook to work with our component system.

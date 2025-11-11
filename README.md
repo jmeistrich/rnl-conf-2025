@@ -1,6 +1,6 @@
 # React Native London Conf Talk
 
-This talk is about React Native MacOS
+This talk is about React Native macOS
 
 # Run the slides
 

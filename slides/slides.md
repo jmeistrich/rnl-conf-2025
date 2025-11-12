@@ -29,7 +29,7 @@ I've been exploring all the benefits and downsides and I think it's now time to
 # Take React Native on desktop seriously
 
 <div class="text-[72px] text-center">
-😎
+🤗
 </div>
 
 <!--
@@ -342,6 +342,8 @@ We've been through this in mobile before with Cordova, Ionic, etc... Native apps
 
 <!--
 But then React Native came in and saved everyone with delightful cross-platform apps. And everything was good.
+
+TODO: Well it wasn't good for a while but now it's good
 -->
 
 ---
@@ -477,6 +479,8 @@ So I propose since we're already building with these two separate technologies a
 And with react-native-web getting better, maybe we could eventually get to React Native everywhere, but that's a whole other thing.
 
 So the big question is why React Native on desktop?
+
+TODO: "The react native on web story"
 -->
 
 ---
@@ -541,7 +545,9 @@ We all know size matters but what's more important is how the app feels.
 
 ---
 
-<SlidevVideo src="/media/photos.mov" autoreset="slide" autoplay mute loop  />
+<SlidevVideo src="/media/photos.mov" autoreset="slide" autoplay mute loop class="max-h-[460px]"  />
+
+<div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/LegendApp/legend-photos</a></div>
 
 <!--
 I vibe coded a photo library app to see what kind of performance I could get with it. The app opens instantly. LegendList powers a gallery view and timeline with no blanking. I made a shared element transition animation just using Animated which looks awesome. And the photo loading is so fast it looks like a movie.
@@ -680,7 +686,7 @@ This complete app using Nativewind, a bunch of libraries and expo modules, and s
 <!--
 Compared to other Electron apps, React Native uses 90% less CPU to play a local mp3 file. It's ludicrous that it should take 26% of my CPU to play an mp3 file.
 
-Since React Native is just running native code, it's effectively the same as native CPU usage. Spotify as an Electron app is running a full Chrome browser and playing through the web platform, so it does a lot more work.
+Since React Native is native code with a lightweight JS engine, it's effectively the same as native CPU usage. Spotify as an Electron app is running a full Chrome browser and playing through the web platform, so it does a lot more work.
 -->
 
 ---
@@ -718,7 +724,31 @@ Since React Native is just running native code, it's effectively the same as nat
 <!--
 And comparing memory usage while playing a song is just as ludicrous. Running a full browser with 6 different processes is taking 806 MB. React Native uses 90% less memory at just 72.
 
-It even beats Apple Music, the most native of native apps.
+It even beats Apple Music, the most native of native apps. Obviously it doesn't have as many features yet, but it's comparable.
+-->
+
+---
+
+## Expo Orbit
+
+<SlidevVideo src="/media/expoorbit.mp4" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[420px]" />
+
+<div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/expo/orbit</a></div>
+
+<!--
+There's some really cool react native macos apps out there. Like Expo Orbit for launching builds or updates from EAS.
+-->
+
+---
+
+## Sol
+
+<img src="/media/sol.webp" class="max-h-[420px] rounded-lg" />
+
+<div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/ospfranco/sol</a></div>
+
+<!--
+And Sol, this great open source mac launcher
 -->
 
 
@@ -784,7 +814,7 @@ I don't know how to write native modules, but if I want to do something natively
 <SlidevVideo src="/media/storybook.mp4" autoreset="slide" autoplay mute loop class="rounded-lg"  />
 
 <!--
-We can even use React Native Storybook to work with our desktop app component system.
+React Native Storybook fully supports macOS so we can run its macOS app to work with our desktop app component system.
 -->
 
 ---
@@ -885,7 +915,7 @@ And we need a lot more libraries to support desktop platforms.
 # <div class="text-[144px]">🐣</div>
 
 <!--
-So we've got a chicken and egg problem here. There's not a lot of people making React Native desktop apps, so libraries aren't bothering to add support. So it's hard to build apps because of a small ecosystem.
+So we've got a chicken and egg problem here. There's not a lot of people making React Native desktop apps, so libraries aren't adding desktop support, so it's hard to build apps because of a small ecosystem.
 
 So while I would very much recommend react-native-macos to all of you legends, I think we need to smooth out some rough edges and support in more libraries before I'd suggest it to new developers.
 
@@ -894,12 +924,15 @@ So let's crack some eggs and get this ecosystem going.
 
 ---
 
-TODO:
+<img src="/media/wildwildwest.jpg" class="max-h-[500px] rounded-lg" />
+
+<!--
+It's a wild west out there. Lots of libraries need to be built, and you could make your library the defacto goto just with first mover advantage.
 
 If you have a library with native code, please add mac support. As Saad said, it's usually pretty easy to port from iOS.
 
 If you want to make a mac app, try doing it in react native. It's pretty cool.
-
+-->
 
 ---
 
@@ -914,3 +947,9 @@ If you want to make a mac app, try doing it in react native. It's pretty cool.
 <!--
 Talk to me or Saad if you're interested and I'll help or connect you to the right people
 -->
+
+<!--
+TODO:
+Add slides for Sol and Orbit
+Make an awesome react native macos github repo
+ -->

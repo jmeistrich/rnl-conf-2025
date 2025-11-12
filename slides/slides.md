@@ -8,6 +8,12 @@ defaults:
     transition: view-transition
 ---
 
+# State of React Native macOS
+
+Saad Najmi & Jay Meistrich
+
+---
+
 # Why isn't everyone using this?
 
 <div class="text-[72px] text-center">
@@ -38,21 +44,6 @@ take React Native on desktop seriously.
 I got so excited about this that I joined Expo to explore if there's an opportunity to make desktop apps better.
  -->
 
-
----
-
-# In 2025
-
-- Version 0.81
-- Fabric support
-- New docs
-
-<!--
-With all the recent updates it's now just about caught up with the latest React Native version
-
-TODO: Tiny recap of what Saad just said
--->
-
 ---
 
 # It's really good
@@ -63,7 +54,7 @@ TODO: Tiny recap of what Saad just said
 - Familiar RN DX
 
 <!--
-And it's just really good. It makes tiny fast apps and it's that familiar React Native dev experience that we all love.
+Because it's just really good. It makes tiny fast apps and it's that familiar React Native dev experience that we all love.
 -->
 
 ---
@@ -557,20 +548,6 @@ That video is not sped up, it's just that fast.
 
 ---
 
-# Native
-
-Video of liquid glass
-
-<!--
-And because it's native we can easily do native things.
-
-Of course get liquid glass for free with native views.
-
-TODO: Ask Saad for liquid glass video
--->
-
----
-
 <SlidevVideo src="/media/windows.mov" autoreset="slide" autoplay mute loop  />
 
 <!--
@@ -729,6 +706,20 @@ It even beats Apple Music, the most native of native apps. Obviously it doesn't 
 
 ---
 
+# React Native macOS is awesome
+
+<!--
+So React Native is pretty awesome. And it's been getting a lot better this past year.
+
+And Saad will tell you all about that.
+-->
+
+---
+
+TODO: Insert Saad slides here
+
+---
+
 ## Expo Orbit
 
 <SlidevVideo src="/media/expoorbit.mp4" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[420px]" />
@@ -736,7 +727,9 @@ It even beats Apple Music, the most native of native apps. Obviously it doesn't 
 <div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/expo/orbit</a></div>
 
 <!--
-There's some really cool react native macos apps out there. Like Expo Orbit for launching builds or updates from EAS.
+I want to show you some really cool React Native macOS apps.
+
+Like Expo Orbit for launching builds or updates from EAS.
 -->
 
 ---
@@ -750,6 +743,10 @@ There's some really cool react native macos apps out there. Like Expo Orbit for 
 <!--
 And Sol, this great open source mac launcher
 -->
+
+---
+
+# Reactotron
 
 
 ---
@@ -950,6 +947,8 @@ Talk to me or Saad if you're interested and I'll help or connect you to the righ
 
 <!--
 TODO:
+How to start it
 Add slides for Sol and Orbit
+Reactotron
 Make an awesome react native macos github repo
  -->

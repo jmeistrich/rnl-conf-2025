@@ -716,7 +716,85 @@ And Saad will tell you all about that.
 
 ---
 
-TODO: Insert Saad slides here
+# What have we been working on?
+
+<v-click> 
+
+- Paying down Tech Debt
+
+- Implementing the new architecture
+
+</v-click>
+
+<!--
+What have we been working on? I can break down the work the teacm has been doing into two buckets: "Paying down tech debt", and "implementing the new architecture". I'd love to have spennt all my time on the latter, but I also realized in order for us to move fast and be a library people use, we need to work on the former. 
+-->
+
+---
+
+# Tech Debt -- Documentation
+
+TODO: Add windows docs screenshot
+
+<!-- 
+The first form of tech debt we had was a lack of documentation. Historically, the macOS and windows docs were all in a separate repo, with mostly React Native Windows docs. There were only two pages for macOS docs, that really only told you how to make a hello world app. That's bad, and that's on me. 
+-->
+
+---
+
+# Tech Debt -- Documentation
+
+microsoft.github.io/react-native-windows
+
+<!-- 
+The first form of tech debt we had was a lack of documentation. Historically, the macOS and windows docs were all in a separate repo, with mostly React Native Windows docs. There were only two pages for macOS docs, that really only told you how to make a hello world app. That's bad, and that's on me. 
+-->
+
+---
+
+# Tech Debt -- Documentation
+
+microsoft.github.io/react-native-macos
+
+TODO - Add front page screenshot
+
+<!-- 
+So.. we made a dnew ocs site! It lives in the React Native macOS repo, so it's super easy to find and update. As I worked on macOS over the last several months, if I ran into something I felt I know that others should also know, I'd make a note to add it to the website. I also asked others to contribute.
+-->
+
+---
+
+# Tech Debt -- Documentation
+
+microsoft.github.io/react-native-macos
+
+TODO - Add screenshot or video of more docs
+
+<!--
+I'm happy to say it's grown quite a bit since we started! We have guides for how to port an iOS library to macOS, and how to configure expo modules with macOS. We also have an API section where we list a bunch of the macOS only props we have. I'm not going to know every case y'all run into, so I encourage yall to raise issues and contribute if you get confused about something.
+-->
+
+---
+
+# Tech Debt -- Stabilizing our releases
+
+<!--
+The next bit of tech debt we had to pay off was to stabilize our releases, and release pipelines. This actually took up the majority of time, turns out releases are hard. We used modern tools like `nx release` and `yarn constraints`. The goal was to make it so that you could trust the CI, and more of the enforcement of quality moved out of my head, and into code. Did this pay off? I think so, because for the first time, React Native macOS had a release made by the open source community. Thanks Gabriel :)
+-->
+
+---
+
+# The New Architecture
+
+<!--
+OK, that's enough about tech debt. Let's talk about the new architecture. Let me first give you a recap of the state 
+-->
+
+---
+
+# Tech Debt -- Stabilizing our releases
+
+TODO - Add screenshot of Gabriels' 0.79 merge
 
 ---
 

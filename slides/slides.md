@@ -734,16 +734,16 @@ What has our team been working on? I can break down the work to mostly two bucke
 
 ---
 
+# Stabilizing our releases
 
-# Tech Debt -- Stabilizing our releases
 
 <!--
-The first bit of tech debt we had to pay off was to stabilize our releases pipelines. Up until now, our release tooling was a hodgepodge of tooling and scripts that we added to over time. Some of it came from React Native, some open source tools Microsoft has, and some our own one off bash scripts. This made it really hard to do releases, and we'd consistently take an extra week or two just remembering what levers to turn on and off. We ended up using `nx release` because we wanted to try something new and cool, but there's a lot of options. We also added a bunch more PR checks to keep the repo green. In particular, Modern Yarn has a cool feature called constraints that helps with this. I'll talk more about that later. Many thanks to Tommy Nguyen, who took on this project with me and helped me a lot.
+The first bit of tech debt we had to pay off was to stabilize our releases pipelines. Up until now, our release tooling was a hodgepodge of scripts built up over time. Some of it came from React Native, some open source tools Microsoft has, and some our own one off bash scripts. This made it really hard to do releases, and we'd consistently take an extra week or two just remembering what levers to turn on and off. We ended up using `nx release` because we wanted to try something new and cool, but there's a lot of options. We also added a bunch more PR checks to keep the repo green. In particular, Modern Yarn has a cool feature called constraints that helps with this. I'll talk more about that later. Many thanks to Tommy Nguyen, who took on this project with me and helped me a lot.
 -->
 
 ---
 
-# Tech Debt -- Stabilizing our releases
+# Stabilizing our releases
 
 Did it pay off?
 
@@ -756,7 +756,7 @@ Did this pay off? I think so, because for the first time, React Native macOS had
 ---
 
 
-# Tech Debt -- Documentation
+# Documentation
 
 TODO: Add windows docs screenshot
 
@@ -767,7 +767,7 @@ Speaking of docs, that's our next area of tech debt we had to address. Historica
 ---
 
 
-# Tech Debt -- Documentation
+# Documentation
 
 microsoft.github.io/react-native-macos
 
@@ -779,7 +779,7 @@ To fix that, we made a new docs site! It lives in the React Native macOS repo, s
 
 ---
 
-# Tech Debt -- Documentation
+# Documentation
 
 microsoft.github.io/react-native-macos
 
@@ -810,8 +810,6 @@ Microsoft 🤝 Meta
 
 </v-click>
 
-Microsoft 🤝 Meta
-
 <v-click>
 
 - RNM 0.81 - On by default
@@ -826,14 +824,9 @@ Several years ago, we partnered with Meta to help us implement the new architect
 
 # The New Architecture
 
-Progress?
-
-<v-click>
-
 - Hermes
 - Fabric
 
-</v-click>
 
 <!--
 There are two main areas where we needed to make progress on the new architecture: Hermes, and Fabric. Hermes was much simpler, and was mostly a version lookup problem, while Fabric is where we had to reimplement a lot of stuff from Paper. Let's talk about Hermes first.
@@ -841,14 +834,10 @@ There are two main areas where we needed to make progress on the new architectur
 
 ---
 
-# The New Architecture - Hermes
+# Hermes
 
-<v-click>
-
-- Mostly worked
-- out of sync
-
-</v-click>
+- It mostly worked
+- Versioning problem
 
 <!--
 Hermes has always worked on macOS, but every now and then your React Native macOS build might fail to compile with Hermes? It was bad enough that we couldn't test Hermes in our CI, even though it mostly worked for end users. What's happening here? Turns out the answer is simple. We're a fork of React Native, and our scripts that choose what version of Hermes to use didn't properly account for that. Our main branch would try the latest commit of Hermes, even if we were 1000-2000 commits behind React Native Core. Our release branches would always pull the latest minor release, even if we weren't synced that ahead yet.
@@ -856,16 +845,10 @@ Hermes has always worked on macOS, but every now and then your React Native macO
 
 ---
 
-# The New Architecture - Hermes
+# Hermes
 
 Solution?
 
-<v-click>
-
-- Mostly worked
-- out of sync
-
-</v-click>
 
 <!--
 The solution was quite simple. We just had to make sure we looked up the right version of Hermes. On our main branch, we can use the git merge-base to grab the right commit of Hermes. On our release branches, we can add a peer dependency to the React Native Core release we are compatible with, and use that to grab Hermes. We made those fixes, and backported to 0.74. Now, we have Hermes enabled by default! Many thanks to my coworker Adam, who did most of the work to fix this.
@@ -873,16 +856,11 @@ The solution was quite simple. We just had to make sure we looked up the right v
 
 ---
 
-# The New Architecture - Hermes
+# Hermes
 
 React Native Devtools
 
-<v-click>
-
-- Mostly worked
-- out of sync
-
-</v-click>
+TODO: Add video of RN Devtools
 
 <!--
 Hermes also means one more thing. We also now fully support React Native Devtools, so you get the same familiar experience with the paused in debugger overlay and the ability to reconnect after reloads. In my own personal dev, this was so much more useful.
@@ -890,24 +868,18 @@ Hermes also means one more thing. We also now fully support React Native Devtool
 
 ---
 
-# The New Architecture - Fabric
+# Fabric
 
 <!--
-Let's talk about the next piece of the new architecture, Fabric. Fabric the native rendering layer, that takes the props and components from Javascript, and parses it into a native UI tree. This is the biggest piece that was missing from React Native macOS, and where most of the work went from both us and Meta. 
+Let's talk about the next piece of the new architecture, Fabric. Fabric the native renderer, that takes the props and components from Javascript, and parses it into a native UI tree. This is the biggest piece that was missing from React Native macOS, and where most of the work went from both us and Meta. 
 -->
 
 ---
 
-# The New Architecture - Fabric
-
-Progress?
-
-<v-click>
+# Fabric
 
 - All the macOS props work
 - Bug squashing through core props
-
-</v-click>
 
 <!--
 In 0.71, we had Fabric at the state where it could render the UI, but most of the props didn't work. As of right now, we have ported over all the macOS specific props, and we're mostly bug squashing our way through the core props. We haven't quite worked through all of them, so we haven't release 0.81, but I hope to soon. 
@@ -915,24 +887,23 @@ In 0.71, we had Fabric at the state where it could render the UI, but most of th
 
 ---
 
-# The New Architecture - Fabric
+# Fabric
 
 It's much better
 
 <v-click>
 
-- All the macOS props work
-- Bug squashing through core props
+- RNM 0.81 - On by default
 
 </v-click>
 
 <!--
-Along the way of porting over Meta's fabric commits, I saw firsthand how much better architectured Fabric is over Paper. There are so many little and big decisions that we had a chance to redo, and it was honestly pretty fun to write stuff with the new APIs. This wouldn't be a tech conference if I don't show some code, so let's dive into some Fabric source code to see one way it's better: prop parsing. 
+Along the way of porting over Meta's fabric commits, I saw firsthand how much better architectured Fabric is over Paper. There are so many little and big decisions that we had a chance to redo, and it was honestly pretty fun to write stuff with the new APIs. There's more than I can talk about now, but I'd like to dive into one of the ways Fabric is better, particularly for out of tree platforms, prop parsing. Let's dive into some source code!
 -->
 
 ---
 
-# The New Architecture - Fabric
+# Fabric
 
 Prop Parsing
 
@@ -948,7 +919,7 @@ Both Paper and Fabric need to pass props from JS to native code, so they can be 
 
 ---
 
-# The New Architecture - Fabric
+# Fabric
 
 Prop Parsing
 
@@ -959,12 +930,12 @@ TODO: Screenshot of Fabric base view props.
 </v-click>
 
 <!--
-In Fabric, all of the prop parsing moved into a shared C++ layer. Instead of parsing JSON, with Fabric we know the types in advance, so we can just create C++ structs and classes that match what we're sending form JS. This is much faster and much cleaner to look at. And it can be shared across platforms, which is awesome for us.
+In Fabric, all of the prop parsing moved into a shared C++ layer. Instead of parsing JSON, with Fabric we know the types in advance, so we can just create C++ structs and classes that match what we're sending from JS. This is much faster and much cleaner to look at. And it can be shared across platforms, which is awesome for us.
 -->
 
 ---
 
-# The New Architecture - Fabric
+# Fabric
 
 Platform specific props
 
@@ -975,12 +946,12 @@ TODO: Screenshot of Fabric base view props.
 </v-click>
 
 <!--
-How do we represent platform specific props in this case? It's actually quite easy, thanks to something I'll call "the host platform model". We can have a base class (in this case, BaseViewProps), that is all the common props between platforms.
+How do we represent platform specific props? It's actually quite easy, thanks to something I'll call "the host platform model". We can have a base class (in this case, BaseViewProps), that is all the common props between platforms.
 -->
 
 ---
 
-# The New Architecture - Fabric
+# Fabric
 
 Platform specific props
 
@@ -988,18 +959,22 @@ TODO: Screenshots of HostPlatformProps
 
 
 <!--
-Then, each platform can define it's own "host platform props". For iOS, they just alias and reuse the base prosps. For Android, you can see they extend the class to add Android specific props, like `elevation`. 
+Then, each platform can define it's own "host platform props". For iOS, React Native just aliases and reuse the base props. For Android, React Native extends the class to add Android specific props, like `elevation`. 
 -->
 
 ---
 
-# The New Architecture - Fabric
+# Fabric
 
 Platform specific props
 
 TODO: Screenshots of macOS HostPlatformProps
 
+<v-click>
 
+TODO: Screenshot of windows HostPlatformProps
+
+</v-click>
 
 <!--
 This makes it easy for macOS to do the same thing, and add all of our props one by one. Bonus points, it also makes it easy to add documentation for what our macOS specific props are, now that they're in an easy to read header. I know this is the right pattern, because React Native Windows uses it too.
@@ -1007,7 +982,7 @@ This makes it easy for macOS to do the same thing, and add all of our props one 
 
 ---
 
-# The New Architecture - Fabric
+# Fabric
 
 This feels too easy?
 
@@ -1017,19 +992,17 @@ TODO: Screenshot of Eric's Host Platform PR
 
 </v-click>
 
-
 <!--
-If this all feels too easy to add a new platform, it's because it was designed that way. Remember that partnership we had with Meta. One of their engineers, Eric Rozell, contributed these APIs to make it easier to work on the desktop platforms, and any future platforms, like what what we're seeing with TV and VR. Thanks Eric!
+If this all feels too easy to add a new platform, it's because it was designed that way. Remember that partnership we had with Meta? One of their engineers, Eric Rozell, contributed these APIs to make it easier to work on the desktop platforms, and any future platforms, like what what we're seeing with TV and VR. Thanks Eric!
 -->
 
 ---
 
 # Looking forward
 
-- 0.81 --> On by default
+- 0.81 - On by default
 
-- 0.82+ --> The only architecture
-
+- 0.82 - The only architecture
 
 <!--
 Looking forward, I can't wait to release our next version of React Native macOS where you all can play around with Fabric. As you might know, on React Native 0.82 and up, you can no longer disable the new architecture. For us, that means that we will probably stay at 0.81 for a while. We still have a lot of work to do internally to get our apps like Office onto the new architecture, and properly stress test it with our millions of users. We're hard at work, and I'm excited to see what the future holds. Let me pass it back to Jay now, so he can tell show you some cool macOS apps in the wild.

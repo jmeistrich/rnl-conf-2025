@@ -284,7 +284,7 @@ Sending back a response is even more complicated. You can implement a Response S
 <!--
 The newer alternative to Electron is Tauri. It's also a webview app, but it uses the system webview so it doesn't bundle chromium and is much smaller.
 
-But then you have to deal with platform differences of Safari on Mac vs. Edge on Windows, and old OS versions will have old webview versions, so you can't really use new browser features.
+But then you have to deal with platform differences of Safari on Mac vs. Edge on Windows, and old OS versions will have old webview versions, so you can't really use the latest browser features.
 
 And you'll use Rust for the code in the main process and native modules, which is great if you love Rust, but otherwise it's a whole other language to learn.
 

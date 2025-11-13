@@ -1107,7 +1107,7 @@ Platform specific props
 
 <img src="/media/host-platform-props-ios.png" class="max-h-[360px] rounded-lg" />
 
-<center>
+<center class="text-gray-400">
 iOS
 </center>
 
@@ -1125,7 +1125,7 @@ Platform specific props
 
 <img src="/media/host-platform-props-android.png" class="max-h-[360px] rounded-lg" />
 
-<center>
+<center class="text-gray-400">
 Android
 </center>
 
@@ -1143,7 +1143,7 @@ Platform specific props
 
 <img src="/media/host-platform-props-macos.png" class="max-h-[360px] rounded-lg" />
 
-<center>
+<center class="text-gray-400">
 macOS
 </center>
 

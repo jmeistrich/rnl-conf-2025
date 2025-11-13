@@ -889,11 +889,10 @@ Did this pay off? I think so, because for the first time, React Native macOS had
 <div class="flex justify-center gap-x-4" >🔗 <a href="microsoft.github.io/react-native-windows">microsoft.github.io/react-native-windows</a></div>
 
 <!--
-Speaking of docs, that's our next area of tech debt we had to address. Historically, the macOS and windows docs were all on one website, but it was mmostly React Native Windows docs. There were only two pages for macOS docs, that really only told you how to make a hello world app. That's bad for our users, and that's on me for not updating them enough.
+Speaking of docs, that's the next bit of tech debt we had. Historically, the macOS and windows docs were all on one website, but actually, it was mostly React Native Windows docs. There were only two pages for macOS docs, and they really only told you how to make a hello world app. That's bad for our users, and that's on me for not updating them enough.
 -->
 
 ---
-
 
 # Documentation
 
@@ -902,7 +901,7 @@ Speaking of docs, that's our next area of tech debt we had to address. Historica
 <div class="flex justify-center gap-x-4" >🔗 <a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a></div>
 
 <!--
-To fix that, we made a new docs site! It lives in the React Native macOS repo, so it's super easy to find and update. And it has a dark mode!
+To fix that, we made a new docs site! It lives in the React Native macOS repo, so it's super easy to find and update. And it has a dark mode! As I worked on macOS over the last several months, if I ran into something I felt I know that others should also know, I'd make a note to add it to the website. Remember that release guide I mentioned? After I wrote it, I added it to the docs too
 -->
 
 ---
@@ -914,7 +913,7 @@ To fix that, we made a new docs site! It lives in the React Native macOS repo, s
 <div class="flex justify-center gap-x-4" >🔗 <a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a></div>
 
 <!--
-As I worked on macOS over the last several months, if I ran into something I felt I know that others should also know, I'd make a note to add it to the website. We have a guide for how to port an iOS library to macOS, that I wrote from my personal experience of porting WebGPU and Skia.
+We have a guide for how to port an iOS library to macOS, that I wrote from my personal experience of porting WebGPU and Skia.
 -->
 
 ---

@@ -8,10 +8,14 @@ defaults:
     transition: view-transition
 ---
 
+<div class="-mt-20" />
+
+<div class="flex flex-col items-center gap-y-24 absolute bottom-4 left-0 right-0">
+
 # State of React Native macOS
 
-<div class="absolute bottom-0 w-124 gap-y-2">
-  <div class="flex w-full justify-between mb-16">
+<div class=" w-124 gap-y-2">
+  <div class="flex w-full justify-between">
     <div class="flex flex-col gap-y-1">
         <div>Saad Najmi</div>
         <div>𝕏 @SaadNajmi</div>
@@ -23,9 +27,9 @@ defaults:
         <div>🦋 @jayz.us</div>
     </div>
     </div>
-  <div class="text-gray-400 pb-1">React Native London - Nov 14, 2025</div>
 </div>
-
+<div class="text-gray-400">React Native London - Nov 14, 2025</div>
+</div>
 <!--
 Good morning!
 
@@ -44,7 +48,7 @@ So without further ado let's get into it and talk about React Native macOS.
 <img src="/media/jay.jpg" class="max-h-[200px] rounded-lg my-10" />
 </center>
 
-- CTO @ Bravely
+- CTO at Bravely
 - Legend List, Legend State, Legend Motion
 - Expo
 
@@ -525,7 +529,7 @@ And fall back to the mediocre web experience when we don't have an app.
 
 ---
 
-# <div class="text-[60px]">🖥️ 🔥🔥🔥</div>
+# <div class="text-[60px]">🔥🔥🔥</div>
 
 <div class="flex justify-center gap-6 mt-16 w-full">
   <div class="bg-white/5 rounded-3xl p-8 flex flex-col gap-6 w-full max-w-4xl">
@@ -867,7 +871,9 @@ The first bit of tech debt we had to pay off was to stabilize our releases pipel
 
 # Stabilizing our releases
 
+<div class="pl-5 text-gray-400">
 Did it pay off?
+</div>
 
 <v-click>
 
@@ -972,10 +978,8 @@ OK, that's enough about tech debt. Let's talk about the new architecture. Let me
 
 <img src="/media/react-native-keyboard-pr.png" class="max-h-[360px] rounded-lg" />
 
-<center>
-
+<center class="text-gray-400">
 Microsoft 🤝 Meta
-
 </center>
 
 ---
@@ -1005,7 +1009,9 @@ Hermes, the JS engine, has always worked on macOS, but it didn't consistently wo
 
 # Hermes
 
+<div class="pl-6 text-gray-400">
 Solution?
+</div>
 
 <img src="/media/hermes-pr.png" class="max-h-[360px] rounded-lg" />
 
@@ -1017,7 +1023,9 @@ The solution was quite simple. We just had to make sure we looked up the right v
 
 # Hermes
 
+<div class="text-gray-400 pb-4">
 React Native Devtools
+</div>
 
 <SlidevVideo src="/media/devtools-rntester.mp4" autoreset="slide" autoplay loop mute class="max-h-[360px] rounded-xl" />
 
@@ -1066,7 +1074,7 @@ In Paper for iOS, this was done by passing JSON to a bunch of macros. This was p
 
 <img src="/media/prop-parsing-paper.png" class="max-h-[360px] rounded-lg" />
 
-<center>
+<center class="text-gray-400">
 Paper
 </center>
 
@@ -1080,7 +1088,7 @@ Both Paper and Fabric need to pass props from JS to native code, so they can be 
 
 <img src="/media/prop-parsing-fabric.png" class="max-h-[360px] rounded-lg" />
 
-<center>
+<center class="text-gray-400">
 Fabric
 </center>
 
@@ -1216,8 +1224,10 @@ And Sol, this great open source customizable mac launcher app is also pretty coo
 
 # Reactotron
 
-<img src="/media/reactotron2.png" class="max-h-[230px] rounded-lg" />
-<img src="/media/reactotron1.png" class="max-h-[180px] rounded-lg" />
+<div class="flex flex-col gap-y-2">
+<img src="/media/reactotron2.png" class="max-h-[190px] rounded-lg" />
+<img src="/media/reactotron3.png" class="max-h-[222px] rounded-lg" />
+</div>
 
 <div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/infinitered/reactotron-macos</a></div>
 
@@ -1423,6 +1433,8 @@ If you want to make a mac app, try doing it in react native. It's pretty cool.
 
 ---
 
+<div class="-mt-20" />
+
 # Take React Native on desktop seriously
 
 - RNM 0.81 coming soon with Fabric
@@ -1457,3 +1469,6 @@ I made this little repo with links to the documentation and apps I showed in the
 
 We're well aware that it has rough edges. So please talk to me or Saad if you're interested and wel'll either help you or connect you to the right people.
 -->
+
+
+<!-- React native mac? -->

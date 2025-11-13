@@ -57,7 +57,7 @@ I'm Jay. That's me in a minion hat coding in the snow in -20 degrees, as I do.
 
 I'm the CTO of Bravely, a mental health startup. And I make some open source libraries, Legend List and Legend State, and I recently joined Expo to see what could be possible with desktop apps.
 
-I'm just here to be your hype man.
+But I'm just here to be your hype man.
 -->
 
 ---
@@ -284,9 +284,9 @@ Sending back a response is even more complicated. You can implement a Response S
 <!--
 The newer alternative to Electron is Tauri. It's also a webview app, but it uses the system webview so it doesn't bundle chromium and is much smaller.
 
-But then you have to deal with platform differences of Safari on Mac vs. Edge on Windows, and old OS versions will have old webview versions.
+But then you have to deal with platform differences of Safari on Mac vs. Edge on Windows, and old OS versions will have old webview versions, so you can't really use new browser features.
 
-And you'll use Rust for the code in the main process, which is great if you love Rust, but otherwise it's a whole other language to learn.
+And you'll use Rust for the code in the main process and native modules, which is great if you love Rust, but otherwise it's a whole other language to learn.
 
 And it's still a webview.
 -->

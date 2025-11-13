@@ -779,7 +779,19 @@ I'm happy to say it's grown quite a bit since we started! We have guides for how
 # Tech Debt -- Stabilizing our releases
 
 <!--
-The next bit of tech debt we had to pay off was to stabilize our releases, and release pipelines. This actually took up the majority of time, turns out releases are hard. We used modern tools like `nx release` and `yarn constraints`. The goal was to make it so that you could trust the CI, and more of the enforcement of quality moved out of my head, and into code. Did this pay off? I think so, because for the first time, React Native macOS had a release made by the open source community. Thanks Gabriel :)
+The next bit of tech debt we had to pay off was to stabilize our releases, and release pipelines. This actually took up the majority of time, turns out releases are hard. We used modern tools like `nx release` and `yarn constraints`. The goal was to reduce the time it took to make a release, and to make them a bit more idiot proof, so they don't rely on one person knowing exactly which levers to pull. We ended up using `nx release` as our tool of choice, but there were many options out there. We also updated our CI to be more rigorous, so the repo is more consistently in a good state. Many thanks to Tommy Nguyen, who helped me a lot with the tooling and stabilization. 
+-->
+
+---
+
+# Tech Debt -- Stabilizing our releases
+
+Did it pay off?
+
+<v-click> TODO: Add Screenshot of 0.79 merge</v-click>
+
+<!--
+Did this pay off? I think so, because for the first time, React Native macOS had a release made by the open source community. Gabriel, the maintainer of Expo Orbit (which by the way, is a React Native macOS app) wanted to have 0.79, so I went and added a releases guide based on the advice I gave him. Better docs, and a new release!
 -->
 
 ---

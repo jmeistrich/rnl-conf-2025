@@ -889,7 +889,7 @@ Did this pay off? I think so, because for the first time, React Native macOS had
 
 </v-click>
 
-<a href="microsoft.github.io/react-native-windows">microsoft.github.io/react-native-windows</a>
+<div class="flex justify-center gap-x-4" >🔗 <a href="microsoft.github.io/react-native-windows">microsoft.github.io/react-native-windows</a></div>
 
 <!--
 Speaking of docs, that's our next area of tech debt we had to address. Historically, the macOS and windows docs were all on one website, but it was mmostly React Native Windows docs. There were only two pages for macOS docs, that really only told you how to make a hello world app. That's bad for our users, and that's on me for not updating them enough. Sorry about that.
@@ -902,8 +902,7 @@ Speaking of docs, that's our next area of tech debt we had to address. Historica
 
 <img src="/media/macos-docs.png" class="max-h-[360px] rounded-lg" />
 
-<a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a>
-
+<div class="flex justify-center gap-x-4" >🔗 <a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a></div>
 
 <!--
 To fix that, we made a new docs site! It lives in the React Native macOS repo, so it's super easy to find and update. And it has a dark mode! As I worked on macOS over the last several months, if I ran into something I felt I know that others should also know, I'd make a note to add it to the website.
@@ -915,7 +914,7 @@ To fix that, we made a new docs site! It lives in the React Native macOS repo, s
 
 <img src="/media/macos-docs-2.png" class="max-h-[360px] rounded-lg" />
 
-<a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a>
+<div class="flex justify-center gap-x-4" >🔗 <a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a></div>
 
 <!--
 I'm happy to say it's grown quite a bit since we started!
@@ -928,7 +927,7 @@ Remember that release guide I mentioned? It's now in the docs. We also have a gu
 
 <img src="/media/macos-docs-3.png" class="max-h-[360px] rounded-lg" />
 
-<a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a>
+<div class="flex justify-center gap-x-4" >🔗 <a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a></div>
 
 <!--
 We also have an API section where we list a bunch of the macOS only props we have. I found most of these as we had to reimplement them for the new architecture. I hope the new docs site is useful, encourage yall to raise issues and contribute if something is confusing, because I'm not going to know every case that people run into.

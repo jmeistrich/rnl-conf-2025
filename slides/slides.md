@@ -12,12 +12,12 @@ defaults:
 
 <div class="absolute bottom-0 w-124 gap-y-2">
   <div class="flex w-full justify-between mb-16">
-    <div>
+    <div class="flex flex-col gap-y-1">
         <div>Saad Najmi</div>
         <div>𝕏 @SaadNajmi</div>
         <div>🦋 @saadnajmi.bsky.social</div>
     </div>
-    <div class="text-right">
+    <div class="flex flex-col gap-y-1 text-right">
         <div>Jay Meistrich</div>
         <div>𝕏 @jmeistrich</div>
         <div>🦋 @jayz.us</div>
@@ -29,8 +29,38 @@ defaults:
 <!--
 Good morning!
 
-TODO: How to intro us
+Big props to Theodo for putting together this awesome conference. I'm 2 for 2 now and I hope to keep back coming every year!
+
+So without further ado let's get into it and talk about React Native macOS.
+-->
+
+---
+
+# Jay Meistrich
+
+<center>
+<img src="/media/jay.jpg" class="max-h-[200px] rounded-lg my-10" />
+</center>
+
+- CTO @ Bravely
+- Legend List, Legend State, Legend Motion
+- Expo
+
+<!--
+I'm Jay. That's me in a minion hat coding in the snow in -20 degrees, as I do.
+
+I'm the CTO of Bravely, a mental health startup. And I make some open source libraries, Legend List and Legend State, and I recently joined Expo to see what could be possible with desktop apps.
+-->
+
+---
+
+<!--
+And Saad is the actual hero who leads the React Native macOS team at Microsoft.
+
+I'm just here to bring you some hype, and Saad will tell you what's actually happening in React Native macOS.
  -->
+
+
 
 ---
 
@@ -115,7 +145,7 @@ But first we need to ground this in the current state of desktop apps.
 
 When people are building a desktop app they have basically two choices: build it fully native or as a webview.
 
-Going fully native requires building two entirely new apps, on top of their existing web and mobile apps. So choosing a webview app is usually the best decision, to be able to actually release apps on every platform.
+Going fully native requires building two entirely new apps, on top of any existing web and mobile apps. So choosing a webview app is usually the best decision, to have time to actually release desktop apps at all.
 
 But it's a big compromise, and it punishes us users with these mediocre web apps pretending to be desktop apps.
 -->
@@ -162,7 +192,9 @@ A Hello World app is 268 MB, runs 4 separate processes, and uses 83 MB of memory
 <img src="/media/ipc.png" class="max-h-[540px] rounded-lg" />
 
 <!--
-The way it works is you have a renderer process for the webview, and a main process for the app itself that communicate through interprocess communcation. The main process then runs through node.js to do system things, and passes the result all the way back up the bridges.
+The way it works is you have a renderer process for the webview, which is an instance of Chromium. And you have a main process for the app itself that communicate through interprocess communcation.
+
+The main process then runs through node.js to do system things, and passes the result all the way back up the bridges.
 
 And that adds a lot of DX and performance overhead.
 -->
@@ -212,9 +244,9 @@ ipcMain.on('open-file', (event, json) => {
 </div>
 
 <!--
-This is a simple example of how you run native code. You have to postMessage from the web process over to the main process, stringify and parse your data across the bridge, then run your native code.
+This is a simple example of how you run native code. You have to postMessage from the web process over to the main process, stringifying and parsing your data across the bridge, then run your native code.
 
-Sending back a response is even more complicated. You can implement a Response Stream using Message Channels. But that's a whole complex thing for what should just be calling a function.
+Sending back a response is even more complicated. You can implement a Response Stream using Message Channels, or there's some libraries to wrap it up. But that's a whole complex thing for what should just be calling a function.
 -->
 
 ---
@@ -237,7 +269,7 @@ The newer alternative to Electron is Tauri. It's also a webview app, but it uses
 
 But then you have to deal with platform differences of Safari on Mac vs. Edge on Windows, and old OS versions will have old webview versions.
 
-And it uses Rust for code in the main process, which is great if you love Rust, but otherwise it's a whole other language to learn.
+And you'll use Rust for the code in the main process, which is great if you love Rust, but otherwise it's a whole other language to learn.
 
 And it's still a webview.
 -->
@@ -275,21 +307,41 @@ Of course the biggest app on my computer is not Electron, but that's a whole oth
 <!--
 When I've been ranting to everybody I know about React Native on desktop, they tell me that nobody really builds desktop apps anymore.
 
-But I don't think that's true. Electron is actually downloaded almost as much as Expo.
+But I don't think that's true. Electron is actually downloaded almost as much as Expo is.
 
-And now AI is making it easy for people to quickly spin up little mini apps. But these mini apps are 300 megabytes with full browsers inside, and they're not as good as they should be.
+And desktop apps are just not as good as they should be.
+-->
+
+---
+
+# Because they're bad?
+
+<div class="img-crop h-[280px] rounded-lg mt-10" style="--crop-top: 80px; --crop-bottom: 10px;">
+  <img src="/media/minionsbad2.gif" class="" />
+</div>
+
+<!--
+And maybe that's the reason why they aren't super popular, because they're bad?
+
+They're basically just 300 megabyte web apps that use more memory and fill your hard drive. So you might as well just use the web app.
+
+But what if they were actually good?
+
+I really believe that if desktop apps were significantly better than web apps, people would use them. Because they're so much better.
 -->
 
 ---
 
 # Reverse the Enshittification
 
-<div class="text-[72px] text-center">
-💩 <span class="text-gray-300">→</span> 🔥
+<div class="flex justify-center">
+
+<img src="/media/minionspunch.gif" class="max-h-[580px] rounded-lg mt-8" />
+
 </div>
 
 <!--
-So I think it's time to reverse the enshittification
+So I think it's time to reverse the enshittification and make good apps again.
 -->
 
 ---
@@ -317,7 +369,7 @@ So I think it's time to reverse the enshittification
 </div>
 
 <!--
-We've been through this before on mobile with Cordova and Ionic apps being wrappers around web apps. They were poor experiences but cross platform and easier to build.
+We've been through this before on mobile with Cordova and Ionic apps being wrappers around web apps. They were bad experiences but cross platform and easier to build.
 
 Native apps are more delightful but hard to build and need dedicated teams. So companies built cross-platform web apps across web and mobile. And everything was bad.
 -->
@@ -354,7 +406,7 @@ Native apps are more delightful but hard to build and need dedicated teams. So c
 <!--
 But then React Native came in and saved everyone with delightful cross-platform apps. And everything was good.
 
-Well to be fair, it was rough for a while now but it's really good.
+Well to be fair, it was rough for a while but now it's really good.
 -->
 
 ---
@@ -409,7 +461,7 @@ But now we've repeated history again on desktop.
 <!--
 Companies are building cross-platform web apps across web and desktop, while using React Native on mobile.
 
-And again we have an opportunity again for React Native to come in and save everyone.
+And again we have an opportunity for React Native to come in and save everyone.
 -->
 
 ---
@@ -516,7 +568,7 @@ Because it's awesome.
 
 Apps are tiny.
 
-And they're fast because Hermes is fast, native modules are fast, they don't have to implement a whole browser, and they don't have to communicate across a webview bridge.
+And they're fast because Hermes is fast, native modules are fast, they don't have to run a whole browser, and they don't have to communicate across a webview bridge.
 
 And because React Native is native, it can be as fast as a native app and easily use native features.
 -->
@@ -567,7 +619,7 @@ We all know size matters but what's more important is how the app feels.
 <!--
 I started into React Native macOS by vibe coding a photo app to see what kind of performance I could get with it.
 
-The app opens instantly. LegendList powers a gallery view and timeline with no blanking. Shared element transitions look awesome. And the photos load so fast it looks like a movie.
+The app opens instantly. It has a gallery view and timeline that look super smooth. Shared element transitions look awesome. And the photos load so fast it looks like a movie.
 
 Looking back at it that video looks sped up, but it's just that fast.
 -->
@@ -581,7 +633,7 @@ Looking back at it that video looks sped up, but it's just that fast.
 <!--
 And then I made a music app to try to save my battery life. We can open multiple windows (ooooh) because it's not a webview. We can even drag and drop between windows. Ooooh.
 
-Clearly not many of you have used Electron because this should be blowing your minds.
+Clearly not many of you have used Electron because this should be blowing your minds right now.
 -->
 
 ---
@@ -601,7 +653,7 @@ In React Native this is just easy, it's using platform native drag drop events.
 <div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/LegendApp/legend-music</a></div>
 
 <!--
-We can even do cool animations on windows. When the song changes this overlay window at the top of the screen unblurs and fades in, and blurs and fades out.
+We can even do cool animations on the windows. When the song changes this overlay window at the top of the screen unblurs and fades in, and after two seconds it blurs and fades out.
 -->
 
 ---
@@ -787,7 +839,7 @@ TODO: Insert Saad slides here
 <!--
 I want to show you some really cool React Native macOS apps.
 
-Like Expo Orbit for launching builds or updates from EAS. It's this nice menu bar app which uses deep links to be activated from the web and run OS simulators with your builds.
+Like Expo Orbit for launching builds or updates from EAS. It's this nice menu bar app which uses deep links to be activated from the web and run OS simulators with your builds. It's pretty cool.
 -->
 
 ---
@@ -799,7 +851,7 @@ Like Expo Orbit for launching builds or updates from EAS. It's this nice menu ba
 <div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/ospfranco/sol</a></div>
 
 <!--
-And Sol, this great open source customizable mac launcher app
+And Sol, this great open source customizable mac launcher app is also pretty cool.
 -->
 
 ---
@@ -968,7 +1020,7 @@ A lot of Expo modules work on mac already. I specifically love expo file system,
 - Window management
 
 <!--
-And there's a whole ton of new libraries that need to be built for new desktop specific features that don't exist on mobile.
+And there's a whole ton of new libraries that still need to be built for new desktop specific features that don't exist on mobile.
 -->
 
 ---
@@ -1021,13 +1073,12 @@ If you want to make a mac app, try doing it in react native. It's pretty cool.
 
 - Talk to me or Saad
 
-https://github.com/jmeistrich/awesome-react-native-desktop
+- https://github.com/jmeistrich/awesome-react-native-desktop
 
 <!--
-Talk to me or Saad if you're interested and I'll help or connect you to the right people
+So let's take React Native on desktop seriously
+
+I made this little repo with links to the documentation and apps I showed in the slides, so check that out.
+
+We're well aware that it has rough edges. So please talk to me or Saad if you're interested and wel'll either help you or connect you to the right people.
 -->
-
-<!--
-TODO:
-How to start it
- -->

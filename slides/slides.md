@@ -254,9 +254,9 @@ A lot of the apps you use every day are Electron apps.
 
 I don't mean to throw shade on Electron or these apps. Maintaining multiple native apps in different languages is a huge overhead, so Electron is probably the best choice for most apps.
 
-So this is just the world we live in where our desktop apps are web apps.
+You can even see my own app, Legend, in there. That's part of why I'm so passionate about this, because I've been mad about this for 8 years now.
 
-You can even see my own app, Legend, in the list there. That's part of why I'm so passionate about this, because I've been mad about this for 8 years now.
+So this is just the world we live in where our desktop apps are web apps.
 -->
 
 ---
@@ -273,7 +273,7 @@ Of course the biggest app on my computer is not Electron, but that's a whole oth
 <img src="/media/downloads.png" class="max-h-[540px] rounded-lg" />
 
 <!--
-When I've been ranting to everyone I know about React Native on desktop, they tell me that nobody builds desktop apps anymore.
+When I've been ranting to everybody I know about React Native on desktop, they tell me that nobody really builds desktop apps anymore.
 
 But I don't think that's true. Electron is actually downloaded almost as much as Expo.
 
@@ -516,7 +516,7 @@ Because it's awesome.
 
 Apps are tiny.
 
-And they're fast because Hermes is fast, native modules are fast, and they don't have to communicate across a webview bridge.
+And they're fast because Hermes is fast, native modules are fast, they don't have to implement a whole browser, and they don't have to communicate across a webview bridge.
 
 And because React Native is native, it can be as fast as a native app and easily use native features.
 -->
@@ -579,7 +579,7 @@ Looking back at it that video looks sped up, but it's just that fast.
 <div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/LegendApp/legend-music</a></div>
 
 <!--
-We can open multiple windows (ooooh) because it's not a webview. We can even use the platform native drag/drop behavior to drag between windows. Ooooh.
+And then I made a music app to try to save my battery life. We can open multiple windows (ooooh) because it's not a webview. We can even drag and drop between windows. Ooooh.
 
 Clearly not many of you have used Electron because this should be blowing your minds.
 -->
@@ -611,7 +611,7 @@ We can even do cool animations on windows. When the song changes this overlay wi
 <div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/LegendApp/legend-music</a></div>
 
 <!--
-Let's look at that in slow motion to see how cool it is. Codex made me a native blur filter in Swift to do that in a few minutes.
+Let's look at that in slow motion to see how cool it is. Codex made me this native blur filter in Swift which looks awesome.
 -->
 
 ---
@@ -637,7 +637,9 @@ Now let's step it up a notch. React Native Skia has mac support.
 <div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/LegendApp/legend-music</a></div>
 
 <!--
-So we can display this dope visualizer by updating our native audio module to tap into the raw frequency data. That's pretty cool, but let's step it up a notch.
+So we can display this dope visualizer by having our native audio module tap into the raw frequency data.
+
+That's pretty cool right? But let's step it up a notch.
 -->
 
 ---
@@ -785,7 +787,7 @@ TODO: Insert Saad slides here
 <!--
 I want to show you some really cool React Native macOS apps.
 
-Like Expo Orbit for launching builds or updates from EAS.
+Like Expo Orbit for launching builds or updates from EAS. It's this nice menu bar app which uses deep links to be activated from the web and run OS simulators with your builds.
 -->
 
 ---
@@ -797,7 +799,7 @@ Like Expo Orbit for launching builds or updates from EAS.
 <div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/ospfranco/sol</a></div>
 
 <!--
-And Sol, this great open source mac launcher
+And Sol, this great open source customizable mac launcher app
 -->
 
 ---

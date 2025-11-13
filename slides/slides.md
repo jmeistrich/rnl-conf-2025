@@ -52,6 +52,8 @@ So without further ado let's get into it and talk about React Native macOS.
 I'm Jay. That's me in a minion hat coding in the snow in -20 degrees, as I do.
 
 I'm the CTO of Bravely, a mental health startup. And I make some open source libraries, Legend List and Legend State, and I recently joined Expo to see what could be possible with desktop apps.
+
+I'm just here to be your hype man.
 -->
 
 ---
@@ -66,9 +68,9 @@ I'm the CTO of Bravely, a mental health startup. And I make some open source lib
 - Tech lead for React Native macOS
 
 <!--
-And Saad is the actual hero who leads the React Native macOS team at Microsoft.
+Saad is the actual hero who leads the React Native macOS team at Microsoft.
 
-I'm just here to bring you some hype, and Saad will tell you what's actually happening in React Native macOS.
+He'll tell you what's actually happening in React Native macOS.
  -->
 
 ---
@@ -900,7 +902,7 @@ Speaking of docs, that's our next area of tech debt we had to address. Historica
 <div class="flex justify-center gap-x-4" >🔗 <a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a></div>
 
 <!--
-To fix that, we made a new docs site! It lives in the React Native macOS repo, so it's super easy to find and update. And it has a dark mode! 
+To fix that, we made a new docs site! It lives in the React Native macOS repo, so it's super easy to find and update. And it has a dark mode!
 -->
 
 ---
@@ -912,7 +914,7 @@ To fix that, we made a new docs site! It lives in the React Native macOS repo, s
 <div class="flex justify-center gap-x-4" >🔗 <a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a></div>
 
 <!--
-As I worked on macOS over the last several months, if I ran into something I felt I know that others should also know, I'd make a note to add it to the website. We have a guide for how to port an iOS library to macOS, that I wrote from my personal experience of porting WebGPU and Skia. 
+As I worked on macOS over the last several months, if I ran into something I felt I know that others should also know, I'd make a note to add it to the website. We have a guide for how to port an iOS library to macOS, that I wrote from my personal experience of porting WebGPU and Skia.
 -->
 
 ---
@@ -1061,7 +1063,9 @@ In Paper for iOS, this was done by passing JSON to a bunch of macros. This was p
 
 <img src="/media/prop-parsing-paper.png" class="max-h-[360px] rounded-lg" />
 
+<center>
 Paper
+</center>
 
 <!--
 Both Paper and Fabric need to pass props from JS to native code, so they can be parsed into native props. In Paper for iOS, this was done by passing JSON to a bunch of macros. This was pretty versatile, but kinda ugly to look at. It also had no guarnatees of type safety, since the JSON can be anything. Performance also isn't great, since your bottleneck is how fast you can serialize and deserialize JSON.
@@ -1073,7 +1077,9 @@ Both Paper and Fabric need to pass props from JS to native code, so they can be 
 
 <img src="/media/prop-parsing-fabric.png" class="max-h-[360px] rounded-lg" />
 
+<center>
 Fabric
+</center>
 
 <!--
 In Fabric, all of the prop parsing moved into a shared C++ layer. Instead of parsing JSON, with Fabric we know the types in advance, so we can just create C++ structs and classes that match what we're sending from JS. This is much faster and much cleaner to look at. And it can be shared across platforms, which is awesome for us.
@@ -1095,11 +1101,15 @@ How do we represent platform specific props? It's actually quite easy, thanks to
 
 # Fabric
 
+<div class="pl-5 text-gray-400">
 Platform specific props
+</div>
 
 <img src="/media/host-platform-props-ios.png" class="max-h-[360px] rounded-lg" />
 
+<center>
 iOS
+</center>
 
 <!--
 Then, each platform can define it's own "host platform props". For iOS, React Native just aliases and reuse the base props. For Android, React Native extends the class to add Android specific props, like `elevation`.
@@ -1109,11 +1119,15 @@ Then, each platform can define it's own "host platform props". For iOS, React Na
 
 # Fabric
 
+<div class="pl-5 text-gray-400">
 Platform specific props
+</div>
 
 <img src="/media/host-platform-props-android.png" class="max-h-[360px] rounded-lg" />
 
+<center>
 Android
+</center>
 
 <!--
 For Android, React Native extends the class to add Android specific props, like `elevation`.
@@ -1123,11 +1137,15 @@ For Android, React Native extends the class to add Android specific props, like 
 
 # Fabric
 
+<div class="pl-5 text-gray-400">
 Platform specific props
+</div>
 
 <img src="/media/host-platform-props-macos.png" class="max-h-[360px] rounded-lg" />
 
+<center>
 macOS
+</center>
 
 <!--
 This makes it easy for macOS to do the same thing, and add all of our props one by one. Bonus points, it also makes it easy to add documentation for what our macOS specific props are, now that they're in an easy to read header. I know this is the right pattern, because React Native Windows uses it too.
@@ -1137,13 +1155,17 @@ This makes it easy for macOS to do the same thing, and add all of our props one 
 
 # Fabric
 
+<div class="pl-5 text-gray-400">
 This feels too easy?
+</div>
 
 <v-click>
 
 <img src="/media/host-platform-pr.png" class="max-h-[360px] rounded-lg" />
 
 </v-click>
+
+<center>&nbsp;</center>
 
 <!--
 If this all feels too easy to add a new platform, it's because it was designed that way. Remember that partnership we had with Meta? One of their engineers, Eric Rozell, contributed these APIs to make it easier to work on the desktop platforms, while he was working on it for React Native Windows. This also makes it easier to add future platforms, like what what we're seeing with TV and VR. Thanks Eric!
@@ -1224,7 +1246,7 @@ Of course Fast Refresh works, so it's easy to tweak the design.
 
 ---
 
-<img src="/media/devtools1.png" class="max-h-[560px] rounded-lg" />
+<img src="/media/devtools1.png" class="max-h-[520px] rounded-lg" />
 
 <!--
 We get the devtools to inspect the component tree
@@ -1232,7 +1254,7 @@ We get the devtools to inspect the component tree
 
 ---
 
-<img src="/media/devtools2.png" class="max-h-[560px] rounded-lg" />
+<img src="/media/devtools2.png" class="max-h-[520px] rounded-lg" />
 
 <!--
 and the nice new performance tab to optimize everything. I use this tab a lot, I love it.
@@ -1409,6 +1431,21 @@ If you want to make a mac app, try doing it in react native. It's pretty cool.
 - Talk to me or Saad
 
 - https://github.com/jmeistrich/awesome-react-native-desktop
+
+<div class="absolute bottom-2 w-170 gap-y-2">
+  <div class="flex w-full justify-between">
+    <div class="flex flex-col gap-y-1">
+        <div>Saad Najmi</div>
+        <div>𝕏 @SaadNajmi</div>
+        <div>🦋 @saadnajmi.bsky.social</div>
+    </div>
+    <div class="flex flex-col gap-y-1 text-right">
+        <div>Jay Meistrich</div>
+        <div>𝕏 @jmeistrich</div>
+        <div>🦋 @jayz.us</div>
+    </div>
+    </div>
+</div>
 
 <!--
 So let's take React Native on desktop seriously

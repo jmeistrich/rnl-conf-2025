@@ -848,7 +848,6 @@ And Saad will tell you all about that.
 </v-click>
 
 <!--
-Hi, I'm Saad Najmi. I'm the tech lead for React Native macOS at Microsoft
 
 What has our team been working on? I can break down the work to mostly two buckets: "Paying down tech debt", and "implementing the new architecture". I'd love to have spent all my time on the latter, but I also realized in order for us to move fast and be a library people use, we need to work on the former. Let's talk about some of the tech debt.
 -->
@@ -883,16 +882,12 @@ Did this pay off? I think so, because for the first time, React Native macOS had
 
 # Documentation
 
-<v-click>
-
 <img src="/media/windows-docs.png" class="max-h-[360px] rounded-lg" />
-
-</v-click>
 
 <div class="flex justify-center gap-x-4" >🔗 <a href="microsoft.github.io/react-native-windows">microsoft.github.io/react-native-windows</a></div>
 
 <!--
-Speaking of docs, that's our next area of tech debt we had to address. Historically, the macOS and windows docs were all on one website, but it was mmostly React Native Windows docs. There were only two pages for macOS docs, that really only told you how to make a hello world app. That's bad for our users, and that's on me for not updating them enough. Sorry about that.
+Speaking of docs, that's our next area of tech debt we had to address. Historically, the macOS and windows docs were all on one website, but it was mmostly React Native Windows docs. There were only two pages for macOS docs, that really only told you how to make a hello world app. That's bad for our users, and that's on me for not updating them enough.
 -->
 
 ---
@@ -905,32 +900,43 @@ Speaking of docs, that's our next area of tech debt we had to address. Historica
 <div class="flex justify-center gap-x-4" >🔗 <a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a></div>
 
 <!--
-To fix that, we made a new docs site! It lives in the React Native macOS repo, so it's super easy to find and update. And it has a dark mode! As I worked on macOS over the last several months, if I ran into something I felt I know that others should also know, I'd make a note to add it to the website.
+To fix that, we made a new docs site! It lives in the React Native macOS repo, so it's super easy to find and update. And it has a dark mode! 
 -->
 
 ---
 
 # Documentation
 
-<img src="/media/macos-docs-2.png" class="max-h-[360px] rounded-lg" />
+<img src="/media/macos-docs-ios-port.png" class="max-h-[360px] rounded-lg" />
 
 <div class="flex justify-center gap-x-4" >🔗 <a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a></div>
 
 <!--
-I'm happy to say it's grown quite a bit since we started!
-Remember that release guide I mentioned? It's now in the docs. We also have a guide for how to port an iOS library to macOS, that I wrote from my personal experience of porting WebGPU and Skia, among other libraries. I also asked others to contribute, and Gabriel added some docs for how to use Expo Modules with macOS. Thanks Gabriel!
+As I worked on macOS over the last several months, if I ran into something I felt I know that others should also know, I'd make a note to add it to the website. We have a guide for how to port an iOS library to macOS, that I wrote from my personal experience of porting WebGPU and Skia. 
 -->
 
 ---
 
 # Documentation
 
-<img src="/media/macos-docs-3.png" class="max-h-[360px] rounded-lg" />
+<img src="/media/macos-docs-props.png" class="max-h-[360px] rounded-lg" />
 
 <div class="flex justify-center gap-x-4" >🔗 <a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a></div>
 
 <!--
 We also have an API section where we list a bunch of the macOS only props we have. I found most of these as we had to reimplement them for the new architecture. I hope the new docs site is useful, encourage yall to raise issues and contribute if something is confusing, because I'm not going to know every case that people run into.
+-->
+
+---
+
+# Documentation
+
+<img src="/media/macos-docs-expo.png" class="max-h-[360px] rounded-lg" />
+
+<div class="flex justify-center gap-x-4" >🔗 <a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a></div>
+
+<!--
+I also asked others to contribute, and Gabriel added some docs for how to use Expo Modules with macOS, and bundle with the Expo CLI. Thanks Gabriel!
 -->
 
 ---
@@ -983,7 +989,7 @@ There are two main areas where we needed to make progress on the new architectur
 - Versioning problem
 
 <!--
-Hermes has always worked on macOS, but every now and then your React Native macOS build might fail to compile with Hermes? It was bad enough that we couldn't test Hermes in our CI, even though it mostly worked for end users. What's happening here? Turns out the answer is simple. We're a fork of React Native, and our scripts that choose what version of Hermes to use didn't properly account for that. Our main branch would try the latest commit of Hermes, even if we were 1000-2000 commits behind React Native Core. Our release branches would always pull the latest minor release, even if we weren't synced that ahead yet.
+Hermes, the JS engine, has always worked on macOS, but it didn't consistently work on React Native macOS.Every now and then your React Native macOS build might fail to compile. It was bad enough that we couldn't test Hermes in our CI, even though it mostly worked for end users. What's happening here? Turns out the answer is simple. We're a fork of React Native, and our scripts that choose what version of Hermes to use didn't properly account for that. Our main branch would try the latest commit of Hermes, even if we were 1000-2000 commits behind React Native Core. Our release branches would always pull the latest minor release, even if we weren't synced that ahead yet.
 -->
 
 ---
@@ -1004,7 +1010,7 @@ The solution was quite simple. We just had to make sure we looked up the right v
 
 React Native Devtools
 
-<SlidevVideo src="/media/devtools-rntester.mp4" autoreset="slide" autoplay mute  />
+<SlidevVideo src="/media/devtools-rntester.mp4" autoreset="slide" autoplay loop mute  />
 
 <!--
 Hermes also means one more thing. We also now fully support React Native Devtools, so you get the same familiar experience with the paused in debugger overlay and the ability to reconnect after reloads. In my own personal dev, this was so much more useful.

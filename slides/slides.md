@@ -56,13 +56,20 @@ I'm the CTO of Bravely, a mental health startup. And I make some open source lib
 
 ---
 
+# Saad Najmi
+
+<center>
+<img src="/media/saad.jpeg" class="max-h-[200px] rounded-lg my-10" />
+</center>
+
+- Senior Software Engineer @ Microsoft
+- Tech lead for React Native macOS
+
 <!--
 And Saad is the actual hero who leads the React Native macOS team at Microsoft.
 
 I'm just here to bring you some hype, and Saad will tell you what's actually happening in React Native macOS.
  -->
-
-
 
 ---
 

@@ -747,7 +747,11 @@ The first bit of tech debt we had to pay off was to stabilize our releases pipel
 
 Did it pay off?
 
-<v-click> TODO: Add Screenshot of 0.79 merge</v-click>
+<v-click> 
+
+<img src="/media/gabriel-79-merge.png" class="max-h-[360px] rounded-lg" />
+
+</v-click>
 
 <!--
 Did this pay off? I think so, because for the first time, React Native macOS had a release made by the open source community. Gabriel, the maintainer of Expo Orbit (which by the way, is a React Native macOS app) wanted to have 0.79, so I went and documented a release guide so we could get that out ASAP.
@@ -758,7 +762,13 @@ Did this pay off? I think so, because for the first time, React Native macOS had
 
 # Documentation
 
-TODO: Add windows docs screenshot
+<v-click> 
+
+<img src="/media/windows-docs.png" class="max-h-[360px] rounded-lg" />
+
+</v-click>
+
+<a href="microsoft.github.io/react-native-windows">microsoft.github.io/react-native-windows</a>
 
 <!-- 
 Speaking of docs, that's our next area of tech debt we had to address. Historically, the macOS and windows docs were all on one website, but it was mmostly React Native Windows docs. There were only two pages for macOS docs, that really only told you how to make a hello world app. That's bad for our users, and that's on me for not updating them enough. Sorry about that.
@@ -769,25 +779,38 @@ Speaking of docs, that's our next area of tech debt we had to address. Historica
 
 # Documentation
 
-microsoft.github.io/react-native-macos
+<img src="/media/macos-docs.png" class="max-h-[360px] rounded-lg" />
 
-TODO - Add front page screenshot
+<a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a>
+
 
 <!-- 
-To fix that, we made a new docs site! It lives in the React Native macOS repo, so it's super easy to find and update. As I worked on macOS over the last several months, if I ran into something I felt I know that others should also know, I'd make a note to add it to the website. 
+To fix that, we made a new docs site! It lives in the React Native macOS repo, so it's super easy to find and update. And it has a dark mode! As I worked on macOS over the last several months, if I ran into something I felt I know that others should also know, I'd make a note to add it to the website. 
 -->
 
 ---
 
 # Documentation
 
-microsoft.github.io/react-native-macos
+<img src="/media/macos-docs-2.png" class="max-h-[360px] rounded-lg" />
 
-TODO - Add screenshot or video of more docs
+<a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a>
 
 <!--
 I'm happy to say it's grown quite a bit since we started!
-Remember that release guide I mentioned? It's now in the docs. We also have a guide for how to port an iOS library to macOS, that I wrote from my personal experience of porting WebGPU and Skia, among other libraries. I also asked others to contribute, and Gabriel added some docs for how to use Expo Modules with macOS. Thanks Gabriel! We also have an API section where we list a bunch of the macOS only props we have. I encourage yall to raise issues and contribute if you get confused about something, because I'm not going to know every case that people run into. 
+Remember that release guide I mentioned? It's now in the docs. We also have a guide for how to port an iOS library to macOS, that I wrote from my personal experience of porting WebGPU and Skia, among other libraries. I also asked others to contribute, and Gabriel added some docs for how to use Expo Modules with macOS. Thanks Gabriel! 
+-->
+
+---
+
+# Documentation
+
+<img src="/media/macos-docs-3.png" class="max-h-[360px] rounded-lg" />
+
+<a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a>
+
+<!--
+We also have an API section where we list a bunch of the macOS only props we have. I found most of these as we had to reimplement them for the new architecture. I hope the new docs site is useful, encourage yall to raise issues and contribute if something is confusing, because I'm not going to know every case that people run into. 
 -->
 
 ---
@@ -860,7 +883,7 @@ The solution was quite simple. We just had to make sure we looked up the right v
 
 React Native Devtools
 
-TODO: Add video of RN Devtools
+<SlidevVideo src="/media/devtools-rntester.mp4" autoreset="slide" autoplay mute  />
 
 <!--
 Hermes also means one more thing. We also now fully support React Native Devtools, so you get the same familiar experience with the paused in debugger overlay and the ability to reconnect after reloads. In my own personal dev, this was so much more useful.
@@ -891,14 +914,8 @@ In 0.71, we had Fabric at the state where it could render the UI, but most of th
 
 It's much better
 
-<v-click>
-
-- RNM 0.81 - On by default
-
-</v-click>
-
 <!--
-Along the way of porting over Meta's fabric commits, I saw firsthand how much better architectured Fabric is over Paper. There are so many little and big decisions that we had a chance to redo, and it was honestly pretty fun to write stuff with the new APIs. There's more than I can talk about now, but I'd like to dive into one of the ways Fabric is better, particularly for out of tree platforms, prop parsing. Let's dive into some source code!
+Along the way of porting over Meta's fabric commits, I saw firsthand how much better written Fabric is over Paper. There are so many little and big decisions that we had a chance to redo, and it was honestly pretty fun to write stuff with the new APIs. There's more than I can talk about now, but I'd like to dive into one of the ways Fabric is better, particularly for out of tree platforms, prop parsing. Let's dive into some source code!
 -->
 
 ---
@@ -907,11 +924,17 @@ Along the way of porting over Meta's fabric commits, I saw firsthand how much be
 
 Prop Parsing
 
-<v-click>
+<!--
+In Paper for iOS, this was done by passing JSON to a bunch of macros. This was pretty versatile, but kinda ugly to look at. It also had no guarnatees of type safety, since the JSON can be anything. Performance also isn't great, since your bottleneck is how fast you can serialize and deserialize JSON.
+-->
 
-TODO: Screenshot of Paper prop parsing.
+---
 
-</v-click>
+# Fabric
+
+<img src="/media/prop-parsing-paper.png" class="max-h-[360px] rounded-lg" />
+
+Paper
 
 <!--
 Both Paper and Fabric need to pass props from JS to native code, so they can be parsed into native props. In Paper for iOS, this was done by passing JSON to a bunch of macros. This was pretty versatile, but kinda ugly to look at. It also had no guarnatees of type safety, since the JSON can be anything. Performance also isn't great, since your bottleneck is how fast you can serialize and deserialize JSON.
@@ -921,13 +944,9 @@ Both Paper and Fabric need to pass props from JS to native code, so they can be 
 
 # Fabric
 
-Prop Parsing
+<img src="/media/prop-parsing-fabric.png" class="max-h-[360px] rounded-lg" />
 
-<v-click>
-
-TODO: Screenshot of Fabric base view props.
-
-</v-click>
+Fabric
 
 <!--
 In Fabric, all of the prop parsing moved into a shared C++ layer. Instead of parsing JSON, with Fabric we know the types in advance, so we can just create C++ structs and classes that match what we're sending from JS. This is much faster and much cleaner to look at. And it can be shared across platforms, which is awesome for us.
@@ -939,11 +958,7 @@ In Fabric, all of the prop parsing moved into a shared C++ layer. Instead of par
 
 Platform specific props
 
-<v-click>
-
-TODO: Screenshot of Fabric base view props.
-
-</v-click>
+"The Host Platform Model"
 
 <!--
 How do we represent platform specific props? It's actually quite easy, thanks to something I'll call "the host platform model". We can have a base class (in this case, BaseViewProps), that is all the common props between platforms.
@@ -955,8 +970,9 @@ How do we represent platform specific props? It's actually quite easy, thanks to
 
 Platform specific props
 
-TODO: Screenshots of HostPlatformProps
+<img src="/media/host-platform-props-ios.png" class="max-h-[360px] rounded-lg" />
 
+iOS
 
 <!--
 Then, each platform can define it's own "host platform props". For iOS, React Native just aliases and reuse the base props. For Android, React Native extends the class to add Android specific props, like `elevation`. 
@@ -968,13 +984,23 @@ Then, each platform can define it's own "host platform props". For iOS, React Na
 
 Platform specific props
 
-TODO: Screenshots of macOS HostPlatformProps
+<img src="/media/host-platform-props-android.png" class="max-h-[360px] rounded-lg" />
 
-<v-click>
+Android
 
-TODO: Screenshot of windows HostPlatformProps
+<!--
+For Android, React Native extends the class to add Android specific props, like `elevation`. 
+-->
 
-</v-click>
+---
+
+# Fabric
+
+Platform specific props
+
+<img src="/media/host-platform-props-macos.png" class="max-h-[360px] rounded-lg" />
+
+macOS
 
 <!--
 This makes it easy for macOS to do the same thing, and add all of our props one by one. Bonus points, it also makes it easy to add documentation for what our macOS specific props are, now that they're in an easy to read header. I know this is the right pattern, because React Native Windows uses it too.
@@ -993,7 +1019,7 @@ TODO: Screenshot of Eric's Host Platform PR
 </v-click>
 
 <!--
-If this all feels too easy to add a new platform, it's because it was designed that way. Remember that partnership we had with Meta? One of their engineers, Eric Rozell, contributed these APIs to make it easier to work on the desktop platforms, and any future platforms, like what what we're seeing with TV and VR. Thanks Eric!
+If this all feels too easy to add a new platform, it's because it was designed that way. Remember that partnership we had with Meta? One of their engineers, Eric Rozell, contributed these APIs to make it easier to work on the desktop platforms, while he was working on it for React Native Windows. This also makes it easier to add future platforms, like what what we're seeing with TV and VR. Thanks Eric!
 -->
 
 ---

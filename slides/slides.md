@@ -74,7 +74,7 @@ I'm just here to be your hype man.
 <!--
 Saad is the actual hero who leads the React Native macOS team at Microsoft.
 
-He'll tell you what's actually happening in React Native macOS.
+He'll tell you what's actually happening in React Native Mac.
  -->
 
 ---
@@ -114,7 +114,7 @@ I got so excited about this that I joined Expo to explore how to make desktop ap
 # It's really good
 
 <!--
-Because React Native macOS is just really good. It makes tiny fast apps and it's got that familiar React Native dev experience that we all love.
+Because React Native Mac is just really good. It makes tiny fast apps and it's got that familiar React Native dev experience that we all love.
 -->
 
 ---
@@ -160,7 +160,7 @@ But first we need to ground this in the current state of desktop apps.
 
 When people are building a desktop app they have basically two choices: build it fully native or as a webview.
 
-Going fully native requires building two entirely new apps in two entirely different languages, on top of any existing web and mobile apps they already have. So choosing a webview app is usually the best decision, to have time to actually release desktop apps at all.
+Going fully native requires building two entirely new apps in two entirely different languages, in addition to any existing web and mobile apps they already have. So choosing a webview app is usually the best decision, to have time to actually release desktop apps at all.
 
 But it's a big compromise, and it punishes us users with these mediocre web apps pretending to be desktop apps.
 -->
@@ -209,7 +209,7 @@ And that's because it's a whole web browser.
 <img src="/media/ipc.png" class="max-h-[540px] rounded-lg" />
 
 <!--
-The way it works is you have a renderer process for the webview, which is an instance of Chromium. And you have a main process for the app itself that communicate through interprocess communcation.
+The way it works is you have a renderer process for the webview, which is an instance of Chromium. And you have a main process for the app itself. These two processes communicate through interprocess communcation.
 
 The main process then runs Node.js to do system things, and passes the result all the way back up the bridges.
 
@@ -624,7 +624,9 @@ And because React Native is native, it can be as fast as a native app and easily
 <!--
 Resource usage is much lower with React Native. It doesn't include a full Chromium browser but it does include Hermes so apps are slightly bigger than Tauri but use much less memory than both.
 
-We all know size matters but what's more important is how the app feels.
+We all know size matters. ... ...
+
+but what's more important is how the app feels.
 -->
 
 ---
@@ -634,7 +636,7 @@ We all know size matters but what's more important is how the app feels.
 <div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/LegendApp/legend-photos</a></div>
 
 <!--
-I started into React Native macOS by vibe coding a photo app to see what kind of performance I could get with it.
+I started into React Native Mac by vibe coding a photo app to see what kind of performance I could get with it.
 
 The app opens instantly. It has a gallery view and timeline that look super smooth. Shared element transitions look awesome. And the photos load so fast it looks like a movie.
 
@@ -1203,7 +1205,7 @@ Looking forward, I can't wait to release our next version of React Native macOS 
 <div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/expo/orbit</a></div>
 
 <!--
-I want to show you some really cool React Native macOS apps.
+I want to show you some really cool React Native Mac apps.
 
 Like Expo Orbit for launching builds or updates from EAS. It's this nice menu bar app which uses deep links to be activated from the web and run OS simulators with your builds. It's pretty cool.
 -->
@@ -1217,7 +1219,7 @@ Like Expo Orbit for launching builds or updates from EAS. It's this nice menu ba
 <div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/ospfranco/sol</a></div>
 
 <!--
-And Sol, this great open source customizable mac launcher app is also pretty cool.
+And Sol, this great open source customizable Mac launcher app is also pretty cool.
 -->
 
 ---
@@ -1232,7 +1234,7 @@ And Sol, this great open source customizable mac launcher app is also pretty coo
 <div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/infinitered/reactotron-macos</a></div>
 
 <!--
-And Infinite Red is currently rewriting their powerful React Native debugging tool Reactotron using React Native macOS
+And Infinite Red is currently rewriting their powerful React Native debugging tool Reactotron using React Native Mac
  -->
 
 ---
@@ -1311,7 +1313,7 @@ And then I can do native things from React. I don't have to post messages across
 <SlidevVideo src="/media/storybook.mp4" autoreset="slide" autoplay mute loop class="rounded-lg"  />
 
 <!--
-And React Native Storybook fully supports macOS so we can run the Storybook mac app to work with our desktop app component system.
+And React Native Storybook fully supports Mac so we can run the Storybook Mac app to work with our desktop app component system.
 -->
 
 ---
@@ -1334,7 +1336,7 @@ And React Native Storybook fully supports macOS so we can run the Storybook mac 
 <!--
 And we get access to the huge ecosystem of React Native libraries.
 
-But this is where we get into both pros and cons. JS-only libraries mostly just work. And a lot of the major native libraries already support macOS. But a lot don't yet.
+But this is where we get into both pros and cons. JS-only libraries mostly just work. And a lot of the major native libraries already support Mac. But a lot don't yet.
 -->
 
 ---
@@ -1426,9 +1428,9 @@ So let's crack some eggs and get this ecosystem going.
 <!--
 It's a wild west out there. Lots of libraries need to be built, and you could make your library the defacto goto by just being first.
 
-If you have a library with native code, please add mac support. As Saad said, it's usually pretty easy to port from iOS.
+If you have a library with native code, please add Mac support. As Saad said, it's usually pretty easy to port from iOS.
 
-If you want to make a mac app, try doing it in react native. It's pretty cool.
+If you want to make a Mac app, try doing it in react native. It's pretty cool.
 -->
 
 ---
@@ -1467,8 +1469,7 @@ So let's take React Native on desktop seriously
 
 I made this little repo with links to the documentation and apps I showed in the slides, so check that out.
 
-We're well aware that it has rough edges. So please talk to me or Saad if you're interested and wel'll either help you or connect you to the right people.
+We're well aware that it has rough edges, and we're trying to smooth them out. So please talk to me or Saad if you're interested and wel'll either help you or connect you to the right people.
+
+Thanks!
 -->
-
-
-<!-- React native mac? -->

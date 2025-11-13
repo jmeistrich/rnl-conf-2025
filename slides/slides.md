@@ -29,7 +29,9 @@ defaults:
 <!--
 Good morning!
 
-Big props to Theodo for putting together this awesome conference. I'm 2 for 2 now and I hope to keep back coming every year!
+Big props to Theodo for putting together this awesome conference.
+
+I'm 2 for 2 now and I hope to keep back coming every year!
 
 So without further ado let's get into it and talk about React Native macOS.
 -->
@@ -145,7 +147,7 @@ But first we need to ground this in the current state of desktop apps.
 
 When people are building a desktop app they have basically two choices: build it fully native or as a webview.
 
-Going fully native requires building two entirely new apps, on top of any existing web and mobile apps. So choosing a webview app is usually the best decision, to have time to actually release desktop apps at all.
+Going fully native requires building two entirely new apps in two entirely different languages, on top of any existing web and mobile apps they already have. So choosing a webview app is usually the best decision, to have time to actually release desktop apps at all.
 
 But it's a big compromise, and it punishes us users with these mediocre web apps pretending to be desktop apps.
 -->
@@ -182,9 +184,11 @@ But it's a big compromise, and it punishes us users with these mediocre web apps
 <!--
 The most popular tool for building desktop apps is Electron.
 
-Electron builds in a full chromium browser and Node.js into every app. It even bundles in ffmpeg because chromium needs it, even though most apps wouldn't use it.
+Electron builds in a full chromium browser and Node.js into every app. It even bundles in ffmpeg because chromium depends on it, even though most apps would never use it.
 
 A Hello World app is 268 MB, runs 4 separate processes, and uses 83 MB of memory.
+
+And that's because it's a whole web browser.
 -->
 
 ---
@@ -194,7 +198,7 @@ A Hello World app is 268 MB, runs 4 separate processes, and uses 83 MB of memory
 <!--
 The way it works is you have a renderer process for the webview, which is an instance of Chromium. And you have a main process for the app itself that communicate through interprocess communcation.
 
-The main process then runs through node.js to do system things, and passes the result all the way back up the bridges.
+The main process then runs Node.js to do system things, and passes the result all the way back up the bridges.
 
 And that adds a lot of DX and performance overhead.
 -->
@@ -284,7 +288,7 @@ And it's still a webview.
 <!--
 A lot of the apps you use every day are Electron apps.
 
-I don't mean to throw shade on Electron or these apps. Maintaining multiple native apps in different languages is a huge overhead, so Electron is probably the best choice for most apps.
+Now I don't mean to throw shade on Electron or these apps. Maintaining multiple native apps in different languages is a huge overhead, so Electron is probably the best choice for most apps.
 
 You can even see my own app, Legend, in there. That's part of why I'm so passionate about this, because I've been mad about this for 8 years now.
 
@@ -369,9 +373,9 @@ So I think it's time to reverse the enshittification and make good apps again.
 </div>
 
 <!--
-We've been through this before on mobile with Cordova and Ionic apps being wrappers around web apps. They were bad experiences but cross platform and easier to build.
+We've been through this before on mobile with Cordova and Ionic apps being wrappers around web apps. They were cross platform and easier to build, but bad for users.
 
-Native apps are more delightful but hard to build and need dedicated teams. So companies built cross-platform web apps across web and mobile. And everything was bad.
+Native apps are more delightful but hard to build and need dedicated teams. So companies built cross-platform web apps. And everything was bad.
 -->
 
 ---
@@ -505,7 +509,7 @@ And again we have an opportunity for React Native to come in and save everyone.
 <!--
 So since we're already building with React Native anyway, we can make React Native the cross-platform solution on desktop as well.
 
-Then instead of desktop apps being basically just downloaded web apps, we can build incredible native experiences and share code across all desktop and mobile platforms.
+Then instead of desktop apps being basically just giant heavy web apps, we can build incredible native experiences and share code across all desktop and mobile platforms.
 
 And fall back to the mediocre web experience when we don't have an app.
 -->
@@ -631,9 +635,9 @@ Looking back at it that video looks sped up, but it's just that fast.
 <div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/LegendApp/legend-music</a></div>
 
 <!--
-And then I made a music app to try to save my battery life. We can open multiple windows (ooooh) because it's not a webview. We can even drag and drop between windows. Ooooh.
+And then I made a music app to try to save my battery life. It can open multiple windows (ooooh) because it's not a webview. It can even drag and drop between windows. Ooooh.
 
-Clearly not many of you have used Electron because this should be blowing your minds right now.
+I notice I'm not hearing all of you cheering. Clearly not many of you have used Electron because this should be blowing your minds right now.
 -->
 
 ---

@@ -830,7 +830,324 @@ And Saad will tell you all about that.
 
 ---
 
-TODO: Insert Saad slides here
+# What have we been working on?
+
+<v-click> 
+
+- Paying down Tech Debt
+
+- Implementing the new architecture
+
+</v-click>
+
+<!--
+Hi, I'm Saad Najmi. I'm the tech lead for React Native macOS at Microsoft
+
+What has our team been working on? I can break down the work to mostly two buckets: "Paying down tech debt", and "implementing the new architecture". I'd love to have spent all my time on the latter, but I also realized in order for us to move fast and be a library people use, we need to work on the former. Let's talk about some of the tech debt.
+-->
+
+---
+
+# Stabilizing our releases
+
+
+<!--
+The first bit of tech debt we had to pay off was to stabilize our releases pipelines. Up until now, our release tooling was a hodgepodge of scripts built up over time. Some of it came from React Native, some open source tools Microsoft has, and some our own one off bash scripts. This made it really hard to do releases, and we'd consistently take an extra week or two just remembering what levers to turn on and off. We ended up using `nx release` because we wanted to try something new and cool, but there's a lot of options. We also added a bunch more PR checks to keep the repo green. In particular, Modern Yarn has a cool feature called constraints that helps with this. I'll talk more about that later. Many thanks to Tommy Nguyen, who took on this project with me and helped me a lot.
+-->
+
+---
+
+# Stabilizing our releases
+
+Did it pay off?
+
+<v-click> 
+
+<img src="/media/gabriel-79-merge.png" class="max-h-[360px] rounded-lg" />
+
+</v-click>
+
+<!--
+Did this pay off? I think so, because for the first time, React Native macOS had a release made by the open source community. Gabriel, the maintainer of Expo Orbit (which by the way, is a React Native macOS app) wanted to have 0.79, so I went and documented a release guide so we could get that out ASAP.
+-->
+
+---
+
+
+# Documentation
+
+<v-click> 
+
+<img src="/media/windows-docs.png" class="max-h-[360px] rounded-lg" />
+
+</v-click>
+
+<a href="microsoft.github.io/react-native-windows">microsoft.github.io/react-native-windows</a>
+
+<!-- 
+Speaking of docs, that's our next area of tech debt we had to address. Historically, the macOS and windows docs were all on one website, but it was mmostly React Native Windows docs. There were only two pages for macOS docs, that really only told you how to make a hello world app. That's bad for our users, and that's on me for not updating them enough. Sorry about that.
+-->
+
+---
+
+
+# Documentation
+
+<img src="/media/macos-docs.png" class="max-h-[360px] rounded-lg" />
+
+<a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a>
+
+
+<!-- 
+To fix that, we made a new docs site! It lives in the React Native macOS repo, so it's super easy to find and update. And it has a dark mode! As I worked on macOS over the last several months, if I ran into something I felt I know that others should also know, I'd make a note to add it to the website. 
+-->
+
+---
+
+# Documentation
+
+<img src="/media/macos-docs-2.png" class="max-h-[360px] rounded-lg" />
+
+<a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a>
+
+<!--
+I'm happy to say it's grown quite a bit since we started!
+Remember that release guide I mentioned? It's now in the docs. We also have a guide for how to port an iOS library to macOS, that I wrote from my personal experience of porting WebGPU and Skia, among other libraries. I also asked others to contribute, and Gabriel added some docs for how to use Expo Modules with macOS. Thanks Gabriel! 
+-->
+
+---
+
+# Documentation
+
+<img src="/media/macos-docs-3.png" class="max-h-[360px] rounded-lg" />
+
+<a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a>
+
+<!--
+We also have an API section where we list a bunch of the macOS only props we have. I found most of these as we had to reimplement them for the new architecture. I hope the new docs site is useful, encourage yall to raise issues and contribute if something is confusing, because I'm not going to know every case that people run into. 
+-->
+
+---
+
+# The New Architecture
+
+<!--
+OK, that's enough about tech debt. Let's talk about the new architecture. Let me first give you a recap of where macOS is.
+-->
+
+---
+
+# The New Architecture
+
+Microsoft 🤝 Meta
+
+<v-click>
+
+- RNM 0.71 - Technical Preview
+
+</v-click>
+
+<v-click>
+
+- RNM 0.81 - On by default
+
+</v-click>
+
+<!--
+Several years ago, we partnered with Meta to help us implement the new architecture. They had a team that wanted to build desktop apps. They internally made a fork, of our fork, of React Native macOS, and will contribute back changes upstream to us after it's been tested in their apps. Back in 0.71, we had a technical preview of the new architecture, where it rendered and ran but didn't do much. Looking forward, in our 0.81 release, I merged a bunch more of Meta's implementation, and we plan to have the new architecture on by default.
+-->
+
+---
+
+# The New Architecture
+
+- Hermes
+- Fabric
+
+
+<!--
+There are two main areas where we needed to make progress on the new architecture: Hermes, and Fabric. Hermes was much simpler, and was mostly a version lookup problem, while Fabric is where we had to reimplement a lot of stuff from Paper. Let's talk about Hermes first.
+-->
+
+---
+
+# Hermes
+
+- It mostly worked
+- Versioning problem
+
+<!--
+Hermes has always worked on macOS, but every now and then your React Native macOS build might fail to compile with Hermes? It was bad enough that we couldn't test Hermes in our CI, even though it mostly worked for end users. What's happening here? Turns out the answer is simple. We're a fork of React Native, and our scripts that choose what version of Hermes to use didn't properly account for that. Our main branch would try the latest commit of Hermes, even if we were 1000-2000 commits behind React Native Core. Our release branches would always pull the latest minor release, even if we weren't synced that ahead yet.
+-->
+
+---
+
+# Hermes
+
+Solution?
+
+<img src="/media/hermes-pr.png" class="max-h-[360px] rounded-lg" />
+
+<!--
+The solution was quite simple. We just had to make sure we looked up the right version of Hermes. On our main branch, we can use the git merge-base to grab the right commit of Hermes. On our release branches, we can add a peer dependency to the React Native Core release we are compatible with, and use that to grab Hermes. We made those fixes, and backported to 0.74. Now, we have Hermes enabled by default! Many thanks to my coworker Adam, who did most of the work to fix this.
+-->
+
+---
+
+# Hermes
+
+React Native Devtools
+
+<SlidevVideo src="/media/devtools-rntester.mp4" autoreset="slide" autoplay mute  />
+
+<!--
+Hermes also means one more thing. We also now fully support React Native Devtools, so you get the same familiar experience with the paused in debugger overlay and the ability to reconnect after reloads. In my own personal dev, this was so much more useful.
+-->
+
+---
+
+# Fabric
+
+<!--
+Let's talk about the next piece of the new architecture, Fabric. Fabric the native renderer, that takes the props and components from Javascript, and parses it into a native UI tree. This is the biggest piece that was missing from React Native macOS, and where most of the work went from both us and Meta. 
+-->
+
+---
+
+# Fabric
+
+- All the macOS props work
+- Bug squashing through core props
+
+<!--
+In 0.71, we had Fabric at the state where it could render the UI, but most of the props didn't work. As of right now, we have ported over all the macOS specific props, and we're mostly bug squashing our way through the core props. We haven't quite worked through all of them, so we haven't release 0.81, but I hope to soon. 
+-->
+
+---
+
+# Fabric
+
+It's much better
+
+<!--
+Along the way of porting over Meta's fabric commits, I saw firsthand how much better written Fabric is over Paper. There are so many little and big decisions that we had a chance to redo, and it was honestly pretty fun to write stuff with the new APIs. There's more than I can talk about now, but I'd like to dive into one of the ways Fabric is better, particularly for out of tree platforms, prop parsing. Let's dive into some source code!
+-->
+
+---
+
+# Fabric
+
+Prop Parsing
+
+<!--
+In Paper for iOS, this was done by passing JSON to a bunch of macros. This was pretty versatile, but kinda ugly to look at. It also had no guarnatees of type safety, since the JSON can be anything. Performance also isn't great, since your bottleneck is how fast you can serialize and deserialize JSON.
+-->
+
+---
+
+# Fabric
+
+<img src="/media/prop-parsing-paper.png" class="max-h-[360px] rounded-lg" />
+
+Paper
+
+<!--
+Both Paper and Fabric need to pass props from JS to native code, so they can be parsed into native props. In Paper for iOS, this was done by passing JSON to a bunch of macros. This was pretty versatile, but kinda ugly to look at. It also had no guarnatees of type safety, since the JSON can be anything. Performance also isn't great, since your bottleneck is how fast you can serialize and deserialize JSON.
+-->
+
+---
+
+# Fabric
+
+<img src="/media/prop-parsing-fabric.png" class="max-h-[360px] rounded-lg" />
+
+Fabric
+
+<!--
+In Fabric, all of the prop parsing moved into a shared C++ layer. Instead of parsing JSON, with Fabric we know the types in advance, so we can just create C++ structs and classes that match what we're sending from JS. This is much faster and much cleaner to look at. And it can be shared across platforms, which is awesome for us.
+-->
+
+---
+
+# Fabric
+
+Platform specific props
+
+"The Host Platform Model"
+
+<!--
+How do we represent platform specific props? It's actually quite easy, thanks to something I'll call "the host platform model". We can have a base class (in this case, BaseViewProps), that is all the common props between platforms.
+-->
+
+---
+
+# Fabric
+
+Platform specific props
+
+<img src="/media/host-platform-props-ios.png" class="max-h-[360px] rounded-lg" />
+
+iOS
+
+<!--
+Then, each platform can define it's own "host platform props". For iOS, React Native just aliases and reuse the base props. For Android, React Native extends the class to add Android specific props, like `elevation`. 
+-->
+
+---
+
+# Fabric
+
+Platform specific props
+
+<img src="/media/host-platform-props-android.png" class="max-h-[360px] rounded-lg" />
+
+Android
+
+<!--
+For Android, React Native extends the class to add Android specific props, like `elevation`. 
+-->
+
+---
+
+# Fabric
+
+Platform specific props
+
+<img src="/media/host-platform-props-macos.png" class="max-h-[360px] rounded-lg" />
+
+macOS
+
+<!--
+This makes it easy for macOS to do the same thing, and add all of our props one by one. Bonus points, it also makes it easy to add documentation for what our macOS specific props are, now that they're in an easy to read header. I know this is the right pattern, because React Native Windows uses it too.
+-->
+
+---
+
+# Fabric
+
+This feels too easy?
+
+<v-click>
+
+<img src="/media/host-platform-pr.png" class="max-h-[360px] rounded-lg" />
+
+</v-click>
+
+<!--
+If this all feels too easy to add a new platform, it's because it was designed that way. Remember that partnership we had with Meta? One of their engineers, Eric Rozell, contributed these APIs to make it easier to work on the desktop platforms, while he was working on it for React Native Windows. This also makes it easier to add future platforms, like what what we're seeing with TV and VR. Thanks Eric!
+-->
+
+---
+
+# Looking forward
+
+- 0.81 - On by default
+
+- 0.82 - The only architecture
+
+<!--
+Looking forward, I can't wait to release our next version of React Native macOS where you all can play around with Fabric. As you might know, on React Native 0.82 and up, you can no longer disable the new architecture. For us, that means that we will probably stay at 0.81 for a while. We still have a lot of work to do internally to get our apps like Office onto the new architecture, and properly stress test it with our millions of users. We're hard at work, and I'm excited to see what the future holds. Let me pass it back to Jay now, so he can tell show you some cool macOS apps in the wild.
+-->
 
 ---
 

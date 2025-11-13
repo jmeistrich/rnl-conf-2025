@@ -832,7 +832,7 @@ And Saad will tell you all about that.
 
 # What have we been working on?
 
-<v-click> 
+<v-click>
 
 - Paying down Tech Debt
 
@@ -861,7 +861,7 @@ The first bit of tech debt we had to pay off was to stabilize our releases pipel
 
 Did it pay off?
 
-<v-click> 
+<v-click>
 
 <img src="/media/gabriel-79-merge.png" class="max-h-[360px] rounded-lg" />
 
@@ -876,7 +876,7 @@ Did this pay off? I think so, because for the first time, React Native macOS had
 
 # Documentation
 
-<v-click> 
+<v-click>
 
 <img src="/media/windows-docs.png" class="max-h-[360px] rounded-lg" />
 
@@ -884,7 +884,7 @@ Did this pay off? I think so, because for the first time, React Native macOS had
 
 <a href="microsoft.github.io/react-native-windows">microsoft.github.io/react-native-windows</a>
 
-<!-- 
+<!--
 Speaking of docs, that's our next area of tech debt we had to address. Historically, the macOS and windows docs were all on one website, but it was mmostly React Native Windows docs. There were only two pages for macOS docs, that really only told you how to make a hello world app. That's bad for our users, and that's on me for not updating them enough. Sorry about that.
 -->
 
@@ -898,8 +898,8 @@ Speaking of docs, that's our next area of tech debt we had to address. Historica
 <a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a>
 
 
-<!-- 
-To fix that, we made a new docs site! It lives in the React Native macOS repo, so it's super easy to find and update. And it has a dark mode! As I worked on macOS over the last several months, if I ran into something I felt I know that others should also know, I'd make a note to add it to the website. 
+<!--
+To fix that, we made a new docs site! It lives in the React Native macOS repo, so it's super easy to find and update. And it has a dark mode! As I worked on macOS over the last several months, if I ran into something I felt I know that others should also know, I'd make a note to add it to the website.
 -->
 
 ---
@@ -912,7 +912,7 @@ To fix that, we made a new docs site! It lives in the React Native macOS repo, s
 
 <!--
 I'm happy to say it's grown quite a bit since we started!
-Remember that release guide I mentioned? It's now in the docs. We also have a guide for how to port an iOS library to macOS, that I wrote from my personal experience of porting WebGPU and Skia, among other libraries. I also asked others to contribute, and Gabriel added some docs for how to use Expo Modules with macOS. Thanks Gabriel! 
+Remember that release guide I mentioned? It's now in the docs. We also have a guide for how to port an iOS library to macOS, that I wrote from my personal experience of porting WebGPU and Skia, among other libraries. I also asked others to contribute, and Gabriel added some docs for how to use Expo Modules with macOS. Thanks Gabriel!
 -->
 
 ---
@@ -924,7 +924,7 @@ Remember that release guide I mentioned? It's now in the docs. We also have a gu
 <a href="microsoft.github.io/react-native-macos">microsoft.github.io/react-native-macos</a>
 
 <!--
-We also have an API section where we list a bunch of the macOS only props we have. I found most of these as we had to reimplement them for the new architecture. I hope the new docs site is useful, encourage yall to raise issues and contribute if something is confusing, because I'm not going to know every case that people run into. 
+We also have an API section where we list a bunch of the macOS only props we have. I found most of these as we had to reimplement them for the new architecture. I hope the new docs site is useful, encourage yall to raise issues and contribute if something is confusing, because I'm not going to know every case that people run into.
 -->
 
 ---
@@ -1009,7 +1009,7 @@ Hermes also means one more thing. We also now fully support React Native Devtool
 # Fabric
 
 <!--
-Let's talk about the next piece of the new architecture, Fabric. Fabric the native renderer, that takes the props and components from Javascript, and parses it into a native UI tree. This is the biggest piece that was missing from React Native macOS, and where most of the work went from both us and Meta. 
+Let's talk about the next piece of the new architecture, Fabric. Fabric the native renderer, that takes the props and components from Javascript, and parses it into a native UI tree. This is the biggest piece that was missing from React Native macOS, and where most of the work went from both us and Meta.
 -->
 
 ---
@@ -1020,7 +1020,7 @@ Let's talk about the next piece of the new architecture, Fabric. Fabric the nati
 - Bug squashing through core props
 
 <!--
-In 0.71, we had Fabric at the state where it could render the UI, but most of the props didn't work. As of right now, we have ported over all the macOS specific props, and we're mostly bug squashing our way through the core props. We haven't quite worked through all of them, so we haven't release 0.81, but I hope to soon. 
+In 0.71, we had Fabric at the state where it could render the UI, but most of the props didn't work. As of right now, we have ported over all the macOS specific props, and we're mostly bug squashing our way through the core props. We haven't quite worked through all of them, so we haven't release 0.81, but I hope to soon.
 -->
 
 ---
@@ -1090,7 +1090,7 @@ Platform specific props
 iOS
 
 <!--
-Then, each platform can define it's own "host platform props". For iOS, React Native just aliases and reuse the base props. For Android, React Native extends the class to add Android specific props, like `elevation`. 
+Then, each platform can define it's own "host platform props". For iOS, React Native just aliases and reuse the base props. For Android, React Native extends the class to add Android specific props, like `elevation`.
 -->
 
 ---
@@ -1104,7 +1104,7 @@ Platform specific props
 Android
 
 <!--
-For Android, React Native extends the class to add Android specific props, like `elevation`. 
+For Android, React Native extends the class to add Android specific props, like `elevation`.
 -->
 
 ---
@@ -1348,7 +1348,7 @@ And there's a whole ton of new libraries that still need to be built for new des
 
 # Downsides
 
-- Expo CLI support is experimental
+- We're experimenting with Expo CLI support
 - Some libraries don't work on macOS/Windows
 - Desktop specific functionality needs native modules
 
@@ -1388,7 +1388,9 @@ If you want to make a mac app, try doing it in react native. It's pretty cool.
 
 # Take React Native on desktop seriously
 
-- Add macos support to your libraries
+- RNM 0.81 coming soon with Fabric
+
+- Add macOS support to your libraries
 
 - Try making apps
 

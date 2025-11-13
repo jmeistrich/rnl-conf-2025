@@ -872,6 +872,7 @@ Hermes has always worked on macOS, but every now and then your React Native macO
 
 Solution?
 
+<img src="/media/hermes-pr.png" class="max-h-[360px] rounded-lg" />
 
 <!--
 The solution was quite simple. We just had to make sure we looked up the right version of Hermes. On our main branch, we can use the git merge-base to grab the right commit of Hermes. On our release branches, we can add a peer dependency to the React Native Core release we are compatible with, and use that to grab Hermes. We made those fixes, and backported to 0.74. Now, we have Hermes enabled by default! Many thanks to my coworker Adam, who did most of the work to fix this.
@@ -1014,7 +1015,7 @@ This feels too easy?
 
 <v-click>
 
-TODO: Screenshot of Eric's Host Platform PR 
+<img src="/media/host-platform-pr.png" class="max-h-[360px] rounded-lg" />
 
 </v-click>
 

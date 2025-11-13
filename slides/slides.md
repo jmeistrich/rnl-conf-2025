@@ -1030,28 +1030,24 @@ Hermes also means one more thing. We also now fully support React Native Devtool
 
 # Fabric
 
-<!--
-Let's talk about the next piece of the new architecture, Fabric. Fabric the native renderer, that takes the props and components from Javascript, and parses it into a native UI tree. This is the biggest piece that was missing from React Native macOS, and where most of the work went from both us and Meta.
--->
-
----
-
-# Fabric
+<v-click>
 
 - All the macOS props work
 - Bug squashing through core props
 
+</v-click>
+
+<v-click>
+
+- It's much better
+
+</v-click>
+
 <!--
+Let's talk about the next piece of the new architecture, Fabric. Fabric the native renderer, that takes the props and components from Javascript, and parses it into a native UI tree. This is the biggest piece that was missing from React Native macOS, and where most of the work went from both us and Meta.
+
 In 0.71, we had Fabric at the state where it could render the UI, but most of the props didn't work. As of right now, we have ported over all the macOS specific props, and we're mostly bug squashing our way through the core props. We haven't quite worked through all of them, so we haven't release 0.81, but I hope to soon.
--->
 
----
-
-# Fabric
-
-It's much better
-
-<!--
 Along the way of porting over Meta's fabric commits, I saw firsthand how much better written Fabric is over Paper. There are so many little and big decisions that we had a chance to redo, and it was honestly pretty fun to write stuff with the new APIs. There's more than I can talk about now, but I'd like to dive into one of the ways Fabric is better, particularly for out of tree platforms, prop parsing. Let's dive into some source code!
 -->
 

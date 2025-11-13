@@ -978,16 +978,6 @@ OK, that's enough about tech debt. Let's talk about the new architecture. Let me
 
 # The New Architecture
 
-<img src="/media/react-native-keyboard-pr.png" class="max-h-[360px] rounded-lg" />
-
-<center class="text-gray-400">
-Microsoft 🤝 Meta
-</center>
-
----
-
-# The New Architecture
-
 - Hermes
 - Fabric
 
@@ -1193,7 +1183,21 @@ If this all feels too easy to add a new platform, it's because it was designed t
 - 0.82 - The only architecture
 
 <!--
-Looking forward, I can't wait to release our next version of React Native macOS where you all can play around with Fabric. As you might know, on React Native 0.82 and up, you can no longer disable the new architecture. For us, that means that we will probably stay at 0.81 for a while. We still have a lot of work to do internally to get our apps like Office onto the new architecture, and properly stress test it with our millions of users. We're hard at work, and I'm excited to see what the future holds. Let me pass it back to Jay now, so he can tell show you some cool macOS apps in the wild.
+Looking forward, I can't wait to release our next version of React Native macOS where you all can play around with Fabric. As you might know, on React Native 0.82 and up, you can no longer disable the new architecture. For us, that means that we will probably stay at 0.81 for a while. We still have a lot of work to do internally to get our apps like Office onto the new architecture, and properly stress test it with our millions of users.
+-->
+
+---
+
+# Looking forward
+
+<img src="/media/react-native-keyboard-pr.png" class="max-h-[360px] rounded-lg" />
+
+<center class="text-gray-400">
+Microsoft 🤝 Meta
+</center>
+
+<!--
+Finally, there's one more interesting result of our collaboration with Meta. I started noticing some of the desktop props we have showing in React Native Core. I reached out and asked, and found out thye were being implemented for VR, with the desktop repos as a reference. I think this truly goes to show, a rising tide lifts all boats. Problems we had to solve for desktop.
 -->
 
 ---

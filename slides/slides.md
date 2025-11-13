@@ -10,7 +10,27 @@ defaults:
 
 # State of React Native macOS
 
-Saad Najmi & Jay Meistrich
+<div class="absolute bottom-0 w-124 gap-y-2">
+  <div class="flex w-full justify-between mb-16">
+    <div>
+        <div>Saad Najmi</div>
+        <div>𝕏 @SaadNajmi</div>
+        <div>🦋 @saadnajmi.bsky.social</div>
+    </div>
+    <div class="text-right">
+        <div>Jay Meistrich</div>
+        <div>𝕏 @jmeistrich</div>
+        <div>🦋 @jayz.us</div>
+    </div>
+    </div>
+  <div class="text-gray-400 pb-1">React Native London - Nov 14, 2025</div>
+</div>
+
+<!--
+Good morning!
+
+TODO: How to intro us
+ -->
 
 ---
 
@@ -21,14 +41,14 @@ Saad Najmi & Jay Meistrich
 </div>
 
 <!--
-I've been seeing these talks from Microsoft about React Native on desktop and it seemed cool, but I haven't heard much about other apps using it.
+For a few years I've been seeing these talks from Microsoft about React Native on desktop and it seemed cool, but I haven't heard much about other apps using it, so I never paid much attention.
 
-But then I tested it out just to see if LegendList would work in it, and I was blown away by how incredibly good it is.
+But then I tried it out just to see if LegendList would work in it, and I was blown away by how incredibly good it is.
 
 I've been playing with it and making some apps, and it's seriously really good, though it has some rough edges.
 
-I've been exploring all the benefits and downsides and I think it's now time to
- -->
+I've been exploring all the benefits and downsides and I think
+-->
 
 ---
 
@@ -39,22 +59,17 @@ I've been exploring all the benefits and downsides and I think it's now time to
 </div>
 
 <!--
-take React Native on desktop seriously.
+it's now time to take React Native on desktop seriously.
 
-I got so excited about this that I joined Expo to explore if there's an opportunity to make desktop apps better.
+I got so excited about this that I joined Expo to explore how to make desktop apps better.
  -->
 
 ---
 
 # It's really good
 
-- Small binaries
-- Really fast
-- Low CPU and memory usage
-- Familiar RN DX
-
 <!--
-Because it's just really good. It makes tiny fast apps and it's that familiar React Native dev experience that we all love.
+Because React Native macOS is just really good. It makes tiny fast apps and it's got that familiar React Native dev experience that we all love.
 -->
 
 ---
@@ -100,9 +115,9 @@ But first we need to ground this in the current state of desktop apps.
 
 When people are building a desktop app they have basically two choices: build it fully native or as a webview.
 
-Going fully native requires building two entirely new apps, on top of their existing web and mobile apps, so most will choose the webview compromise. That's usually the best decision, to be able to actually release apps on every platform.
+Going fully native requires building two entirely new apps, on top of their existing web and mobile apps. So choosing a webview app is usually the best decision, to be able to actually release apps on every platform.
 
-But it's a big compromise, and users are punished with subpar web apps pretending to be desktop apps.
+But it's a big compromise, and it punishes us users with these mediocre web apps pretending to be desktop apps.
 -->
 
 ---
@@ -135,7 +150,9 @@ But it's a big compromise, and users are punished with subpar web apps pretendin
 </div>
 
 <!--
-The most popular tool for building desktop apps is Electron. Electron builds in a full chromium browser and Node.js into every app. It even bundles in ffmpeg because chromium needs it, even if your app doesn't.
+The most popular tool for building desktop apps is Electron.
+
+Electron builds in a full chromium browser and Node.js into every app. It even bundles in ffmpeg because chromium needs it, even though most apps wouldn't use it.
 
 A Hello World app is 268 MB, runs 4 separate processes, and uses 83 MB of memory.
 -->
@@ -145,7 +162,7 @@ A Hello World app is 268 MB, runs 4 separate processes, and uses 83 MB of memory
 <img src="/media/ipc.png" class="max-h-[540px] rounded-lg" />
 
 <!--
-The way it works is you have a renderer process for the webview, and a main process for the app itself that communicate through interprocess communcation. Then main process then runs through node.js to do system things, and passes the result all the way back up the bridges.
+The way it works is you have a renderer process for the webview, and a main process for the app itself that communicate through interprocess communcation. The main process then runs through node.js to do system things, and passes the result all the way back up the bridges.
 
 And that adds a lot of DX and performance overhead.
 -->
@@ -197,7 +214,7 @@ ipcMain.on('open-file', (event, json) => {
 <!--
 This is a simple example of how you run native code. You have to postMessage from the web process over to the main process, stringify and parse your data across the bridge, then run your native code.
 
-Sending back a response is even more complicated and not worth going into here. But let me just tell you, it's not fun.
+Sending back a response is even more complicated. You can implement a Response Stream using Message Channels. But that's a whole complex thing for what should just be calling a function.
 -->
 
 ---
@@ -235,12 +252,13 @@ And it's still a webview.
 <!--
 A lot of the apps you use every day are Electron apps.
 
-I don't mean to throw shade on Electron or these apps. Electron is probably the best choice for most of them. If they had to build two whole other apps in two other lanugages, they would probably just never ship desktop apps.
+I don't mean to throw shade on Electron or these apps. Maintaining multiple native apps in different languages is a huge overhead, so Electron is probably the best choice for most apps.
 
 So this is just the world we live in where our desktop apps are web apps.
 
-You can even see my own app, Legend, in the list there. That's part of why I'm so passionate about this, having dealt with it for years.
+You can even see my own app, Legend, in the list there. That's part of why I'm so passionate about this, because I've been mad about this for 8 years now.
 -->
+
 ---
 
 <img src="/media/xcode.png" class="max-h-[300px] flex-1 rounded-lg" />
@@ -255,11 +273,11 @@ Of course the biggest app on my computer is not Electron, but that's a whole oth
 <img src="/media/downloads.png" class="max-h-[540px] rounded-lg" />
 
 <!--
-I've been hearing that nobody builds desktop apps anymore, but I don't think that's true. Electron is actually downloaded almost as much as Expo.
+When I've been ranting to everyone I know about React Native on desktop, they tell me that nobody builds desktop apps anymore.
 
-But these apps are huge, they use a ton of memory, and they don't feel as good as they should.
+But I don't think that's true. Electron is actually downloaded almost as much as Expo.
 
-So I think it's time to…
+And now AI is making it easy for people to quickly spin up little mini apps. But these mini apps are 300 megabytes with full browsers inside, and they're not as good as they should be.
 -->
 
 ---
@@ -271,7 +289,7 @@ So I think it's time to…
 </div>
 
 <!--
-Reverse the enshittification
+So I think it's time to reverse the enshittification
 -->
 
 ---
@@ -299,7 +317,9 @@ Reverse the enshittification
 </div>
 
 <!--
-We've been through this in mobile before with Cordova, Ionic, etc... Native apps are more delightful but hard to build and need dedicated teams. So companies built cross-platform web apps across web and mobile. And everything was bad.
+We've been through this before on mobile with Cordova and Ionic apps being wrappers around web apps. They were poor experiences but cross platform and easier to build.
+
+Native apps are more delightful but hard to build and need dedicated teams. So companies built cross-platform web apps across web and mobile. And everything was bad.
 -->
 
 ---
@@ -334,7 +354,7 @@ We've been through this in mobile before with Cordova, Ionic, etc... Native apps
 <!--
 But then React Native came in and saved everyone with delightful cross-platform apps. And everything was good.
 
-TODO: Well it wasn't good for a while but now it's good
+Well to be fair, it was rough for a while now but it's really good.
 -->
 
 ---
@@ -389,7 +409,7 @@ But now we've repeated history again on desktop.
 <!--
 Companies are building cross-platform web apps across web and desktop, while using React Native on mobile.
 
-And we have an opportunity again for React Native to come in and save everyone.
+And again we have an opportunity again for React Native to come in and save everyone.
 -->
 
 ---
@@ -431,7 +451,11 @@ And we have an opportunity again for React Native to come in and save everyone.
 
 
 <!--
-So I propose since we're already building with these two separate technologies anyway, we make React Native the cross-platform solution on desktop as well.
+So since we're already building with React Native anyway, we can make React Native the cross-platform solution on desktop as well.
+
+Then instead of desktop apps being basically just downloaded web apps, we can build incredible native experiences and share code across all desktop and mobile platforms.
+
+And fall back to the mediocre web experience when we don't have an app.
 -->
 
 ---
@@ -467,11 +491,9 @@ So I propose since we're already building with these two separate technologies a
 </div>
 
 <!--
-And with react-native-web getting better, maybe we could eventually get to React Native everywhere, but that's a whole other thing.
+And maybe we could eventually get to React Native everywhere, but that's a whole other thing.
 
 So the big question is why React Native on desktop?
-
-TODO: "The react native on web story"
 -->
 
 ---
@@ -492,7 +514,9 @@ TODO: "The react native on web story"
 <!--
 Because it's awesome.
 
-Apps are tiny. They're fast because Hermes is fast, native modules are fast, and they don't have to communicate across a webview bridge.
+Apps are tiny.
+
+And they're fast because Hermes is fast, native modules are fast, and they don't have to communicate across a webview bridge.
 
 And because React Native is native, it can be as fast as a native app and easily use native features.
 -->
@@ -536,19 +560,23 @@ We all know size matters but what's more important is how the app feels.
 
 ---
 
-<SlidevVideo src="/media/photos.mov" autoreset="slide" autoplay mute loop class="max-h-[460px]"  />
+<SlidevVideo src="/media/photos.mov" autoreset="slide" autoplay mute loop class="max-h-[480px]" />
 
 <div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/LegendApp/legend-photos</a></div>
 
 <!--
-I vibe coded a photo library app to see what kind of performance I could get with it. The app opens instantly. LegendList powers a gallery view and timeline with no blanking. I made a shared element transition animation just using Animated which looks awesome. And the photo loading is so fast it looks like a movie.
+I started into React Native macOS by vibe coding a photo app to see what kind of performance I could get with it.
 
-That video is not sped up, it's just that fast.
+The app opens instantly. LegendList powers a gallery view and timeline with no blanking. Shared element transitions look awesome. And the photos load so fast it looks like a movie.
+
+Looking back at it that video looks sped up, but it's just that fast.
 -->
 
 ---
 
-<SlidevVideo src="/media/windows.mov" autoreset="slide" autoplay mute loop  />
+<SlidevVideo src="/media/windows.mov" autoreset="slide" autoplay mute loop class="max-h-[480px]" />
+
+<div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/LegendApp/legend-music</a></div>
 
 <!--
 We can open multiple windows (ooooh) because it's not a webview. We can even use the platform native drag/drop behavior to drag between windows. Ooooh.
@@ -561,22 +589,26 @@ Clearly not many of you have used Electron because this should be blowing your m
 <img src="/media/medium.png" class="max-h-[420px] rounded-lg" />
 
 <!--
-And you haven't read enough Medium articles about how to postMessage between the isolated Chromium processes running multiple windows.
+And you haven't read enough Medium articles about how to postMessage between the isolated Chromium processes.
 
-In React Native this is just easy.
+In React Native this is just easy, it's using platform native drag drop events.
 -->
 
 ---
 
-<SlidevVideo src="/media/overlay1.mov" autoreset="slide" autoplay mute loop  />
+<SlidevVideo src="/media/overlay1.mov" autoreset="slide" autoplay mute loop class="max-h-[480px]" />
+
+<div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/LegendApp/legend-music</a></div>
 
 <!--
-We can even do cool animations on windows. When the song changes this overlay at the top of the screen unblurs and fades in, and blurs and fades out.
+We can even do cool animations on windows. When the song changes this overlay window at the top of the screen unblurs and fades in, and blurs and fades out.
 -->
 
 ---
 
-<SlidevVideo src="/media/overlayblur.mp4" autoreset="slide" autoplay mute loop  />
+<SlidevVideo src="/media/overlayblur.mp4" autoreset="slide" autoplay mute loop class="max-h-[480px]" />
+
+<div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/LegendApp/legend-music</a></div>
 
 <!--
 Let's look at that in slow motion to see how cool it is. Codex made me a native blur filter in Swift to do that in a few minutes.
@@ -584,19 +616,25 @@ Let's look at that in slow motion to see how cool it is. Codex made me a native 
 
 ---
 
-<SlidevVideo src="/media/overlay2.mov" autoreset="slide" autoplay mute loop  />
+<SlidevVideo src="/media/overlay2.mov" autoreset="slide" autoplay mute loop class="max-h-[480px]" />
+
+<div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/LegendApp/legend-music</a></div>
 
 <!--
-Multiple windows can easily share state. This actually just happened and I never thought about it, because they're both subscribed to the same global state.
+And multiple windows can easily share state. Both of these windows use the same PlaybackArea component, and since it's subscribed to global state they're fully synchronized.
 
-Again in the alternatives you have to postMessage between isolated chromium processes to do this.
+I didn't even think about this until it was already done. This is just a given with React.
+
+And again in the alternatives you have to postMessage between isolated chromium processes to do this.
 
 Now let's step it up a notch. React Native Skia has mac support.
 -->
 
 ---
 
-<SlidevVideo src="/media/visbar.mov" autoreset="slide" autoplay mute loop  />
+<SlidevVideo src="/media/visbar.mov" autoreset="slide" autoplay mute loop class="max-h-[480px]" />
+
+<div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/LegendApp/legend-music</a></div>
 
 <!--
 So we can display this dope visualizer by updating our native audio module to tap into the raw frequency data. That's pretty cool, but let's step it up a notch.
@@ -604,7 +642,9 @@ So we can display this dope visualizer by updating our native audio module to ta
 
 ---
 
-<SlidevVideo src="/media/visaurora.mov" autoreset="slide" autoplay mute loop  />
+<SlidevVideo src="/media/visaurora.mov" autoreset="slide" autoplay mute loop class="max-h-[480px]" />
+
+<div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/LegendApp/legend-music</a></div>
 
 <!--
 We can build visualizers with shaders in skia, so we can display it as this cool glowing radial cloud.
@@ -614,10 +654,12 @@ Or we could step it up another notch and go full 3D.
 
 ---
 
-<SlidevVideo src="/media/viscube.mov" autoreset="slide" autoplay mute loop  />
+<SlidevVideo src="/media/viscube.mov" autoreset="slide" autoplay mute loop class="max-h-[480px]" />
+
+<div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/LegendApp/legend-music</a></div>
 
 <!--
-We can make full 3D visualizers using the power of the GPU. And why not, this is a native app.
+We can make full 3D visualizers in shaders using the power of the GPU. And why not, this is a native app, we can do whatever we want.
 -->
 
 ---
@@ -625,7 +667,9 @@ We can make full 3D visualizers using the power of the GPU. And why not, this is
 <img src="/media/musicsize.png" class="max-h-[320px] rounded-lg" />
 
 <!--
-This complete app using Nativewind, a bunch of libraries and expo modules, and skia comes out to 35 MB. Zipped, it's an 11 MB download.
+This complete app using Nativewind, a bunch of libraries and expo modules, and skia comes out to 35 MB.
+
+Zipped, it's an 11 MB download.
 -->
 
 ---
@@ -663,7 +707,15 @@ This complete app using Nativewind, a bunch of libraries and expo modules, and s
 <!--
 Compared to other Electron apps, React Native uses 90% less CPU to play a local mp3 file. It's ludicrous that it should take 26% of my CPU to play an mp3 file.
 
-Since React Native is native code with a lightweight JS engine, it's effectively the same as native CPU usage. Spotify as an Electron app is running a full Chrome browser and playing through the web platform, so it does a lot more work.
+Just think about what's happened to us as a society that playing an mp3 file uses more processing power now than it did 25 years ago on my Pentium 2.
+-->
+
+---
+
+<img src="/media/boomer.gif" class="max-h-[480px] rounded-lg" />
+
+<!--
+Back in my day people cared about performance.
 -->
 
 ---
@@ -685,7 +737,7 @@ Since React Native is native code with a lightweight JS engine, it's effectively
                 <td class="px-4 py-5 text-2xl font-medium text-white" style="padding:20px 24px">806 MB</td>
             </tr>
             <tr class="border-t border-white/5 bg-white/5">
-                <td class="px-4 py-5 text-2xl text-white font-semibold" style="padding:20px 24px">Music</td>
+                <td class="px-4 py-5 text-2xl text-white font-semibold" style="padding:20px 24px">Apple Music</td>
                 <td class="px-4 py-5 text-2xl font-medium text-white" style="padding:20px 24px">149 MB</td>
             </tr>
             <tr class="border-t border-white/5">
@@ -699,9 +751,13 @@ Since React Native is native code with a lightweight JS engine, it's effectively
 </div>
 
 <!--
-And comparing memory usage while playing a song is just as ludicrous. Running a full browser with 6 different processes is taking 806 MB. React Native uses 90% less memory at just 72.
+And comparing memory usage while playing a song is just as ludicrous. Running a full browser with 6 different processes takes 800 megabytes of memory.
 
-It even beats Apple Music, the most native of native apps. Obviously it doesn't have as many features yet, but it's comparable.
+800! This should not be acceptable.
+
+React Native uses over 90% less memory at just 72.
+
+It even beats Apple Music, the most native of native apps. Obviously my app doesn't have as many features yet, but the memory usage is comparable to native.
 -->
 
 ---
@@ -748,6 +804,26 @@ And Sol, this great open source mac launcher
 
 # Reactotron
 
+<img src="/media/reactotron2.png" class="max-h-[230px] rounded-lg" />
+<img src="/media/reactotron1.png" class="max-h-[180px] rounded-lg" />
+
+<div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/infinitered/reactotron-macos</a></div>
+
+<!--
+And Infinite Red is currently rewriting their powerful React Native debugging tool Reactotron using React Native macOS
+ -->
+
+---
+
+# BrowserUI
+
+<img src="/media/browserui.png" class="max-h-[420px] rounded-lg" />
+
+<div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/DanielSRS/BrowserUI</a></div>
+
+<!--
+There's even a guy building a browser with React Native
+-->
 
 ---
 
@@ -803,7 +879,9 @@ function PlayButton() {
 </div>
 
 <!--
-I don't know how to write native modules, but if I want to do something natively, I just ask AI to make me a native module. And then I can do native things from React. I don't have to post messages across the IPC and all those shenanigans. It's just functions I can call from anywhere.
+I don't actually know how to write native modules, but if I want to do something natively, I just ask AI to make me a native module.
+
+And then I can do native things from React. I don't have to post messages across the IPC and all those shenanigans. It's just functions I can call from anywhere.
 -->
 
 ---
@@ -811,7 +889,7 @@ I don't know how to write native modules, but if I want to do something natively
 <SlidevVideo src="/media/storybook.mp4" autoreset="slide" autoplay mute loop class="rounded-lg"  />
 
 <!--
-React Native Storybook fully supports macOS so we can run its macOS app to work with our desktop app component system.
+And React Native Storybook fully supports macOS so we can run the Storybook mac app to work with our desktop app component system.
 -->
 
 ---
@@ -889,20 +967,20 @@ A lot of Expo modules work on mac already. I specifically love expo file system,
 
 <!--
 And there's a whole ton of new libraries that need to be built for new desktop specific features that don't exist on mobile.
- -->
+-->
 
 ---
 
 # Downsides
 
-- Expo CLI doesn't support macOS/Windows (yet)
+- Expo CLI support is experimental
 - Some libraries don't work on macOS/Windows
 - Desktop specific functionality needs native modules
 
 <!--
 So there are still some downsides and rough edges.
 
-It's not supported in the Expo CLI so it needs to be built separately.
+We're still experimenting with Expo CLI support.
 
 And we need a lot more libraries to support desktop platforms.
 -->
@@ -914,7 +992,7 @@ And we need a lot more libraries to support desktop platforms.
 <!--
 So we've got a chicken and egg problem here. There's not a lot of people making React Native desktop apps, so libraries aren't adding desktop support, so it's hard to build apps because of a small ecosystem.
 
-So while I would very much recommend react-native-macos to all of you legends, I think we need to smooth out some rough edges and support in more libraries before I'd suggest it to new developers.
+So while I would very much recommend react-native-macos to all of you legends, I think we need to smooth out some rough edges and have more desktop support in libraries before I'd suggest it to new developers.
 
 So let's crack some eggs and get this ecosystem going.
 -->
@@ -924,7 +1002,7 @@ So let's crack some eggs and get this ecosystem going.
 <img src="/media/wildwildwest.jpg" class="max-h-[500px] rounded-lg" />
 
 <!--
-It's a wild west out there. Lots of libraries need to be built, and you could make your library the defacto goto just with first mover advantage.
+It's a wild west out there. Lots of libraries need to be built, and you could make your library the defacto goto by just being first.
 
 If you have a library with native code, please add mac support. As Saad said, it's usually pretty easy to port from iOS.
 
@@ -941,6 +1019,8 @@ If you want to make a mac app, try doing it in react native. It's pretty cool.
 
 - Talk to me or Saad
 
+https://github.com/jmeistrich/awesome-react-native-desktop
+
 <!--
 Talk to me or Saad if you're interested and I'll help or connect you to the right people
 -->
@@ -948,7 +1028,4 @@ Talk to me or Saad if you're interested and I'll help or connect you to the righ
 <!--
 TODO:
 How to start it
-Add slides for Sol and Orbit
-Reactotron
-Make an awesome react native macos github repo
  -->

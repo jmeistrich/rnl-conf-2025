@@ -943,15 +943,11 @@ I also asked others to contribute, and Gabriel added some docs for how to use Ex
 
 # The New Architecture
 
-<!--
-OK, that's enough about tech debt. Let's talk about the new architecture. Let me first give you a recap of where macOS is.
--->
-
----
-
-# The New Architecture
+<v-click>
 
 Microsoft 🤝 Meta
+
+</v-click>
 
 <v-click>
 
@@ -966,8 +962,20 @@ Microsoft 🤝 Meta
 </v-click>
 
 <!--
-Several years ago, we partnered with Meta to help us implement the new architecture. They had a team that wanted to build desktop apps. They internally made a fork, of our fork, of React Native macOS, and will contribute back changes upstream to us after it's been tested in their apps. Back in 0.71, we had a technical preview of the new architecture, where it rendered and ran but didn't do much. Looking forward, in our 0.81 release, I merged a bunch more of Meta's implementation, and we plan to have the new architecture on by default.
+OK, that's enough about tech debt. Let's talk about the new architecture. Let me first give you a recap of where macOS is. Several years ago, we partnered with Meta to help us implement the new architecture. They had a team that wanted to build desktop apps. They internally made a fork, of our fork, of React Native macOS, and will contribute back changes upstream to us after it's been tested in their apps. Back in 0.71, we had a technical preview of the new architecture, where it rendered and ran but didn't do much. Looking forward, in our 0.81 release, I merged a bunch more of Meta's implementation, and we plan to have the new architecture on by default.
 -->
+
+---
+
+# The New Architecture
+
+<img src="/media/react-native-keyboard-pr.png" class="max-h-[360px] rounded-lg" />
+
+<center>
+
+Microsoft 🤝 Meta
+
+</center>
 
 ---
 

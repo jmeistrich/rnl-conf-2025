@@ -1012,7 +1012,7 @@ The solution was quite simple. We just had to make sure we looked up the right v
 
 React Native Devtools
 
-<SlidevVideo src="/media/devtools-rntester.mp4" autoreset="slide" autoplay loop mute  />
+<SlidevVideo src="/media/devtools-rntester.mp4" autoreset="slide" autoplay loop mute class="max-h-[360px] rounded-xl" />
 
 <!--
 Hermes also means one more thing. We also now fully support React Native Devtools, so you get the same familiar experience with the paused in debugger overlay and the ability to reconnect after reloads. In my own personal dev, this was so much more useful.
@@ -1226,7 +1226,7 @@ And Infinite Red is currently rewriting their powerful React Native debugging to
 
 # BrowserUI
 
-<img src="/media/browserui.png" class="max-h-[420px] rounded-lg" />
+<img src="/media/browserui.png" class="max-h-[410px] rounded-lg" />
 
 <div class="mt-4 flex justify-center gap-x-4" >🔗 <a>https://github.com/DanielSRS/BrowserUI</a></div>
 

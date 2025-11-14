@@ -1036,28 +1036,31 @@ Hermes also means one more thing. We also now fully support React Native Devtool
 
 </v-click>
 
-<v-click>
-
-- It's much better
-
-</v-click>
-
 <!--
 Let's talk about the next piece of the new architecture, Fabric. Fabric the native renderer, that takes the props and components from Javascript, and parses it into a native UI tree. This is the biggest piece that was missing from React Native macOS, and where most of the work went from both us and Meta.
 
 In 0.71, we had Fabric at the state where it could render the UI, but most of the props didn't work. As of right now, we have ported over all the macOS specific props, and we're mostly bug squashing our way through the core props. We haven't quite worked through all of them, so we haven't release 0.81, but I hope to soon.
-
-Along the way of porting over Meta's fabric commits, I saw firsthand how much better written Fabric is over Paper. There are so many little and big decisions that we had a chance to redo, and it was honestly pretty fun to write stuff with the new APIs. There's more than I can talk about now, but I'd like to dive into one of the ways Fabric is better, particularly for out of tree platforms, prop parsing. Let's dive into some source code!
 -->
 
 ---
 
 # Fabric
 
-Prop Parsing
+
+<v-click>
+
+- It's much better
+
+</v-click>
+
+<v-click>
+
+- Prop Parsing
+
+</v-click>
 
 <!--
-In Paper for iOS, this was done by passing JSON to a bunch of macros. This was pretty versatile, but kinda ugly to look at. It also had no guarnatees of type safety, since the JSON can be anything. Performance also isn't great, since your bottleneck is how fast you can serialize and deserialize JSON.
+Along the way of porting over Meta's fabric commits, I saw firsthand how much better written Fabric is over Paper. There are so many little and big decisions that we had a chance to redo, and it was honestly pretty fun to write stuff with the new APIs. There's more than I can talk about now, but I'd like to dive into one of the ways Fabric is better, particularly for out of tree platforms, prop parsing. Let's dive into some source code!
 -->
 
 ---
@@ -1071,7 +1074,7 @@ Paper
 </center>
 
 <!--
-Both Paper and Fabric need to pass props from JS to native code, so they can be parsed into native props. In Paper for iOS, this was done by passing JSON to a bunch of macros. This was pretty versatile, but kinda ugly to look at. It also had no guarnatees of type safety, since the JSON can be anything. Performance also isn't great, since your bottleneck is how fast you can serialize and deserialize JSON.
+Both Paper and Fabric need to pass props from JS to native code, so they can be parsed into native props. In Paper for iOS, this was done by passing JSON to a bunch of macros. This was pretty versatile, but kinda ugly to look at. It's made even more ugly, by the fact that macOS has to put a bunch of ifdefs everywhere. It also had no guarantees of type safety, since the JSON can be anything. Performance also isn't great, since your bottleneck is how fast you can serialize and deserialize JSON.
 -->
 
 ---
@@ -1085,7 +1088,7 @@ Fabric
 </center>
 
 <!--
-In Fabric, all of the prop parsing moved into a shared C++ layer. Instead of parsing JSON, with Fabric we know the types in advance, so we can just create C++ structs and classes that match what we're sending from JS. This is much faster and much cleaner to look at. And it can be shared across platforms, which is awesome for us.
+In Fabric, all of the prop parsing moved into a shared C++ layer. Instead of parsing JSON, with Fabric we know the types in advance, so we can just create C++ structs and classes that match what we're sending from JS. This is much faster and much cleaner to look at. And it can be shared across platforms, which is awesome for us. What I'm showing you here is "BaseViewProps", which are the props common between iOS and Android. How would you do platform specific props?
 -->
 
 ---

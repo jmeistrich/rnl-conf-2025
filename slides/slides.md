@@ -197,6 +197,8 @@ But it's a big compromise, and it punishes us users with these mediocre web apps
 <!--
 The most popular tool for building desktop apps is Electron.
 
+Raise your hand if you've ever used Electron?
+
 Electron builds in a full chromium browser and Node.js into every app. It even bundles in ffmpeg because chromium depends on it, even though most apps would never use it.
 
 A Hello World app is 268 MB, runs 4 separate processes, and uses 83 MB of memory.
@@ -209,7 +211,7 @@ And that's because it's a whole web browser.
 <img src="/media/ipc.png" class="max-h-[540px] rounded-lg" />
 
 <!--
-The way it works is you have a renderer process for the webview, which is an instance of Chromium. And you have a main process for the app itself. These two processes communicate through interprocess communcation.
+The way it works is you have a renderer process for the webview, which is an instance of Chromium. And you have a main process for the app itself. These two processes communicate through interprocess communication.
 
 The main process then runs Node.js to do system things, and passes the result all the way back up the bridges.
 
@@ -1472,7 +1474,7 @@ If you want to make a Mac app, try doing it in react native. It's pretty cool.
 </div>
 
 <!--
-So let's take React Native on desktop seriously
+So let's take React Native on desktop seriously. The new version 81 with Fabric coming soon and experimental Expo CLI support is making it a lot easier to use. So I hope you'll give it a try.
 
 I made this little repo with links to the documentation and apps I showed in the slides, so check that out.
 

@@ -44,9 +44,9 @@ So without further ado let's get into it and talk about React Native macOS.
 
 # Jay Meistrich
 
-<center>
+<div class="flex justify-center">
 <img src="/media/jay.jpg" class="max-h-[200px] rounded-lg my-10" />
-</center>
+</div>
 
 - CTO at Bravely
 - Legend List, Legend State, Legend Motion
@@ -64,9 +64,9 @@ But I'm just here to be your hype man.
 
 # Saad Najmi
 
-<center>
+<div class="flex justify-center">
 <img src="/media/saad.jpeg" class="max-h-[200px] rounded-lg my-10" />
-</center>
+</div>
 
 - Senior Software Engineer @ Microsoft
 - Tech lead for React Native macOS
@@ -1071,9 +1071,9 @@ Along the way of porting over Meta's fabric commits, I saw firsthand how much be
 
 <img src="/media/prop-parsing-paper.png" class="max-h-[360px] rounded-lg" />
 
-<center class="text-gray-400">
+<div class="text-center text-gray-400">
 Paper
-</center>
+</div>
 
 <!--
 Both Paper and Fabric need to pass props from JS to native code, so they can be parsed into native props. In Paper for iOS, this was done by passing JSON to a bunch of macros. This was pretty versatile, but kinda ugly to look at. It's made even more ugly, by the fact that macOS has to put a bunch of ifdefs everywhere. It also had no guarantees of type safety, since the JSON can be anything. Performance also isn't great, since your bottleneck is how fast you can serialize and deserialize JSON.
@@ -1085,9 +1085,9 @@ Both Paper and Fabric need to pass props from JS to native code, so they can be 
 
 <img src="/media/prop-parsing-fabric.png" class="max-h-[360px] rounded-lg" />
 
-<center class="text-gray-400">
+<div class="text-center text-gray-400">
 Fabric
-</center>
+</div>
 
 <!--
 In Fabric, all of the prop parsing moved into a shared C++ layer. Instead of parsing JSON, with Fabric we know the types in advance, so we can just create C++ structs and classes that match what we're sending from JS. This is much faster and much cleaner to look at. And it can be shared across platforms, which is awesome for us. What I'm showing you here is "BaseViewProps", which are the props common between iOS and Android. How would you do platform specific props?
@@ -1115,9 +1115,9 @@ Platform specific props
 
 <img src="/media/host-platform-props-ios.png" class="max-h-[360px] rounded-lg" />
 
-<center class="text-gray-400">
+<div class="text-center text-gray-400">
 iOS
-</center>
+</div>
 
 <!--
 Then, each platform can define it's own "host platform props". For iOS, React Native just aliases and reuse the base props. For Android, React Native extends the class to add Android specific props, like `elevation`.
@@ -1133,9 +1133,9 @@ Platform specific props
 
 <img src="/media/host-platform-props-android.png" class="max-h-[360px] rounded-lg" />
 
-<center class="text-gray-400">
+<div class="text-center text-gray-400">
 Android
-</center>
+</div>
 
 <!--
 For Android, React Native extends the class to add Android specific props, like `elevation`.
@@ -1151,9 +1151,9 @@ Platform specific props
 
 <img src="/media/host-platform-props-macos.png" class="max-h-[360px] rounded-lg" />
 
-<center class="text-gray-400">
+<div class="text-center text-gray-400">
 macOS
-</center>
+</div>
 
 <!--
 This makes it easy for macOS to do the same thing, and add all of our props one by one. Bonus points, it also makes it easy to add documentation for what our macOS specific props are, now that they're in an easy to read header. I know this is the right pattern, because React Native Windows uses it too.
@@ -1173,7 +1173,7 @@ This feels too easy?
 
 </v-click>
 
-<center>&nbsp;</center>
+<div>&nbsp;</div>
 
 <!--
 If this all feels too easy to add a new platform, it's because it was designed that way. Remember that partnership we had with Meta? One of their engineers, Eric Rozell, contributed these APIs to make it easier to work on the desktop platforms, while he was working on it for React Native Windows. This also makes it easier to add future platforms, like what what we're seeing with TV and VR. Thanks Eric!
@@ -1197,9 +1197,9 @@ Looking forward, I can't wait to release our next version of React Native macOS 
 
 <img src="/media/react-native-keyboard-pr.png" class="max-h-[360px] rounded-lg" />
 
-<center class="text-gray-400">
+<div class="text-center text-gray-400">
 Microsoft 🤝 Meta
-</center>
+</div>
 
 <!--
 Finally, there's one more interesting result of our collaboration with Meta. I started noticing some of the desktop props we have showing in React Native Core. I reached out and asked, and found out thye were being implemented for VR, with the desktop repos as a reference. I think this truly goes to show, a rising tide lifts all boats. Problems we had to solve for desktop.

@@ -1015,39 +1015,8 @@ This way your apps will just do a lot less work.
 
 ---
 
-# Updates stop traveling through the whole tree
+<img src="/media/legend-state.png" class="rounded-lg" />
 
-<!--
-It means constant re-rendering is not the orchestrator. Updates stop traveling through the whole component tree.
--->
-
----
-
-# Parent owns the value
-
-<div class="text-3xl text-gray-300 mt-12 text-center">
-without waking up
-</div>
-
-<!--
-The parent can own the value without waking up. The callback can read the value without being recreated. The effect can re-run without a render. And the leaf can update without pulling the whole screen with it.
--->
-
----
-
-# Leaf updates
-
-<div class="text-3xl text-gray-300 mt-12 text-center">
-without pulling the whole screen with it
-</div>
-
-<!--
-And the leaf can update without pulling the whole screen with it.
--->
-
----
-
-# Legend State
 
 <!--
 And this is not just a wild theory. I build all of my apps and libraries like this. If you use my state library Legend State, you probably realized a while ago that I've been describing how it works.
@@ -1055,17 +1024,24 @@ And this is not just a wild theory. I build all of my apps and libraries like th
 
 ---
 
-<div class="grid grid-cols-2 gap-6 text-3xl">
-  <div class="box-not-flashing">SolidJS</div>
-  <div class="box-not-flashing">Svelte</div>
-  <div class="box-not-flashing">Reanimated SharedValue</div>
-  <div class="box-not-flashing">LegendList</div>
+<div class="flex flex-col gap-y-8">
+    <img src="/media/solid.png" class="rounded-lg max-w-[340px]" />
+    <img src="/media/svelte-horizontal.png" class="rounded-lg max-w-[300px]" />
+    <img src="/media/preact.png" class="rounded-lg max-w-[300px]" />
 </div>
 
 <!--
-This is how SolidJS and Svelte work.
+And this is how some other frameworks like SolidJS, Svelte, and Preact work.
+-->
 
-This is how Reanimated SharedValue works.
+---
+
+<img src="/media/reanimated.png" class="rounded-lg" />
+
+<!--
+But it's actually already in React Native. This is how Reanimated works. A SharedValue is a stable stage object. When you get a SharedValue within an observing hook, it subscribes and updates itself automatically. You can set it anywhere in your code, and it will automatically update the UI without a re-render.
+
+So we're already doing this in order to reach the best performance with animations.
 
 If you use LegendList, you already have this pattern in your app. And this is how LegendList is the fastest list library on both web and mobile.
 -->

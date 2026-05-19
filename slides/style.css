@@ -220,6 +220,47 @@ img {
     margin: 8px;
 }
 
+.flash-delay-1 {
+    animation-duration: 4s;
+    animation-delay: -0.5s;
+}
+
+.flash-delay-2 {
+    animation-duration: 4s;
+    animation-delay: -1.1s;
+}
+
+.flash-delay-3 {
+    animation-duration: 4s;
+    animation-delay: -1.7s;
+}
+
+.flash-delay-4 {
+    animation-duration: 4s;
+    animation-delay: -2.3s;
+}
+
+.flash-delay-5 {
+    animation-duration: 4s;
+    animation-delay: -2.9s;
+}
+
+.flash-delay-6 {
+    animation-duration: 4s;
+    animation-delay: -3.5s;
+}
+
+.deep-chat-tree .box-not-flashing-small,
+.deep-chat-tree .box-flashing-small {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px 12px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    white-space: nowrap;
+}
+
 @keyframes flash-box {
     0%,
     20%,

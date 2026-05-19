@@ -939,21 +939,78 @@ useContext is still very useful, but to provide stable state objects. That way, 
 
 ---
 
-Is this a good slide? Maybe with a spaghetti meme? Or something about deps?
-<!--# Easier to reason about-->
-
-<!--
-This is easier to reason about too.
-
-You don't have to inspect dependency arrays and mentally trace the spaghetti of what might cause a dep to change which might change a callback which might cause re-renders.
--->
-
----
-
 # Render once doesn't mean nothing updates
 
+<div class="w-[980px] text-[12px] leading-tight deep-chat-tree">
+  <div class="rounded-lg border border-[#32343a] bg-[#111214] p-3">
+    <div class="text-center text-xl mb-3">ChatApp</div>
+    <div class="rounded-lg border border-[#32343a] bg-[#151619] p-3">
+      <div class="text-center text-lg mb-3">ChatScreen</div>
+      <div class="grid grid-cols-[180px_1fr_180px] gap-3 items-stretch">
+        <div class="rounded-lg border border-[#32343a] bg-[#17181a] p-3">
+          <div class="text-center text-base mb-3">InboxSidebar</div>
+          <div class="rounded-lg border border-[#32343a] bg-[#111214] p-2">
+            <div class="text-center mb-2">RoomList</div>
+            <div class="rounded-lg border border-[#32343a] bg-[#17181a] p-2">
+              <div class="text-center mb-2">RoomRow</div>
+              <div class="box-flashing-small flash-delay-1">UnreadBadge</div>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-lg border border-[#32343a] bg-[#17181a] p-3">
+          <div class="text-center text-base mb-3">ConversationView</div>
+          <div class="grid grid-cols-[150px_1fr_150px] gap-2 items-stretch">
+            <div class="rounded-lg border border-[#32343a] bg-[#111214] p-2">
+              <div class="text-center mb-2">RoomHeader</div>
+              <div class="rounded-lg border border-[#32343a] bg-[#17181a] p-2">
+                <div class="text-center mb-2">Presence</div>
+                <div class="box-flashing-small flash-delay-2">OnlineDot</div>
+              </div>
+            </div>
+            <div class="rounded-lg border border-[#32343a] bg-[#111214] p-2">
+              <div class="text-center mb-2">MessageList</div>
+              <div class="rounded-lg border border-[#32343a] bg-[#17181a] p-2">
+                <div class="text-center mb-2">DaySection</div>
+                <div class="rounded-lg border border-[#32343a] bg-[#111214] p-2">
+                  <div class="text-center mb-2">MessageCluster</div>
+                  <div class="rounded-lg border border-[#32343a] bg-[#17181a] p-2">
+                    <div class="text-center mb-2">MessageBubble</div>
+                    <div class="flex justify-center">
+                      <div class="box-flashing-small flash-delay-3">ReplyHighlight</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="rounded-lg border border-[#32343a] bg-[#111214] p-2">
+              <div class="text-center mb-2">Composer</div>
+              <div class="box-flashing-small flash-delay-4">ReplyPreview</div>
+              <div class="rounded-lg border border-[#32343a] bg-[#17181a] p-2">
+                <div class="text-center mb-2">InputRow</div>
+                <div class="box-flashing-small flash-delay-5">SendButton</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="rounded-lg border border-[#32343a] bg-[#17181a] p-3">
+          <div class="text-center text-base mb-3">MembersPanel</div>
+          <div class="rounded-lg border border-[#32343a] bg-[#111214] p-2">
+            <div class="text-center mb-2">MemberList</div>
+            <div class="rounded-lg border border-[#32343a] bg-[#17181a] p-2">
+              <div class="text-center mb-2">TypingStatus</div>
+              <div class="box-flashing-small flash-delay-6">TypingIndicator</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!--
-So render once doesn't mean nothing updates.
+So when I say render once I don't mean never update. I mean render the app and large screens once. Let leaf nodes re-render themselves. Let effects re-run themselves. Don't orchestrate through render.
+
+This way your apps will just do a lot less work.
 -->
 
 ---

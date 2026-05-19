@@ -390,24 +390,7 @@ We know that big renders are bad for performance, but React's design encourages 
 
 ---
 
-```tsx
-function ChatMessage({ messageId }) {
-  const [replyId, setReplyId] = useState('')
-
-  return (
-    <Pressable
-      style={{
-          backgroundColor: messageId === replyId ?
-            'pink' :
-            'transparent'
-      }}
-      onPress={() => setReplying(true)}
-    >
-        <MessageInner />
-    </Pressable>
-  )
-}
-```
+<img src="/media/chat-without-reply.png" class="rounded-lg" />
 
 <!--
 For example let's say we have a chat message with a reply feature which changes the background color. That's cool, just re-render the message to update the color.
@@ -415,51 +398,23 @@ For example let's say we have a chat message with a reply feature which changes 
 
 ---
 
-```tsx
-function ChatComposer({ replyId }) {
-  return (
-    <View>
-        <ReplyRow replyId={replyId} />
-        <TextInput />
-    </View>
-  )
-}
-```
+<img src="/media/chat-with-reply.png" class="rounded-lg" />
 
 <!--
-And then you want to also show in the composer that you're replying. But oh no, where does that replyId come from?
+And then you want to also show in the composer that you're replying. But oh no, now we need to access the same state in sibling components. So what do you do? Say it with me!
 -->
 
 ---
 
-```tsx
-function ChatScreen() {
-  return (
-    <View>
-        <ChatMessages />
-        <ChatComposer />
-    </View>
-  )
-}
-````
-
-<!--
-You need that reply state in sibling components. So what do you do? Say it with me
--->
-
----
-
-Docs image of lift state up
+<img src="/media/lifting-state-up.png" class="rounded-lg" />
 
 <!--
 Lift state up!
 
 Nobody did it, that's okay.
 
-You do what the React docs tell you. You lift state up.
-
+You do what the React docs tell you. You lift state up. And it's one of the most common things you'll do writing React code.
 -->
-
 
 ---
 
@@ -477,33 +432,42 @@ function ChatScreen() {
 ```
 
 <!--
-Let's throw a `replyId` in the highest level of the chat screen.
-
-Cool, now when I reply to a message, it re-renders the whole ChatScreen with the replyId and passes it down.
+So you move the state up to the top of the tree and pass it all the way down.
 -->
 
 ---
 
-<div class="flex flex-col gap-4 pt-8">
+<div class="flex flex-col gap-2 pt-8">
   <div class="flex justify-center">
-    <div class="box-flashing">ChatScreen</div>
+    <div class="box-flashing ml-10">ChatScreen</div>
   </div>
-  <div class="flex justify-center">
+  <div class="flex justify-center items-start">
+      <div>
     <div class="box-flashing">ChatMessages</div>
-    <div class="box-flashing">ChatComposer</div>
-  </div>
-  <div class="flex justify-center">
-    <div class="box-flashing">Message</div>
-    <div class="box-flashing">Message</div>
-    <div class="box-flashing">Message</div>
-    <div class="box-flashing">Message</div>
+    <div class="flex flex-col flex-1 items-center">
+      <div class="box-flashing">Message</div>
+      <div class="box-flashing">Message</div>
+      <div class="box-flashing">Message</div>
+      <div class="box-flashing">Message</div>
+    </div>
+      </div>
+      <div>
+        <div class="box-flashing">ChatComposer</div>
+      <div class="flex flex-col flex-1 items-center">
+        <div class="box-flashing">ReplyRow</div>
+        <div class="box-flashing">InputRow</div>
+      </div>
+      </div>
+    <div class="flex justify-center">
+        <div class="box-flashing">useEffects</div>
+    </div>
   </div>
 </div>
 
 <!--
-It re-renders every component all the way down.
+And it re-renders every component all the way down.
 
-It re-renders the chat screen. It re-renders the composer with all of its dialogs and buttons and hooks. It re-renders everything down to the list. And then it re-renders every chat message so one message can change a style. And that lets us change a background color.
+It re-renders the chat screen. It re-renders the composer with all of its dialogs and buttons and hooks. It re-renders everything down to the list. And then it re-renders every chat message. So that one message can change a background color.
 
 That kills performance.
 -->
@@ -513,20 +477,19 @@ That kills performance.
 # React Compiler!
 
 <!--
-And React Compiler helps a lot, but it can't save you from legitimate changes. `replyId` changed. Props changed. Wherever a prop is changed, it has to render. To update a style in one message we have to cascade state changes through the whole screen.
+And React Compiler helps a lot, but it can't save you from legitimate changes. The `replyId` changed. Props changed. Wherever a prop is changed, it has to render. To update a style in one message we have to cascade state changes through the whole screen.
 -->
 
 ---
 
-Meme you don't need useEffect
+<img src="/media/not-need-useeffect.webp" class="rounded-lg" />
+
 
 <!--
 Now let's talk about effects. We all know the "You might not need useEffect" meme, but it is still a core tool for orchestrating apps that you can't really avoid.
 -->
 
 ---
-
-Screenshot of this code from the docs:
 
 ```tsx
 const [isOpen, setIsOpen] = useState(false)
@@ -553,10 +516,14 @@ It's not actually changing what renders. But it re-renders anyway.
 ```tsx
 const [isPaused, setIsPaused] = useState(false)
 
-useQuery({
+const { data } = useQuery({
     queryKey,
     refetchInterval: isPaused ? false : 1000,
 })
+
+const pauseQuery = () => {
+  setIsPaused(true)
+}
 ```
 
 <!--
@@ -568,17 +535,17 @@ Setting isPaused doesn't change what renders. But we have to re-render to change
 ---
 
 ```tsx
-const isStoreReady = useIsStoreReady();
+const isFocused = useIsFocused()
 
 useEffect(() => {
-  if (isStoreReady) {
-    loadFromStore()
+  if (isFocused) {
+    markConversationRead(conversationId)
   }
-}, [isStoreReady])
+}, [isFocused, conversationId])
 ```
 
 <!--
-Or I need to wait for some state before I can do an imperative action. That state doesn't change what renders. But again we have to re-render to update the effect.
+Or I want to mark this chat as read when the user is focused on the chat. Nothing visible changed here. I just need to run an imperative action when the screen becomes focused. And that requires going through render for the side effect, and now this screen re-renders every time focus changes..
 -->
 
 ---
@@ -586,7 +553,7 @@ Or I need to wait for some state before I can do an imperative action. That stat
 # Render is for coordinating
 
 <!--
-Render is coordinating things that aren't even rendering. We're wasting all of this computing to just run side effects.
+This is all because render is needed for coordinating things that aren't even rendering. We're wasting all of this computing to just run side effects.
 -->
 
 ---
@@ -627,9 +594,9 @@ Now let's talk about callbacks. Shout out if you see the problem here.
 
 ** React to crowd => Nobdoy did it, oh wow
 
-The deps array needs to have value in it. This callback will become stale when value changes.
+The deps array needs to have value in it or this callback will become stale when value changes.
 
-So we add value to the deps and it's fixed! But now the identity of onPress changes whenever value changes, so we re-render the whole MyBigComponent. It doesn't actually change what's rendered, but we have to re-render to do it.
+So we add value to the deps and it's fixed! But now the identity of onPress changes whenever value changes, so we have re-render the whole MyBigComponent. It doesn't actually change what's rendered, but we have to re-render to do update the callbacks.
 -->
 
 ---
@@ -662,7 +629,7 @@ const [state, setState] = useState({ stuff })
 ```
 
 <!--
-`useState` doesn't just create state. It also subscribes the current component to that state.
+useState doesn't just create state. It also subscribes the current component to that state.
 
 That sounds normal because we're used to it, but it's actually a big limitation.
 
@@ -680,7 +647,7 @@ const { stuff } = useContext(Provider)
 <!--
 Context can be even worse.
 
-`useContext` doesn't subscribe to the field you need. It subscribes to the whole context value. Whenever anything in the context value changes, ALL subscribers re-render.
+useContext doesn't subscribe to the field you need. It subscribes to the whole context value. Whenever anything in the context value changes, ALL subscribers re-render.
 -->
 
 ---
@@ -718,7 +685,7 @@ Say you want to get `fontScale` in your text element. This will re-render whenev
 
 TRICK!
 
-You actually subscribed to window width and height too. So now when an iPad user resizes the window, every single text element re-renders and your app freezes. It doesn't actually need the with, but useContext subscribed to it. So now you have a huge performance problem for no reason.
+You actually subscribed to window width and height too. So now when an iPad user resizes the window, every single text element re-renders and your app freezes. It doesn't actually need the width, but useContext subscribed to it. So now you have a huge performance problem for no reason.
 -->
 
 ---
@@ -796,14 +763,8 @@ clicks: 1
 <!--
 Currently, render coordinates everything and producers push state down, through props and deps arrays.
 
-Instead, let's let consumers update themselves as needed.
+Instead, let's let consumers update themselves as needed. All we need to do to change this paradigm is to re-think state.
 -->
-
----
-
-State CODEX
-
-State ownershipa and subscription tied together, separate them
 
 ---
 
@@ -818,7 +779,7 @@ const replyId = useValue(replyId$)
 ```
 
 <!--
-All we need to do that is stable state objects that you can subscribe to
+And that means: stable state objects that you can subscribe to
 
 Some people call this signals. Some people call it observables.
 
@@ -853,33 +814,75 @@ function ReplyRow({ replyId$ }) {
 <!--
 This separates ownership from subscription. We lift state ownership up, but push state subscription way down.
 
-ChatScreen passes down stable objects that never change, so it never has to re-render. Then tThe tiny little ReplyRow subscribes to the state change, and re-renders itself whenever it needs to.
+ChatScreen passes down stable objects that never change, so it never has to re-render. Then the tiny little ReplyRow subscribes to the state change, and re-renders itself whenever it needs to. It does almost nothing so the cost of updating it is tiny, compared to re-rendering the whole chat screen.
 -->
 
 ---
 
-# ChatRoom owns it
-
-<div class="flex flex-col gap-4 pt-8">
+<div class="flex flex-col gap-2 pt-8">
   <div class="flex justify-center">
-    <div class="box-not-flashing">replyToId observable</div>
+    <div class="box-flashing ml-10">ChatScreen</div>
   </div>
-  <div class="flex justify-center">
-    <div class="box-flashing">Composer</div>
-    <div class="box-not-flashing">List</div>
-  </div>
-  <div class="flex justify-center">
-    <div class="box-not-flashing">Message</div>
-    <div class="box-flashing">ReplyTo Message</div>
-    <div class="box-not-flashing">Message</div>
-    <div class="box-not-flashing">Message</div>
+  <div class="flex justify-center items-start">
+      <div>
+    <div class="box-flashing">ChatMessages</div>
+    <div class="flex flex-col flex-1 items-center">
+      <div class="box-flashing">Message</div>
+      <div class="box-flashing">Message</div>
+      <div class="box-flashing">Message</div>
+      <div class="box-flashing">Message</div>
+    </div>
+      </div>
+      <div>
+        <div class="box-flashing">ChatComposer</div>
+      <div class="flex flex-col flex-1 items-center">
+        <div class="box-flashing">ReplyRow</div>
+        <div class="box-flashing">InputRow</div>
+      </div>
+      </div>
+    <div class="flex justify-center">
+        <div class="box-flashing">useEffects</div>
+    </div>
   </div>
 </div>
 
 <!--
-If one message needs selected styling, one message updates.
+So whereas normally the whole app re-renders
+-->
 
-So the chatroom could own the `replyToId` observable but doesn't render it itself. The composer and the replyTo message can re-render themselves.
+---
+
+<div class="flex flex-col gap-2 pt-8">
+  <div class="flex justify-center">
+    <div class="box-not-flashing ml-10">ChatScreen</div>
+  </div>
+  <div class="flex justify-center items-start">
+      <div>
+    <div class="box-not-flashing">ChatMessages</div>
+    <div class="flex flex-col flex-1 items-center">
+      <div class="box-not-flashing">Message</div>
+      <div class="box-flashing">Message</div>
+      <div class="box-not-flashing">Message</div>
+      <div class="box-not-flashing">Message</div>
+    </div>
+      </div>
+      <div>
+        <div class="box-not-flashing">ChatComposer</div>
+      <div class="flex flex-col flex-1 items-center">
+        <div class="box-flashing">ReplyRow</div>
+        <div class="box-not-flashing">InputRow</div>
+      </div>
+      </div>
+    <div class="flex justify-center">
+        <div class="box-not-flashing">useEffects</div>
+    </div>
+  </div>
+</div>
+
+<!--
+With this setup, only the affected components re-render.
+
+The components that actually use the state subscribe themselves to it and re-render themselves. Render doesn't need to coordinate it and pass it all down.
 -->
 
 ---
@@ -896,8 +899,6 @@ If a callback needs a state value, it can just get the current value. It doesn't
 
 ---
 
-# The effect can re-run itself
-
 ```tsx
 useObserveEffect(() => {
     if (isOpen$.get()) {
@@ -909,12 +910,10 @@ useObserveEffect(() => {
 ```
 
 <!--
-An observe effect can just re-run itself when the state it cares about changes. It doesn't need a render to update it. It automatically subscribes to any state it gets.
+An observe effect can just re-run itself when the state it cares about changes. It doesn't need a render to update it. It automatically subscribes to any state it gets. So we can open a modal without any render coordination.
 -->
 
 ---
-
-# Context provides stable state objects
 
 ```tsx
 function ReplyIdProvider({ children }) {

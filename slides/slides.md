@@ -150,18 +150,31 @@ React Native is not slow. The way we use it is.
 -->
 
 ---
+clicks: 1
+---
 
-# Render less, less often  {.inline-block.view-transition-title}
+<h1>
+  Render
+  <span class="relative inline-block overflow-hidden align-bottom">
+    <span class="invisible">less, less often</span>
+    <span
+      class="absolute left-0 transition-all duration-500 ease-out"
+      :class="$clicks >= 1 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'"
+    >
+      less, less often
+    </span>
+    <span
+      class="absolute left-0 transition-all duration-500 ease-out"
+      :class="$clicks >= 1 ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'"
+    >
+      once
+    </span>
+  </span>
+</h1>
 
 <!--
 If you've seen one of my talks before you may know my catchphrase: render less, less often.
--->
 
----
-
-# Render once  {.inline-block.view-transition-title}
-
-<!--
 But today I want to make it spicier:
 
 Render once.
@@ -1147,28 +1160,62 @@ When the list size changes, it skips React entirely and updates an Animated styl
 -->
 
 ---
+clicks: 1
+---
 
-# Render less, less often
+<h1>
+    Render
+    <span class="relative inline-block overflow-hidden align-bottom">
+        <span class="invisible">less, less often</span>
+        <span
+            class="absolute left-0 transition-all duration-500 ease-out"
+            :class="$clicks >= 1 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'"
+        >
+            less, less often
+        </span>
+        <span
+            class="absolute left-0 transition-all duration-500 ease-out"
+            :class="$clicks >= 1 ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'"
+        >
+            once
+        </span>
+    </span>
+</h1>
 
 <!--
 LegendList is fast because it's extremely careful do less work. Rendering has a real and significant cost, so for the fastest possible apps, render less, less often.
+
+Or, pushed further: render once. Use React to create the structure, then update the smallest leaf nodes directly.
 -->
 
 ---
+clicks: 1
+---
 
-# Try this today  {.inline-block.view-transition-title}
+<h1>
+    Try this
+    <span class="relative inline-block overflow-hidden align-bottom">
+        <span class="invisible">on Monday</span>
+        <span
+            class="absolute left-0 transition-all duration-500 ease-out"
+            :class="$clicks >= 1 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'"
+        >
+            today
+        </span>
+        <span
+            class="absolute left-0 transition-all duration-500 ease-out"
+            :class="$clicks >= 1 ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'"
+        >
+            on Monday
+        </span>
+    </span>
+</h1>
 
 <!--
 But this isn't just a list trick. This is the model I want you to take back to your apps.
 
 So try this today. Well, maybe not today since we're at a conference.
--->
 
----
-
-# Try this on Monday  {.inline-block.view-transition-title}
-
-<!--
 So try this on Monday.
 
 Look at your slowest screens. Find the components doing the most work, and trace how often they re-render.
@@ -1194,15 +1241,21 @@ I know this is controversial, everyone has strong opinions about state. I get a 
 
 ---
 
-<div class="grid grid-cols-2 gap-5 text-2xl">
-  <div class="box-not-flashing-small">Reanimated</div>
-  <div class="box-not-flashing-small">Nativewind</div>
-  <div class="box-not-flashing-small">Uniwind</div>
-  <div class="box-not-flashing-small">LegendList</div>
-  <div class="box-not-flashing-small">MMKV</div>
-  <div class="box-not-flashing-small">Safe area context</div>
-  <div class="box-not-flashing-small">expo-image</div>
-  <div class="box-not-flashing-small">design system</div>
+<div class="mx-auto grid w-max grid-cols-[250px_max-content] gap-1 text-lg">
+  <div class="box-not-flashing-small">❌ Animated</div>
+  <div class="box-not-flashing-small">✅ Reanimated</div>
+  <div class="box-not-flashing-small">❌ StyleSheet</div>
+  <div class="box-not-flashing-small">✅ Nativewind / Uniwind</div>
+  <div class="box-not-flashing-small">❌ FlatList</div>
+  <div class="box-not-flashing-small">✅ LegendList</div>
+  <div class="box-not-flashing-small">❌ AsyncStorage</div>
+  <div class="box-not-flashing-small">✅ MMKV / SQLite</div>
+  <div class="box-not-flashing-small">❌ SafeAreaView</div>
+  <div class="box-not-flashing-small">✅ react-native-safe-area-context</div>
+  <div class="box-not-flashing-small">❌ Image</div>
+  <div class="box-not-flashing-small">✅ expo-image</div>
+  <div class="box-not-flashing-small">❌ TouchableOpacity</div>
+  <div class="box-not-flashing-small">✅ Design System</div>
 </div>
 
 <!--

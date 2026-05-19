@@ -711,7 +711,7 @@ So we know that rendering too much, too often is a major cause of performance pr
 
 ---
 
-Everything everwhere all at once video
+<img src="/media/everything-everywhere.gif" class="rounded-lg" />
 
 <!--
 So that's the model I want to break.
@@ -1052,7 +1052,7 @@ And this is how some other frameworks like SolidJS, Svelte, and Preact work.
 <img src="/media/reanimated.png" class="rounded-lg" />
 
 <!--
-But it's actually already in React Native. This is how Reanimated works. A SharedValue is a stable stage object. When you get a SharedValue within an observing hook, it subscribes and updates itself automatically. You can set it anywhere in your code, and it will automatically update the UI without a re-render.
+But it's actually already in React Native. This is how Reanimated works. A SharedValue is a stable state object. When you get a SharedValue within an observing hook, it subscribes and updates itself automatically. You can set it anywhere in your code, and it will automatically update the UI without a re-render.
 
 So we're already doing this in order to reach the best performance with animations.
 -->

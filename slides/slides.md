@@ -1259,56 +1259,20 @@ I know this is controversial, everyone has strong opinions about state. I get a 
 </div>
 
 <!--
-But you use Reanimated instead of Animated, Nativewind or Uniwind instead of StyleSheet, LegendList instead of FlatList, MMKV instead of AsyncStorage, Safe area context, expo image, a design system - I hope you're not using TouchableOpacity. So why are we clinging onto built in state?
+But you use Reanimated instead of Animated, Nativewind or Uniwind instead of StyleSheet, LegendList instead of FlatList, MMKV instead of AsyncStorage, Safe area context, expo image, a design system - I hope you're not using TouchableOpacity. So why are we clinging onto the built in state and render orchestration workflow?
 -->
 
 ---
 
-# State architecture
-
-<div class="text-4xl text-gray-300 mt-12 text-center">
-the biggest hidden bottleneck in most apps
-</div>
+<img src="/media/state-architecture.jpg" class="rounded-lg" />
 
 <!--
-IMHO state architecture is by far the biggest hidden bottleneck in most apps, so that's what you should care about and optimize the most. I care so much about this I built a whole state library for it.
+IMHO state architecture is by far the biggest hidden bottleneck in most apps, so that's what you should care about and optimize the most. I care so much about this I built a whole state and sync library because that was the only way to get the best performance.
 -->
 
 ---
 
-# Try this on one slow screen
-
-<!--
-Try this on one slow screen. Move coordination out of render. Let consumers update themselves.
--->
-
----
-
-# What actually needs to update?
-
-<!--
-Ask yourself: what actually needs to update? Then make the smallest possible thing update. Push your re-renders to the leaves.
--->
-
----
-
-# Make the smallest possible thing update
-
-<!--
-Then make the smallest possible thing update. Push your re-renders to the leaves.
--->
-
----
-
-# From "fast for React Native"
-
-<!--
-That's how you get from "fast for React Native" to REALLY FAST.
--->
-
----
-
-# To REALLY FAST
+# REALLY FAST
 
 <!--
 That's how you get from "fast for React Native" to REALLY FAST.

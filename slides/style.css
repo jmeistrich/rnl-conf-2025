@@ -428,16 +428,31 @@ img {
 .container-flashing-1 {
     animation: flash-container-1 3s infinite;
     animation-delay: 1.2s;
+    border-radius: 8px;
+    background-color: #17181a;
+    border: 1px solid #32343a;
+    padding: 24px 48px;
+    margin: 8px;
 }
 
 .container-flashing-2 {
     animation: flash-container-1 3s infinite;
     animation-delay: 2.2s;
+    border-radius: 8px;
+    background-color: #17181a;
+    border: 1px solid #32343a;
+    padding: 24px 48px;
+    margin: 8px;
 }
 
 .container-flashing-3 {
     animation: flash-container-1 3s infinite;
     animation-delay: 3.2s;
+    border-radius: 8px;
+    background-color: #17181a;
+    border: 1px solid #32343a;
+    padding: 24px 48px;
+    margin: 8px;
 }
 
 .code-column .slidev-code-wrapper {

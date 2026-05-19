@@ -1042,51 +1042,83 @@ And this is how some other frameworks like SolidJS, Svelte, and Preact work.
 But it's actually already in React Native. This is how Reanimated works. A SharedValue is a stable stage object. When you get a SharedValue within an observing hook, it subscribes and updates itself automatically. You can set it anywhere in your code, and it will automatically update the UI without a re-render.
 
 So we're already doing this in order to reach the best performance with animations.
-
-If you use LegendList, you already have this pattern in your app. And this is how LegendList is the fastest list library on both web and mobile.
 -->
 
 ---
 
-# LegendList
+<img src="/media/list-cpu.png" class="rounded-lg" />
 
 <!--
-Every other list library is basically built around rendering an array of items. Something changes, React gets a new array or new props, and React does a bunch of work to reconcile all of that.
+And if you use LegendList, you already have this pattern in your app. This is how LegendList is the fastest list library on both web and mobile.
 -->
 
 ---
 
-# Pooled containers
-
-<div class="flex items-center justify-center gap-8 mt-10 text-2xl">
-  <div class="box-not-flashing-small">LegendList</div>
-  <div class="box-not-flashing-small">Containers</div>
-  <div class="flex flex-col gap-3">
-    <div class="box-flashing-small">Container 0</div>
-    <div class="box-flashing-small">Container 1</div>
-    <div class="box-flashing-small">Container 2</div>
-  </div>
+<div class="flex items-center">
+    <div class="flex flex-col gap-4 pt-8">
+        <div class="box-not-flashing">App</div>
+    </div>
+    <div class="flex flex-col gap-4 pt-8">
+        <div class="box-not-flashing">LegendList</div>
+    </div>
+    <div class="flex flex-col gap-4 pt-8">
+        <div class="box-not-flashing">Containers[]</div>
+    </div>
+    <div class="flex flex-col gap-4 pt-8">
+        <div class="container-flashing-1 whitespace-pre">Container 0</div>
+        <div class="container-flashing-2 whitespace-pre">Container 1</div>
+        <div class="container-flashing-3 whitespace-pre">Container 2</div>
+    </div>
+    <div class="phone-container">
+        <img src="/media/phone.png">
+        <div class="absolute inset-x-6 rounded-[32px] top-[22.5px] bottom-[21px] overflow-hidden bg-white">
+            <div class="animate-up">
+                <div class="box border-none absolute inset-x-8 top-0 h-[290px] bg-red-500 font-medium">
+                    Container 0
+                </div>
+                <div class="box border-none absolute inset-x-8 top-[300px] h-[290px] bg-blue-500 font-medium">
+                    Container 1
+                </div>
+                <div class="box border-none absolute inset-x-8 top-[600px] h-[290px] bg-green-500 font-medium">
+                    Container 2
+                </div>
+                <div class="box border-none absolute inset-x-8 top-[900px] h-[290px] bg-purple-500 font-medium">
+                    Container 0
+                </div>
+                <div class="box border-none absolute inset-x-8 top-[1200px] h-[290px] bg-teal-500 font-medium">
+                    Container 1
+                </div>
+                <div class="box border-none absolute inset-x-8 top-[1500px] h-[290px] bg-pink-500 font-medium">
+                    Container 2
+                </div>
+                <div class="box border-none absolute inset-x-8 top-[1800px] h-[290px] bg-red-500 font-medium">
+                    Container 0
+                </div>
+                <div class="box border-none absolute inset-x-8 top-[2100px] h-[290px] bg-blue-500 font-medium">
+                    Container 1
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!--
-LegendList renders an array of pooled containers one time, and reuses them. Then the containers update themselves as needed.
--->
+LegendList mounts a pool of absolutely positioned containers, and never re-renders the array of containers again. It signals individual containers to re-render themselves as needed.
 
----
-
-# One container re-renders itself
-
-<!--
-When a new list item comes into view, one container re-renders itself with that item.
+So while you're scrolling down it's signaling individual containers to re-render at a new position with a new item. It results in the same thing on screen, but it skips a bunch of work in the middle.
 -->
 
 ---
 
 # PositionView
 
-<div class="text-3xl text-gray-300 mt-12 text-center">
-tiny style change
-</div>
+```tsx
+function PositionViewState({ id, ...rest }) {
+    const [position] = useValue(`containerPosition${id}`);
+
+    return <View style={{ top: position }]} {...rest} />;
+})
+```
 
 <!--
 When an item's size changes, a tiny PositionView component re-renders itself with a style change.
@@ -1094,87 +1126,67 @@ When an item's size changes, a tiny PositionView component re-renders itself wit
 
 ---
 
-# Skips React entirely
+```tsx
+function ContainersSizer({ children }) {
+    const animSize: Animated.Value = useValue$("totalSize");
+    const style={
+        height: animSize
+    }
 
-<div class="text-3xl text-gray-300 mt-12 text-center">
-updates an Animated style
-</div>
+    return (
+        <Animated.View style={style}>
+            {children}
+        </Animated.View>
+    )
+}
+
+```
 
 <!--
-When the list size changes, it skips React entirely and updates an Animated style.
+When the list size changes, it skips React entirely and updates an Animated style. That size changes very often while scrolling as items layout and measure. So it would kill performance if it had to update the outer list component with a new size every time.
 -->
 
 ---
 
-# It's fast because it does less work
+# Render less, less often
 
 <!--
-It's fast because it does less work. Rendering has a real and significant cost, so for the fastest possible apps, render less, less often.
+LegendList is fast because it's extremely careful do less work. Rendering has a real and significant cost, so for the fastest possible apps, render less, less often.
 -->
 
 ---
 
-# React creates the structure
-
-<div class="text-3xl text-gray-300 mt-12 text-center">
-the list engine updates the tiniest possible thing
-</div>
-
-<!--
-React creates the structure, and then the list engine updates the tiniest possible thing that changed.
--->
-
----
-
-# This isn't just a list trick
+# Try this today  {.inline-block.view-transition-title}
 
 <!--
 But this isn't just a list trick. This is the model I want you to take back to your apps.
+
+So try this today. Well, maybe not today since we're at a conference.
 -->
 
 ---
 
-# Use this tomorrow
+# Try this on Monday  {.inline-block.view-transition-title}
 
 <!--
+So try this on Monday.
+
 Look at your slowest screens. Find the components doing the most work, and trace how often they re-render.
--->
 
----
-
-# Find one state change
-
-<div class="text-3xl text-gray-300 mt-12 text-center">
-that causes a big render cascade
-</div>
-
-<!--
-Find one state change that causes a big render cascade. Push the renders down to the leaf nodes.
--->
-
----
-
-# Push renders down to the leaves
-
-<!--
-Find one state change that causes a big render cascade. Push the renders down to the leaf nodes.
+Find one state change that causes a big render cascade and clean it up.
 -->
 
 ---
 
 # Use a state library
 
-<div class="text-3xl text-gray-300 mt-12 text-center">
-I obviously recommend Legend State
-</div>
-
 <!--
-Use a state library. I obviously recommend Legend State. Or there's some other signal style state libraries if you prefer.
+Use a state library. It's honestly tough to do this in raw React. I obviously recommend Legend State. Or there's some other signal style state libraries if you prefer. The key thing is you want to decouple state creation and subscription, and push the renders down to the leaf nodes.
 -->
 
 ---
 
-# Why are we clinging onto built in state?
+<img src="/media/say-state.jpg" class="rounded-lg" />
 
 <!--
 I know this is controversial, everyone has strong opinions about state. I get a ton of pushback that teams prefer to just use the builtin useState and useContext.

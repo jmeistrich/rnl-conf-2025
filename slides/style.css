@@ -99,6 +99,10 @@ h3 {
     padding: 4px 32px;
 }
 
+.notes-vertical-resizer {
+    display: none;
+}
+
 h1 + .slidev-code-wrapper,
 h2 + .slidev-code-wrapper {
     margin-top: 32px !important;

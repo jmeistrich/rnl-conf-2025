@@ -5,8 +5,8 @@ transition: none
 comark: true
 mdc: true
 defaults:
-    layout: center
-    transition: view-transition
+  layout: center
+  transition: view-transition
 ---
 
 <div class="pb-12">
@@ -24,7 +24,9 @@ defaults:
 </div>
 
 <!--
-I'm here to talk about performance. But I'm not going to talk about how to do profiling or little optimization tricks.
+Hi, I'm Jay.
+
+I'm here to talk about performance. But I'm not going to talk about how to do profiling or little optimization tricks. Today we're talking about rethinking app architecture.
 -->
 
 ---
@@ -40,20 +42,23 @@ I want to talk about making apps that are REALLY FAST.
 <SlidevVideo src="/media/v0.mp4" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[520px]" />
 
 <!--
-I worked with Fernando on animations and list performance for the v0 iOS app. It's a beautiful AI chat app that feels incredible. When it was announced people couldn't believe it was React Native.
+I worked with Fernando on animations and list performance for the v0 iOS app. It's a beautiful AI chat app that feels incredible.
 -->
 
 ---
 
-  <img src="/media/v0-rn.png" class="rounded-lg" />
+<img src="/media/v0-rn.png" class="rounded-lg" />
 
+<!--
+When it was announced people couldn't believe it was React Native.
+-->
 
 ---
 
 <SlidevVideo src="/media/md-open.mov" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[520px]" />
 
 <!--
-Here's a React Native macOS app I'm working on. It opens a 10MB markdown file in 20 milliseconds.
+Here's a React Native macOS app I'm working on. This video is me double clicking the app, and it's fully open and ready before the app opening animation is done. It opens a 10MB markdown file in 20 milliseconds.
 -->
 
 ---
@@ -65,7 +70,7 @@ Here's a React Native macOS app I'm working on. It opens a 10MB markdown file in
 </div>
 
 <!--
-Here's every single frame of the video from open to being fully ready.
+Here's every single frame of the video from clicking open to being fully ready. It only takes two frames to open.
 -->
 
 ---
@@ -73,7 +78,8 @@ Here's every single frame of the video from open to being fully ready.
 <SlidevVideo src="/media/md-zed.mov" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[520px]" />
 
 <!--
-For comparison, here's Zed loading the same file. Most other apps I tried froze until they crashed.
+For comparison, here's Zed loading the same file. It opens the file quickly, but takes over 4 seconds to parse and syntax highlight. Most other apps I tried either froze indefinitely or just crashed.
+-->
 -->
 
 ---
@@ -81,7 +87,7 @@ For comparison, here's Zed loading the same file. Most other apps I tried froze 
 <SlidevVideo src="/media/visaurora.mov" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[520px]" />
 
 <!--
-Here's another one. It's an mp3 player app.
+Here's another one. It's a React Native macOS mp3 player app.
 -->
 
 ---
@@ -92,26 +98,42 @@ Here's another one. It's an mp3 player app.
 </div>
 
 <!--
-It uses less CPU and memory than every other music app.
+It uses less CPU and memory than every other music app I tried, even the native Apple Music player.
 -->
 
 ---
-
-<SlidevVideo src="/media/photos.mov" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[520px]" />
-
-
-<!--
-TODO: Cut this slide/
-
-And here's a photo app I prototyped. It opens my photos library instantly and flies through fullscreen jpgs. It turns the photos into basically a movie.
--->
-
+clicks: 1
 ---
 
-# React Native macOS is 🔥 {.inline-block.view-transition-title}
+<h1>
+    React Native
+    <span class="relative inline-block overflow-hidden align-bottom">
+        <span class="invisible">in 2026</span>
+        <span
+            class="absolute left-0 transition-all duration-500 ease-out"
+            :class="$clicks >= 1 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'"
+        >
+            macOS
+        </span>
+        <span
+            class="absolute left-0 transition-all duration-500 ease-out"
+            :class="$clicks >= 1 ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'"
+        >
+            in 2026
+        </span>
+    </span>
+    <span> is 🔥</span>
+</h1>
+
 
 <!--
-These are all React Native apps and they're faster than every other app on my computer.
+These are React Native apps and they're faster than every other app on my computer.
+
+They're not just fast relative to Electron web apps. They're faster than most native apps.
+
+React Native macOS is awesome.
+
+2. But also, React Native in 2026 is so much better.
 -->
 
 ---
@@ -184,9 +206,7 @@ If you've seen one of my talks before you may know my catchphrase: render less, 
 
 But today I want to make it spicier:
 
-Render once.
-
-Use React to create the structure, then update the smallest leaf nodes directly.
+2. Render once.
 -->
 
 ---
@@ -252,14 +272,20 @@ function ElapsedText() {
 </div>
 
 <!--
-We know that for best performance we should render less often, but it's also important to render less stuff. But how much?
+We know that for best performance we should render less often, but it's also important to render less stuff. But how much of a difference does it make?
 
-I did a little benchmark test in my music app to compare re-rendering at the app root vs. updating a single label.
+I did a little benchmark in my music app to compare two things:
+
+Re-rendering 4 times a second vs. 12 times a second and
+
+Re-rendering at the app root vs. in a medium size component in the middle of the component tree vs. updating a single text element.
+
+When that state passes all the way down from the top it has to do a lot more work along the way than just updating one text element. But it's a pretty small difference, right?
 -->
 
 ---
 
-# CPU
+# CPU Usage
 
 <div class="flex gap-2 mt-10 text-left">
   <div class="box-not-flashing flex-1 flex-col !items-start">
@@ -281,13 +307,15 @@ I did a little benchmark test in my music app to compare re-rendering at the app
 </div>
 
 <!--
+No, it's huge.
+
 Even I was surprised.
 
 First and obviously, reducing the update frequency reduced the CPU usage.
 
-But then dropping that update target from the top level down to the tiniest leaf node made a huge difference, reducing the CPU usage by X%.
+But then dropping that update target from the top level down to the tiniest leaf node made a huge difference, reducing the CPU usage from 20% to 1%.
 
-So the best thing to do is render less
+So rendering less has a huge impact.
 -->
 
 ---
@@ -369,23 +397,15 @@ return (
 <!--
 We use render to coordinate the whole app:
 
-- local state to pass down the tree
-- update useContext consumers
-- trigger effects
-- update query properties
-- external properties
-- update subscriptions
-- and actually render UI
+- Render passes local state down the tree
+- It updates context consumers
+- It triggers effects
+- It updates query properties
+- It updates external properties
+- It updates subscriptions
+- And of course it renders UI too
 
-That's a lot of responsibility for "render". And that's where so many normal React patterns become a problem.
--->
-
----
-
-# React encourages re-rendering
-
-<!--
-We know that big renders are bad for performance, but React's design encourages more rendering
+That's a lot of responsibility for "render". And that's where so many normal React patterns become a performance problem.
 -->
 
 ---
@@ -393,7 +413,7 @@ We know that big renders are bad for performance, but React's design encourages 
 <img src="/media/chat-without-reply.png" class="rounded-lg" />
 
 <!--
-For example let's say we have a chat message with a reply feature which changes the background color. That's cool, just re-render the message to update the color.
+For example let's say we have a chat message with a reply feature that changes the background color. That's cool, just re-render the message to update the color.
 -->
 
 ---
@@ -401,7 +421,7 @@ For example let's say we have a chat message with a reply feature which changes 
 <img src="/media/chat-with-reply.png" class="rounded-lg" />
 
 <!--
-And then you want to also show in the composer that you're replying. But oh no, now we need to access the same state in sibling components. So what do you do? Say it with me!
+And then you want to also show in the composer that you're replying. So now we need to access the same state in sibling components. So what do you do? Say it with me!
 -->
 
 ---
@@ -413,7 +433,7 @@ Lift state up!
 
 Nobody did it, that's okay.
 
-You do what the React docs tell you. You lift state up. And it's one of the most common things you'll do writing React code.
+You do what the React docs tell you. You lift state up. And as the docs say, it's one of the most common things you'll do writing React code.
 -->
 
 ---
@@ -506,9 +526,9 @@ return (
 ```
 
 <!--
-Here's an example from the React docs: controlling a modal dialog. To open a dialog on button click, we could just open the dialog. But the React pattern is set state which triggers a render, then use an effect to open the dialog.
+Here's an example from the React docs: controlling a modal dialog. To open a dialog on button click, we could just open the dialog. But the React pattern is to set state which triggers a render, then use an effect to open the dialog.
 
-It's not actually changing what renders. But it re-renders anyway.
+It doesn't change what renders. But it re-renders anyway.
 -->
 
 ---
@@ -545,7 +565,9 @@ useEffect(() => {
 ```
 
 <!--
-Or I want to mark this chat as read when the user is focused on the chat. Nothing visible changed here. I just need to run an imperative action when the screen becomes focused. And that requires going through render for the side effect, and now this screen re-renders every time focus changes..
+Or I want to mark this chat as read when the user is focused on the chat. The useIsFocused hook re-renders when focus state changes.
+
+isFocused changing doesn't change what renders. But we have to re-render for the side effect, and now this screen re-renders every time focus changes.
 -->
 
 ---
@@ -560,6 +582,20 @@ This is all because render is needed for coordinating things that aren't even re
 
 ````md magic-move
 ```tsx
+function Component() {
+  const [value, setValue] = useState(0)
+
+  const onPress = useCallback(() => {
+    console.log(value)
+    setValue(v => v + 1)
+  }, [])
+
+  return (
+    <MyBigComponent onPress={onPress} />
+  )
+}
+```
+```tsx {4-8}
 function Component() {
   const [value, setValue] = useState(0)
 
@@ -592,11 +628,13 @@ function Component() {
 <!--
 Now let's talk about callbacks. Shout out if you see the problem here.
 
-** React to crowd => Nobdoy did it, oh wow
+** React to crowd => Nobody did it OR oh wow
 
-The deps array needs to have value in it or this callback will become stale when value changes.
+1. The deps array needs to have value in it or this callback will become stale when value changes.
 
-So we add value to the deps and it's fixed! But now the identity of onPress changes whenever value changes, so we have re-render the whole MyBigComponent. It doesn't actually change what's rendered, but we have to re-render to do update the callbacks.
+2. So we add value to the deps and it's fixed! But now the identity of onPress changes whenever value changes, so we have re-render the whole MyBigComponent. It doesn't actually change what's rendered, but we have to re-render to update the callbacks to see the latest local state.
+
+Callbacks changing without realizing it is one of the biggest problems I've seen, as it triggers re-renders down a tree for no reason.
 -->
 
 ---
@@ -668,7 +706,7 @@ function MyText({ text }) {
 <!--
 Say you want to get `fontScale` in your text element. This will re-render whenever fontScale changes, but that doesn't happen too often, right?
 
-TRICK!
+2. TRICK!
 
 You actually subscribed to window width and height too. So now when an iPad user resizes the window, every single text element re-renders and your app freezes. It doesn't actually need the width, but useContext subscribed to it. So now you have a huge performance problem for no reason.
 -->
@@ -678,7 +716,9 @@ You actually subscribed to window width and height too. So now when an iPad user
 # Rendering too much, too often
 
 <!--
-So we know that rendering too much, too often is a major cause of performance problems. But render is the orchestrator of everything, and React encourages re-rendering often, and spreading those renders deep and wide.
+So we know that rendering too much, too often is a major cause of performance problems. But render is the orchestrator of everything,
+
+and React encourages re-rendering often, and spreading those renders deep and wide.
 -->
 
 ---
@@ -749,6 +789,8 @@ clicks: 1
 Currently, render coordinates everything and producers push state down, through props and deps arrays.
 
 Instead, let's let consumers update themselves as needed. All we need to do to change this paradigm is to re-think state.
+
+And all we need is:
 -->
 
 ---
@@ -764,13 +806,11 @@ const replyId = useValue(replyId$)
 ```
 
 <!--
-And that means: stable state objects that you can subscribe to
+Stable state objects that you can subscribe to
 
 Some people call this signals. Some people call it observables.
 
 The key thing here is that useObservable does not subscribe to the value, it just creates it. Any other component can useValue it to subscribe to the value.
-
-I just use a $ suffix to clearly mark observables, there's no compilation or anything that needs that.
 -->
 
 ---
@@ -791,7 +831,9 @@ function ReplyRow({ replyId$ }) {
   const replyId = useValue(replyId$)
 
   return (
-    <Text>Replying to {replyId}</Text>
+    replyId ?
+      <Text>Replying to {replyId}</Text> :
+      null
   )
 }
 ```
@@ -832,7 +874,7 @@ ChatScreen passes down stable objects that never change, so it never has to re-r
 </div>
 
 <!--
-So whereas normally the whole app re-renders
+So whereas normally the whole app re-renders because the state is owned and subscribed at the top
 -->
 
 ---
@@ -1005,7 +1047,7 @@ This way your apps will just do a lot less work.
 <img src="/media/legend-state.png" class="rounded-lg" />
 
 <!--
-And this is not just a wild theory. I build all of my apps and libraries like this. If you use my state library Legend State, you probably realized a while ago that I've been describing how it works.
+This is not just a wild theory. I've been building all of my apps and libraries like this for 10 years. If you use my state library Legend State, you probably realized a while ago that I've been describing how it works.
 -->
 
 ---
@@ -1017,7 +1059,7 @@ And this is not just a wild theory. I build all of my apps and libraries like th
 </div>
 
 <!--
-And this is how some other frameworks like SolidJS, Svelte, and Preact work.
+And this is basically how some other frameworks like Solid, Svelte, and Preact work.
 -->
 
 ---
@@ -1025,9 +1067,9 @@ And this is how some other frameworks like SolidJS, Svelte, and Preact work.
 <img src="/media/reanimated.png" class="rounded-lg" />
 
 <!--
-But it's actually already in React Native. This is how Reanimated works. A SharedValue is a stable state object. When you get a SharedValue within an observing hook, it subscribes and updates itself automatically. You can set it anywhere in your code, and it will automatically update the UI without a re-render.
+But it's actually already in React Native too. This is how Reanimated works. A SharedValue is a stable state object. When you get a SharedValue within an observing hook, it subscribes and updates itself automatically. You can set it anywhere in your code, and it will automatically update the UI without a re-render.
 
-So we're already doing this in order to reach the best performance with animations.
+So we're actually already doing this to get the best performance with animations.
 -->
 
 ---
@@ -1059,28 +1101,28 @@ And if you use LegendList, you already have this pattern in your app. This is ho
         <img src="/media/phone.png">
         <div class="absolute inset-x-6 rounded-[32px] top-[22.5px] bottom-[21px] overflow-hidden bg-white">
             <div class="animate-up">
-                <div class="box border-none absolute inset-x-8 top-0 h-[290px] bg-red-500 font-medium">
+                <div class="box border-none absolute inset-x-4 top-0 h-[290px] bg-red-500 font-medium">
                     Container 0
                 </div>
-                <div class="box border-none absolute inset-x-8 top-[300px] h-[290px] bg-blue-500 font-medium">
+                <div class="box border-none absolute inset-x-4 top-[300px] h-[290px] bg-blue-500 font-medium">
                     Container 1
                 </div>
-                <div class="box border-none absolute inset-x-8 top-[600px] h-[290px] bg-green-500 font-medium">
+                <div class="box border-none absolute inset-x-4 top-[600px] h-[290px] bg-green-500 font-medium">
                     Container 2
                 </div>
-                <div class="box border-none absolute inset-x-8 top-[900px] h-[290px] bg-purple-500 font-medium">
+                <div class="box border-none absolute inset-x-4 top-[900px] h-[290px] bg-purple-500 font-medium">
                     Container 0
                 </div>
-                <div class="box border-none absolute inset-x-8 top-[1200px] h-[290px] bg-teal-500 font-medium">
+                <div class="box border-none absolute inset-x-4 top-[1200px] h-[290px] bg-teal-500 font-medium">
                     Container 1
                 </div>
-                <div class="box border-none absolute inset-x-8 top-[1500px] h-[290px] bg-pink-500 font-medium">
+                <div class="box border-none absolute inset-x-4 top-[1500px] h-[290px] bg-pink-500 font-medium">
                     Container 2
                 </div>
-                <div class="box border-none absolute inset-x-8 top-[1800px] h-[290px] bg-red-500 font-medium">
+                <div class="box border-none absolute inset-x-4 top-[1800px] h-[290px] bg-red-500 font-medium">
                     Container 0
                 </div>
-                <div class="box border-none absolute inset-x-8 top-[2100px] h-[290px] bg-blue-500 font-medium">
+                <div class="box border-none absolute inset-x-4 top-[2100px] h-[290px] bg-blue-500 font-medium">
                     Container 1
                 </div>
             </div>
@@ -1091,7 +1133,7 @@ And if you use LegendList, you already have this pattern in your app. This is ho
 <!--
 LegendList mounts a pool of absolutely positioned containers, and never re-renders the array of containers again. It signals individual containers to re-render themselves as needed.
 
-So while you're scrolling down it's signaling individual containers to re-render at a new position with a new item. It results in the same thing on screen, but it skips a bunch of work in the middle.
+So while you're scrolling down it's signaling individual containers to re-render at a new position with a new item. This keeps the size of renders as small as possible for best scrolling performance.
 -->
 
 ---
@@ -1099,10 +1141,10 @@ So while you're scrolling down it's signaling individual containers to re-render
 # PositionView
 
 ```tsx
-function PositionViewState({ id, ...rest }) {
-    const [position] = useValue(`containerPosition${id}`);
+function PositionView({ id, ...rest }) {
+    const [ position ] = useValue(`containerPosition${id}`)
 
-    return <View style={{ top: position }]} {...rest} />;
+    return <View style={{ top: position }]} {...rest} />
 })
 ```
 
@@ -1189,7 +1231,7 @@ But this isn't just a list trick. This is the model I want you to take back to y
 
 So try this today. Well, maybe not today since we're at a conference.
 
-So try this on Monday.
+2. So try this on Monday.
 
 Look at your slowest screens. Find the components doing the most work, and trace how often they re-render.
 
@@ -1198,10 +1240,10 @@ Find one state change that causes a big render cascade and clean it up.
 
 ---
 
-# Use a state library
+# Use a fast state library
 
 <!--
-Use a state library. It's honestly tough to do this in raw React. I obviously recommend Legend State. Or there's some other signal style state libraries if you prefer. The key thing is you want to decouple state creation and subscription, and push the renders down to the leaf nodes.
+Use a performance focused state library. It's honestly tough to do this in raw React. I obviously recommend Legend State. Or there's some other signal style state libraries if you prefer. The key thing is you want to decouple state creation and subscription, and push the renders down to the leaf nodes.
 -->
 
 ---
@@ -1243,23 +1285,40 @@ But you use Reanimated instead of Animated, Nativewind or Uniwind instead of Sty
 </div>
 
 <!--
-External state libraries are built on useSyncExternalStore, which is a built-in hook, so it's all good.
+Even if you only want to use built-in state hooks, most external state libraries are built on useSyncExternalStore, which is a built-in hook, so you're all good.
 -->
 
 ---
 
+````md magic-move
 ```jsx
-import { Dimensions } from 'react-native'
+function Component() {
+  const { width } = useWindowDimensions()
 
-function onClick() {
-  const width = Dimensions.get().width
+  const onClick = useCallback(() => {
+    doSomethingWithWindowWidth(width)
+  }, [width])
 
-  doSomethingWithWindowWidth(width)
+  // ...
 }
 ```
+```jsx
+function Component() {
+  const onClick = useCallback(() => {
+    const width = Dimensions.get().width
+
+    doSomethingWithWindowWidth(width)
+  }, [])
+
+  // ...
+}
+```
+````
 
 <!--
-But even without that, try to use imperative APIs when possible rather than as a hook, to avoid the re-rendering.
+But even without that, try to use imperative APIs rather than hooks when possible, to avoid the re-rendering.
+
+2. For example you can just get screen width when you need it and make this callback stable.
 -->
 
 ---
@@ -1269,11 +1328,10 @@ import { Dimensions, useWindowDimensions } from 'react-native'
 
 interface Dimensions {
   get(dim: 'window' | 'screen'): ScaledSize;
-  set(dims: {[key: string]: any}): void;
   addEventListener(type: 'change', handler: Handler): EmitterSubscription;
 }
 
-const windowWidth$ = observable(Dimensions.get().window.width)
+const windowWidth$ = observable(Dimensions.get("window").width)
 
 Dimensions.addEventListener('change', ({ window }) => {
   windowWidth$.set(e.window.width))
@@ -1315,7 +1373,9 @@ It never sets state so it doesn't need a render.
 <img src="/media/state-architecture.jpg" class="rounded-lg" />
 
 <!--
-IMHO state architecture is by far the biggest hidden bottleneck in most apps, so that's what you should care about and optimize the most. I care so much about this I built a whole state and sync library because that was the only way to get the best performance.
+I believe state architecture is by far the biggest hidden bottleneck in most apps, so that's what you should care about and optimize the most.
+
+I care so much about this I built a whole state and sync library because it was the only way to get the best performance.
 -->
 
 

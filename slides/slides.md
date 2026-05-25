@@ -11,20 +11,20 @@ defaults:
 
 <div class="pb-12">
 
-# React Native is not
+# How to Build the Fastest Apps:
 
-# the compromise anymore
+# Break the Rules
 
 </div>
 
 <div class="absolute bottom-16 gap-y-2 flex flex-col">
   <div>Jay Meistrich</div>
   <div>@jmeistrich</div>
-  <div class="text-gray-400">Bravely, Legend, Margelo</div>
+  <div>Bravely, Legend, Margelo</div>
 </div>
 
 <!--
-I'm here to talk about performance. But I'm not going to talk about how to do profiling or little optimization tricks. I want to talk about making apps that are REALLY FAST.
+I'm here to talk about performance. But I'm not going to talk about how to do profiling or little optimization tricks.
 -->
 
 ---
@@ -42,6 +42,11 @@ I want to talk about making apps that are REALLY FAST.
 <!--
 I worked with Fernando on animations and list performance for the v0 iOS app. It's a beautiful AI chat app that feels incredible. When it was announced people couldn't believe it was React Native.
 -->
+
+---
+
+  <img src="/media/v0-rn.png" class="rounded-lg" />
+
 
 ---
 
@@ -96,6 +101,8 @@ It uses less CPU and memory than every other music app.
 
 
 <!--
+TODO: Cut this slide/
+
 And here's a photo app I prototyped. It opens my photos library instantly and flies through fullscreen jpgs. It turns the photos into basically a movie.
 -->
 
@@ -188,26 +195,6 @@ Use React to create the structure, then update the smallest leaf nodes directly.
 
 <!--
 But first, why is rendering too much a problem? Everyone talks about reducing renders, but what's the actual impact?
--->
-
----
-
-# render = Component function
-
-```tsx
-function Component(props) {
-    const [state, setState] = useState(false);
-
-    return (
-        <View>
-            <Text>Hi</Text>
-        </View>
-    )
-}
-```
-
-<!--
-And by render, I mean your function component. It gets called over and over to render UI, run hooks, etcetera.
 -->
 
 ---
@@ -614,21 +601,6 @@ So we add value to the deps and it's fixed! But now the identity of onPress chan
 
 ---
 
-# deps array ???
-
-```tsx
-const onPress = useCallback(() => {
-    // ...
-}, [value, thingRef, otherValue, otherRef])
-```
-<!--
-As a side note, dependency arrays are just the most maddening thing.
-
-It's a puzzle I have to solve every time I look at it. Are all deps stable? Maybe one can change sometimes? But when does it change? What render cascade will we see when one of the deps changes?
--->
-
----
-
 # React State Is Oversubscribed
 
 <!--
@@ -948,6 +920,8 @@ function useIsReplyMessage(messageId) {
 
 <!--
 useContext is still very useful, but to provide stable state objects. That way, the context provider never re-renders. And consumers can select which specific thing to listen to, to re-render as little as possible.
+
+We could also subscribe to derived values, so rather than subscribing to replyId which would re-render every single message, this re-renders whenever the boolean return value changes. So it will only re-render the one reply message.
 -->
 
 ---
@@ -1029,7 +1003,6 @@ This way your apps will just do a lot less work.
 ---
 
 <img src="/media/legend-state.png" class="rounded-lg" />
-
 
 <!--
 And this is not just a wild theory. I build all of my apps and libraries like this. If you use my state library Legend State, you probably realized a while ago that I've been describing how it works.
@@ -1156,7 +1129,7 @@ function ContainersSizer({ children }) {
 ```
 
 <!--
-When the list size changes, it skips React entirely and updates an Animated style. That size changes very often while scrolling as items layout and measure. So it would kill performance if it had to update the outer list component with a new size every time.
+When the list size changes, it skips rendering entirely and updates an Animated style. That size changes very often while scrolling as items layout and measure. So it would kill performance if it had to update the outer list component with a new size every time.
 -->
 
 ---
@@ -1264,11 +1237,87 @@ But you use Reanimated instead of Animated, Nativewind or Uniwind instead of Sty
 
 ---
 
+<div class="mx-auto grid w-max grid-cols-[250px_max-content] gap-1 text-xl">
+  <div class="box-not-flashing-small">❌ useState</div>
+  <div class="box-not-flashing-small">✅ useSyncExternalStore</div>
+</div>
+
+<!--
+External state libraries are built on useSyncExternalStore, which is a built-in hook, so it's all good.
+-->
+
+---
+
+```jsx
+import { Dimensions } from 'react-native'
+
+function onClick() {
+  const width = Dimensions.get().width
+
+  doSomethingWithWindowWidth(width)
+}
+```
+
+<!--
+But even without that, try to use imperative APIs when possible rather than as a hook, to avoid the re-rendering.
+-->
+
+---
+
+```jsx
+import { Dimensions, useWindowDimensions } from 'react-native'
+
+interface Dimensions {
+  get(dim: 'window' | 'screen'): ScaledSize;
+  set(dims: {[key: string]: any}): void;
+  addEventListener(type: 'change', handler: Handler): EmitterSubscription;
+}
+
+const windowWidth$ = observable(Dimensions.get().window.width)
+
+Dimensions.addEventListener('change', ({ window }) => {
+  windowWidth$.set(e.window.width))
+})
+```
+
+<!--
+And if you're a library author, please support an imperative API as well as a hook, like React Native's Dimensions has.
+
+Then users can get the value when they need it, or use an event listener to hook it up to their own state, and don't need to run it through a render.
+-->
+
+---
+
+```jsx
+export function useWindowWidth(callback) {
+    const widthRef = useRef(Dimensions.get().window.width)
+
+    useEffect(() => {
+        const subscription = Dimensions.addEventListener('change', ({ window }) => {
+            widthRef.current = window.width
+            callback?.(window.width)
+        })
+        return () => subscription.remove()
+    }, [])
+
+    return widthRef
+}
+```
+
+<!--
+Or another pattern I've used is to make hooks take a callback function and return a ref. Then users can use the ref to get the value, or listen to changes via the callback.
+
+It never sets state so it doesn't need a render.
+-->
+
+---
+
 <img src="/media/state-architecture.jpg" class="rounded-lg" />
 
 <!--
 IMHO state architecture is by far the biggest hidden bottleneck in most apps, so that's what you should care about and optimize the most. I care so much about this I built a whole state and sync library because that was the only way to get the best performance.
 -->
+
 
 ---
 

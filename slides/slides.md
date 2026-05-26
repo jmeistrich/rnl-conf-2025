@@ -26,7 +26,31 @@ defaults:
 <!--
 Hi, I'm Jay.
 
-I'm here to talk about performance. But I'm not going to talk about how to do profiling or little optimization tricks. Today we're talking about rethinking app architecture.
+Last year's App.js was my first conference talk and it was so much fun! It's great to be back!
+
+Now I'm here to talk about performance.
+-->
+
+---
+
+# Performance Optimization Techniques
+
+<div class="flex flex-col gap-y-4 max-w-[280px] mx-auto text-xl pt-6">
+    <div>Less re-renders</div>
+    <div>Object pooling</div>
+    <div>Freeze background screens</div>
+    <div>Priotize First Contentful Paint</div>
+    <div>Files can be faster than SQL</div>
+    <div>NitroModules</div>
+    <div v-click class="absolute inset-0 flex flex-col items-center justify-center" >
+        <img src="/media/red-x.png" />
+    </div>
+</div>
+
+<!--
+My plan for this talk was to cover a bunch of different performance topics. But as I benchmarked them and helped a few companies performance optimize their apps, I realized that one of these is so much more impactful than everything else, and most apps are doing it the slow way without even knowing it.
+
+2. So we're not doing that. Today we're talking about completely rethinking app architecture.
 -->
 
 ---
@@ -35,11 +59,13 @@ I'm here to talk about performance. But I'm not going to talk about how to do pr
 
 <!--
 I want to talk about making apps that are REALLY FAST.
+
+Not just fast for React Native, better than native.
 -->
 
 ---
 
-<SlidevVideo src="/media/v0.mp4" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[520px]" />
+<SlidevVideo src="/media/v0.mp4" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[560px]" />
 
 <!--
 I worked with Fernando on animations and list performance for the v0 iOS app. It's a beautiful AI chat app that feels incredible.
@@ -50,44 +76,41 @@ I worked with Fernando on animations and list performance for the v0 iOS app. It
 <img src="/media/v0-rn.png" class="rounded-lg" />
 
 <!--
-When it was announced people couldn't believe it was React Native.
+When it was announced people couldn't believe it was React Native because it felt so good.
 -->
 
 ---
 
-<SlidevVideo src="/media/md-open.mov" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[520px]" />
+<SlidevVideo src="/media/md-open.mov" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[560px]" />
 
 <!--
-Here's a React Native macOS app I'm working on. This video is me double clicking the app, and it's fully open and ready before the app opening animation is done. It opens a 10MB markdown file in 20 milliseconds.
+Here's a React Native mac app I'm working on. This video is me double clicking the app, and it's fully open and ready instantly. It opens a 10MB markdown file in 20 milliseconds.
 -->
 
 ---
 
-<div class="flex items-center justify-center gap-2">
-  <img src="/media/md-1-start.png" class="rounded-lg max-h-[260px]" />
-  <img src="/media/md-2-loading.png" class="rounded-lg max-h-[260px]" />
-  <img src="/media/md-3-loaded.png" class="rounded-lg max-h-[260px]" />
-</div>
+<SlidevVideo src="/media/md-open-slow.mp4" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[560px]" />
 
 <!--
-Here's every single frame of the video from clicking open to being fully ready. It only takes two frames to open.
+Let's look at that in slow motion at 5% speed to see how crazy it is. It's already fully open, parsed, and rendering rich content before the window finishes animating open.
+
+But ignore the white flash, I just haven't hooked up theming on the native side yet.
 -->
 
 ---
 
-<SlidevVideo src="/media/md-zed.mov" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[520px]" />
+<SlidevVideo src="/media/md-zed.mov" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[560px]" />
 
 <!--
-For comparison, here's Zed loading the same file. It opens the file quickly, but takes over 4 seconds to parse and syntax highlight. Most other apps I tried either froze indefinitely or just crashed.
--->
+For comparison, here's Zed loading the same file. It opens the file quickly, but it takes over 4 seconds to parse and syntax highlight. Most other apps I tried either froze indefinitely or just crashed.
 -->
 
 ---
 
-<SlidevVideo src="/media/visaurora.mov" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[520px]" />
+<SlidevVideo src="/media/visaurora.mov" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[560px]" />
 
 <!--
-Here's another one. It's a React Native macOS mp3 player app.
+Here's another one. It's a React Native mac mp3 player app.
 -->
 
 ---
@@ -98,7 +121,7 @@ Here's another one. It's a React Native macOS mp3 player app.
 </div>
 
 <!--
-It uses less CPU and memory than every other music app I tried, even the native Apple Music player.
+It uses less CPU and memory than almost every other music app I tried, even the native Apple Music player.
 -->
 
 ---
@@ -125,15 +148,14 @@ clicks: 1
     <span> is 🔥</span>
 </h1>
 
-
 <!--
 These are React Native apps and they're faster than every other app on my computer.
 
-They're not just fast relative to Electron web apps. They're faster than most native apps.
+They're not just fast relative to Electron webview apps. They're faster than most native apps.
 
-React Native macOS is awesome.
+Because React Native macOS is awesome.
 
-2. But also, React Native in 2026 is so much better.
+2. But also, React Native in 2026 is just so good.
 -->
 
 ---
@@ -144,7 +166,7 @@ React Native macOS is awesome.
 
 # React Native in 2026 is 🔥 {.inline-block.view-transition-title}
 
-<div class="mx-auto w-[160px]">
+<div class="mx-auto w-[180px]">
 
 New Architecture
 
@@ -158,17 +180,38 @@ Redraw
 
 Dev Tools
 
+Agent Device / Argent
+
 </div>
 
 <!--
 In 2026 the game has totally changed.
 
-New architecture unlocks big possibilities. Hermes keeps getting better. Nitro Modules are crazy fast. Lists are no longer terribly slow. Redraw makes incredible graphics easy and fast. The new dev tooling is awesome.
+The new architecture unlocks big possibilities.
+
+Hermes keeps getting better.
+
+Nitro Modules are crazy fast.
+
+Lists are no longer a bottleneck.
+
+Redraw makes incredible graphics easy and fast.
+
+The new dev tooling is awesome.
+
+Agent Device and Argent rapidly accelerate development and debugging time.
 -->
 
 ---
 
-# React Native is a compromise?
+<div class="absolute inset-0 overflow-hidden">
+  <img src="/media/tweet1.png" class="absolute w-[500px] rounded-lg shadow-2xl" style="left: 46px; top: 34px; transform: rotate(-5deg);" />
+  <img src="/media/tweet2.png" class="absolute w-[500px] rounded-lg shadow-2xl" style="left: 542px; top: 30px; transform: rotate(4deg);" />
+  <img src="/media/tweet4.png" class="absolute w-[500px] rounded-lg shadow-2xl" style="left: 286px; top: 138px; transform: rotate(-2deg);" />
+  <img src="/media/tweet5.png" class="absolute w-[500px] rounded-lg shadow-2xl" style="left: 16px; top: 286px; transform: rotate(4deg);" />
+  <img src="/media/tweet7.png" class="absolute w-[500px] rounded-lg shadow-2xl" style="left: 518px; top: 286px; transform: rotate(-4deg);" />
+  <img src="/media/tweet8.png" class="absolute w-[500px] rounded-lg shadow-2xl" style="left: 286px; top: 420px; transform: rotate(3deg);" />
+</div>
 
 <!--
 But still, React Native is seen as a compromise.
@@ -272,13 +315,13 @@ function ElapsedText() {
 </div>
 
 <!--
-We know that for best performance we should render less often, but it's also important to render less stuff. But how much of a difference does it make?
+We know that for best performance we should render less often, but it's also important to render less stuff. But how much of a difference does it actually make?
 
 I did a little benchmark in my music app to compare two things:
 
-Re-rendering 4 times a second vs. 12 times a second and
+Frequency: Re-rendering 4 times a second vs. 12 times a second and
 
-Re-rendering at the app root vs. in a medium size component in the middle of the component tree vs. updating a single text element.
+Size: Re-rendering at the app root vs. in a medium size component in the middle of the tree vs. updating a single text element leaf node.
 
 When that state passes all the way down from the top it has to do a lot more work along the way than just updating one text element. But it's a pretty small difference, right?
 -->
@@ -309,11 +352,11 @@ When that state passes all the way down from the top it has to do a lot more wor
 <!--
 No, it's huge.
 
-Even I was surprised.
+Even I was surprised by this.
 
-First and obviously, reducing the update frequency reduced the CPU usage.
+First and obviously, reducing the update frequency reduced the CPU usage quite a bit.
 
-But then dropping that update target from the top level down to the tiniest leaf node made a huge difference, reducing the CPU usage from 20% to 1%.
+But then dropping that update target from the top level down to the tiniest leaf node made a huge difference, reducing the CPU usage 10 times.
 
 So rendering less has a huge impact.
 -->
@@ -393,10 +436,7 @@ return (
 }
 </style>
 
-
 <!--
-We use render to coordinate the whole app:
-
 - Render passes local state down the tree
 - It updates context consumers
 - It triggers effects
@@ -413,7 +453,7 @@ That's a lot of responsibility for "render". And that's where so many normal Rea
 <img src="/media/chat-without-reply.png" class="rounded-lg" />
 
 <!--
-For example let's say we have a chat message with a reply feature that changes the background color. That's cool, just re-render the message to update the color.
+Let's say we're making a chat app. We have a reply feature that changes the background color of message. That's cool, just re-render the message to update the color.
 -->
 
 ---
@@ -433,7 +473,7 @@ Lift state up!
 
 Nobody did it, that's okay.
 
-You do what the React docs tell you. You lift state up. And as the docs say, it's one of the most common things you'll do writing React code.
+Well, you do what the React docs tell you. You lift state up. And as the docs say, it's one of the most common things you'll do writing React code.
 -->
 
 ---
@@ -497,7 +537,9 @@ That kills performance.
 # React Compiler!
 
 <!--
-And React Compiler helps a lot, but it can't save you from legitimate changes. The `replyId` changed. Props changed. Wherever a prop is changed, it has to render. To update a style in one message we have to cascade state changes through the whole screen.
+And React Compiler helps a lot, but it can't save you from legitimate changes.
+
+The `replyId` changed. Props changed. Wherever a prop is changed, it has to render. Compiler can't really help you there. To update a style in one message we have to cascade state changes through the whole screen.
 -->
 
 ---
@@ -526,7 +568,7 @@ return (
 ```
 
 <!--
-Here's an example from the React docs: controlling a modal dialog. To open a dialog on button click, we could just open the dialog. But the React pattern is to set state which triggers a render, then use an effect to open the dialog.
+Here's an example from the React docs: controlling a modal dialog. To open a dialog on button click, we could just open the dialog. But the React pattern is to set state, which triggers a render, then use an effect to open the dialog.
 
 It doesn't change what renders. But it re-renders anyway.
 -->
@@ -567,7 +609,7 @@ useEffect(() => {
 <!--
 Or I want to mark this chat as read when the user is focused on the chat. The useIsFocused hook re-renders when focus state changes.
 
-isFocused changing doesn't change what renders. But we have to re-render for the side effect, and now this screen re-renders every time focus changes.
+isFocused changing doesn't change what renders. But we need the side effect, and now this screen re-renders every time focus changes.
 -->
 
 ---
@@ -591,7 +633,7 @@ function Component() {
   }, [])
 
   return (
-    <MyBigComponent onPress={onPress} />
+    <BigComponent onPress={onPress} />
   )
 }
 ```
@@ -605,7 +647,7 @@ function Component() {
   }, [])
 
   return (
-    <MyBigComponent onPress={onPress} />
+    <BigComponent onPress={onPress} />
   )
 }
 ```
@@ -619,7 +661,7 @@ function Component() {
   }, [value])
 
   return (
-    <MyBigComponent onPress={onPress} />
+    <BigComponent onPress={onPress} />
   )
 }
 ```
@@ -630,9 +672,9 @@ Now let's talk about callbacks. Shout out if you see the problem here.
 
 ** React to crowd => Nobody did it OR oh wow
 
-1. The deps array needs to have value in it or this callback will become stale when value changes.
+1. Well, the deps array needs to have value in it or this callback will become stale when value changes.
 
-2. So we add value to the deps and it's fixed! But now the identity of onPress changes whenever value changes, so we have re-render the whole MyBigComponent. It doesn't actually change what's rendered, but we have to re-render to update the callbacks to see the latest local state.
+2. So we add value to the deps and it's fixed! But now the identity of onPress changes whenever value changes, so we have re-render the whole BigComponent. It doesn't actually change what's rendered, but we have to re-render to update the callbacks so they see the latest local state.
 
 Callbacks changing without realizing it is one of the biggest problems I've seen, as it triggers re-renders down a tree for no reason.
 -->
@@ -654,7 +696,7 @@ const [state, setState] = useState({ stuff })
 <!--
 useState doesn't just create state. It also subscribes the current component to that state.
 
-That sounds normal because we're used to it, but it's actually a big limitation.
+That sounds normal because we're used to it, but it's actually a huge limitation.
 
 The owner of the state HAS to re-render when it changes. And then it's responsible for passing it down.
 
@@ -674,7 +716,6 @@ useContext doesn't subscribe to the field you need. It subscribes to the whole c
 -->
 
 ---
-
 
 ````md magic-move
 ```tsx
@@ -704,7 +745,7 @@ function MyText({ text }) {
 ````
 
 <!--
-Say you want to get `fontScale` in your text element. This will re-render whenever fontScale changes, but that doesn't happen too often, right?
+Say you want to get `fontScale` in your text element. This will re-render every text element whenever fontScale changes, but that doesn't happen too often, right?
 
 2. TRICK!
 
@@ -786,9 +827,9 @@ clicks: 1
 </div>
 
 <!--
-Currently, render coordinates everything and producers push state down, through props and deps arrays.
+Currently, render coordinates everything and state owners push state down, through props and deps arrays.
 
-Instead, let's let consumers update themselves as needed. All we need to do to change this paradigm is to re-think state.
+2. Instead, let's let consumers update themselves as needed. All we need to do to change this paradigm is to re-think state.
 
 And all we need is:
 -->
@@ -808,7 +849,7 @@ const replyId = useValue(replyId$)
 <!--
 Stable state objects that you can subscribe to
 
-Some people call this signals. Some people call it observables.
+Some people call this signals. Some call it observables.
 
 The key thing here is that useObservable does not subscribe to the value, it just creates it. Any other component can useValue it to subscribe to the value.
 -->
@@ -1047,7 +1088,9 @@ This way your apps will just do a lot less work.
 <img src="/media/legend-state.png" class="rounded-lg" />
 
 <!--
-This is not just a wild theory. I've been building all of my apps and libraries like this for 10 years. If you use my state library Legend State, you probably realized a while ago that I've been describing how it works.
+This is not just a wild theory.
+
+I've actually been building all of my apps and libraries like this for 10 years. If you use my state library Legend State, you probably realized a while ago that I've been describing how it works.
 -->
 
 ---
@@ -1077,7 +1120,7 @@ So we're actually already doing this to get the best performance with animations
 <img src="/media/list-cpu.png" class="rounded-lg" />
 
 <!--
-And if you use LegendList, you already have this pattern in your app. This is how LegendList is the fastest list library on both web and mobile.
+And if you use LegendList, you already have this pattern in your app. This is how LegendList is the fastest list library on both web and mobile. Because it just does less rendering work.
 -->
 
 ---
@@ -1171,7 +1214,7 @@ function ContainersSizer({ children }) {
 ```
 
 <!--
-When the list size changes, it skips rendering entirely and updates an Animated style. That size changes very often while scrolling as items layout and measure. So it would kill performance if it had to update the outer list component with a new size every time.
+When the list size changes, it skips rendering entirely and updates an Animated style. That size changes very often while scrolling as items layout and measure and change the total size. So it would kill performance if it had to update the outer list component with a new size every time.
 -->
 
 ---
@@ -1243,7 +1286,13 @@ Find one state change that causes a big render cascade and clean it up.
 # Use a fast state library
 
 <!--
-Use a performance focused state library. It's honestly tough to do this in raw React. I obviously recommend Legend State. Or there's some other signal style state libraries if you prefer. The key thing is you want to decouple state creation and subscription, and push the renders down to the leaf nodes.
+But ideally, use a performance focused state library.
+
+It's honestly tough to do this in raw React.
+
+I obviously recommend Legend State. Or there's some other signal style state libraries if you prefer.
+
+The key thing is you want to decouple state creation and subscription, and push the renders down to the leaf nodes.
 -->
 
 ---
@@ -1274,7 +1323,17 @@ I know this is controversial, everyone has strong opinions about state. I get a 
 </div>
 
 <!--
-But you use Reanimated instead of Animated, Nativewind or Uniwind instead of StyleSheet, LegendList instead of FlatList, MMKV instead of AsyncStorage, Safe area context, expo image, a design system - I hope you're not using TouchableOpacity. So why are we clinging onto the built in state and render orchestration workflow?
+But you already use
+
+- Reanimated instead of Animated
+- Nativewind or Uniwind instead of direct StyleSheet
+- LegendList instead of FlatList
+- MMKV instead of AsyncStorage
+- Safe area context
+- expo image
+- a design system - I hope you're not using TouchableOpacity.
+
+So why are we clinging onto the built in state and render orchestration workflow?
 -->
 
 ---
@@ -1285,7 +1344,7 @@ But you use Reanimated instead of Animated, Nativewind or Uniwind instead of Sty
 </div>
 
 <!--
-Even if you only want to use built-in state hooks, most external state libraries are built on useSyncExternalStore, which is a built-in hook, so you're all good.
+Even if you only want to use built-in state hooks, most state libraries are built on useSyncExternalStore, which is a built-in hook, so you're all good.
 -->
 
 ---
@@ -1318,7 +1377,7 @@ function Component() {
 <!--
 But even without that, try to use imperative APIs rather than hooks when possible, to avoid the re-rendering.
 
-2. For example you can just get screen width when you need it and make this callback stable.
+2. For example you can just get screen width when you need it and make this callback stable. It doesn't need to go through a hook re-rendering.
 -->
 
 ---
@@ -1348,17 +1407,17 @@ Then users can get the value when they need it, or use an event listener to hook
 
 ```jsx
 export function useWindowWidth(callback) {
-    const widthRef = useRef(Dimensions.get().window.width)
+  const widthRef = useRef(Dimensions.get().window.width)
 
-    useEffect(() => {
-        const subscription = Dimensions.addEventListener('change', ({ window }) => {
-            widthRef.current = window.width
-            callback?.(window.width)
-        })
-        return () => subscription.remove()
-    }, [])
+  useEffect(() => {
+    const sub = Dimensions.addEventListener('change', ({ window }) => {
+      widthRef.current = window.width
+      callback?.(window.width)
+    })
+    return () => sub.remove()
+  }, [])
 
-    return widthRef
+  return widthRef
 }
 ```
 
@@ -1373,11 +1432,10 @@ It never sets state so it doesn't need a render.
 <img src="/media/state-architecture.jpg" class="rounded-lg" />
 
 <!--
-I believe state architecture is by far the biggest hidden bottleneck in most apps, so that's what you should care about and optimize the most.
+I believe state architecture is by far the biggest hidden bottleneck in most apps, so you should care about it and optimize the bananas out of it.
 
 I care so much about this I built a whole state and sync library because it was the only way to get the best performance.
 -->
-
 
 ---
 
@@ -1389,7 +1447,7 @@ That's how you get from "fast for React Native" to REALLY FAST.
 
 ---
 
-# Render once
+# Render once.
 
 <!--
 Render once.

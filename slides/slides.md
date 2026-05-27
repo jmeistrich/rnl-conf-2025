@@ -28,7 +28,7 @@ Hi, I'm Jay.
 
 Last year's App.js was my first conference talk and it was so much fun! It's great to be back!
 
-Last year's talk was about LegendList which was version 1.0.14 at the time.
+That talk was about LegendList which was version 1.0.14 at the time.
 -->
 
 ---
@@ -72,7 +72,11 @@ clicks: 1
 </div>
 
 <!--
-And now it's on version 3.0 beta 56, which is just too many betas. So today I'm changing that.
+And now it's on version 3 beta 56. Version 3 brings full web support, not just react native web but regular ol react dom. So it's now the fastest list library on both mobile and web.
+
+It's even faster than v2, it's more stable, it works really well for AI chat apps, initial scroll is finally perfect, it supports animated item transitions.
+
+I'm really excited about it! But it's just too many betas. So today I'm changing that.
 
 2. It's now 3.0 stable.
 
@@ -96,7 +100,7 @@ But that's not actually what I'm here to talk about today. I'm here to talk abou
 </div>
 
 <!--
-My plan for this talk was to cover a bunch of different performance topics. But as I benchmarked them and helped a few companies performance optimize their apps, I realized that one of these is so much more impactful than everything else, and most apps are doing it the slow way without even knowing it.
+My plan for this talk was to cover a bunch of different performance topics. But as I benchmarked them and helped a few companies optimize their apps, I realized that one of these is so much more impactful than everything else, and most apps are doing it the slow way without even knowing it.
 
 2. So we're not doing that. Today we're talking about completely rethinking app architecture.
 -->
@@ -132,7 +136,7 @@ When it was announced, people couldn't believe it was React Native because it fe
 <SlidevVideo src="/media/md-open.mov" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[560px]" />
 
 <!--
-Here's a React Native mac app I'm working on. This video is me double clicking the app, and it's fully open and ready instantly. It opens a 10 megabyte markdown file in 20 milliseconds.
+And here's a React Native mac app I'm working on. This video is me double clicking the app, and it's fully open and ready instantly. It opens a 10 megabyte markdown file in 20 milliseconds.
 -->
 
 ---
@@ -142,7 +146,7 @@ Here's a React Native mac app I'm working on. This video is me double clicking t
 <!--
 Let's look at that in slow motion at 5% speed to see how crazy it is. It's already fully open, parsed, and rendering rich content before the window finishes animating open.
 
-But ignore the white flash, I just haven't hooked up native theming yet.
+Ignore the white flash, I just haven't hooked up native theming yet.
 -->
 
 ---
@@ -317,7 +321,7 @@ But first, why is rendering too much a problem? Everyone talks about reducing re
 # Rendering benchmark
 
 <br />
-<div class="flex three-column-code gap-2">
+<div class="flex three-column-code gap-4">
 
 ```tsx
 function App() {
@@ -383,6 +387,11 @@ function ElapsedText() {
     .slidev-code-wrapper:nth-of-type(3)::before {
         content: "Leaf text";
     }
+
+    code {
+        font-size: 12px !important;
+        line-height: 18px !important;
+    }
 }
 </style>
 
@@ -393,7 +402,7 @@ I did a little benchmark in my music app to compare two things:
 
 First, Frequency: Re-rendering 4 times a second vs. 12 times a second
 
-and Second, Size: Re-rendering from the app root vs. in a medium size component in the middle of the tree vs. updating just a single text element leaf node.
+and Second, Size: Re-rendering from the app root vs. in a medium size component in the middle of the tree vs. just a single text element leaf node.
 
 When that state passes all the way down from the top it has to do a lot more work along the way than just updating one text element. But it's a small difference, right?
 -->
@@ -465,7 +474,7 @@ But React's state model is designed around re-rendering. Render coordinates ever
 </div>-->
 
 ```tsx
-const { projectId } = useContext(ProjectContext)
+const { teamId } = useContext(TeamContext)
 ```
 
 ```tsx
@@ -551,7 +560,7 @@ And then you want to also show in the composer that you're replying. So now we n
 <!--
 Lift state up!
 
-Nobody did it, that's okay.
+Nobody did it.
 
 Well, you do what the React docs tell you. You lift state up. And as the docs say, it's one of the most common things you'll do writing React code.
 -->
@@ -617,7 +626,7 @@ That kills performance.
 # React Compiler!
 
 <!--
-And React Compiler helps a lot, but it can't save you from actual changes.
+Now React Compiler helps a lot, absolutely use it. But it can't save you from actual changes.
 -->
 
 ---
@@ -644,7 +653,7 @@ Wherever a prop is changed, it has to render to propagate the state down. Compil
 <img src="/media/not-need-useeffect.webp" class="rounded-lg" />
 
 <!--
-And let's talk about effects. We all know the "You might not need useEffect" meme, but it is still a core tool for orchestrating apps.
+And let's talk about effects.
 -->
 
 ---
@@ -666,7 +675,7 @@ function ChatScreen() {
 ```
 
 <!--
-Here's an example from the React docs: controlling a modal dialog. To open a dialog on button click, we could just open the dialog. But the React pattern is to set state, which triggers a render, then use an effect to open the dialog.
+Here's an example from the React docs: controlling a modal dialog. To open a modal on button click, we could just open the modal. But the React pattern is to set state, which triggers a render, then use an effect to open the moda.
 
 It doesn't change what renders. But it re-renders anyway.
 -->

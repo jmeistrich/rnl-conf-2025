@@ -1,5 +1,7 @@
 :root {
     --un-prose-body: #cacbcc;
+    --slidev-code-font-size: 14px;
+    --slidev-code-line-height: 22px;
 }
 
 h1 {
@@ -134,6 +136,8 @@ video,
 img {
     max-height: 540px;
 }
+
+
 
 .img-crop {
     --crop-top: 0px;

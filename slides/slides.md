@@ -28,7 +28,55 @@ Hi, I'm Jay.
 
 Last year's App.js was my first conference talk and it was so much fun! It's great to be back!
 
-Now I'm here to talk about performance.
+Last year's talk was about LegendList which was version 1.0.14 at the time.
+-->
+
+---
+
+<img src="/media/npm.png" class="rounded-lg" />
+
+<!--
+Since then there's been almost 1400 commits and it has over a million downloads per month, which is absolutely crazy.
+-->
+
+---
+clicks: 1
+---
+
+<h1 class="!text-[2.75rem]">
+    <span>3.0</span>
+    <span class="relative inline-block overflow-hidden align-bottom">
+        <span class="invisible">.0-beta.56</span>
+        <span
+            class="absolute left-0 transition-all duration-500 ease-out"
+            :class="$clicks >= 1 ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'"
+        >
+            .0-beta.56
+        </span>
+        <span
+            class="absolute left-0 transition-all duration-500 ease-out"
+            :class="$clicks >= 1 ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'"
+        >
+            &nbsp;&nbsp;🎉
+        </span>
+    </span>
+</h1>
+
+<div class="flex flex-col gap-y-4 max-w-[280px] mx-auto text-xl pt-6">
+    <div>React DOM</div>
+    <div>Even Faster ⚡️</div>
+    <div>Keyboard Aware Chat</div>
+    <div>Item Layout Transitions</div>
+    <div>Perfect initial scroll</div>
+    <div>So much more!</div>
+</div>
+
+<!--
+And now it's on version 3.0 beta 56, which is just too many betas. So today I'm changing that.
+
+2. It's now 3.0 stable.
+
+But that's not actually what I'm here to talk about today. I'm here to talk about performance.
 -->
 
 ---
@@ -68,7 +116,7 @@ Not just fast for a React Native app, better than native.
 <SlidevVideo src="/media/v0.mp4" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[560px]" />
 
 <!--
-I worked with Fernando on animations and list performance for the v0 iOS app. It's a beautiful AI chat app that feels incredible.
+I worked with Fernando Rojo on animations and list performance for Vercel's v0 iOS app. It's a beautiful AI chat app that feels incredible.
 -->
 
 ---
@@ -76,7 +124,7 @@ I worked with Fernando on animations and list performance for the v0 iOS app. It
 <img src="/media/v0-rn.png" class="rounded-lg" />
 
 <!--
-When it was announced people couldn't believe it was React Native because it felt so good.
+When it was announced, people couldn't believe it was React Native because it felt so good.
 -->
 
 ---
@@ -84,7 +132,7 @@ When it was announced people couldn't believe it was React Native because it fel
 <SlidevVideo src="/media/md-open.mov" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[560px]" />
 
 <!--
-Here's a React Native mac app I'm working on. This video is me double clicking the app, and it's fully open and ready instantly. It opens a 10MB markdown file in 20 milliseconds.
+Here's a React Native mac app I'm working on. This video is me double clicking the app, and it's fully open and ready instantly. It opens a 10 megabyte markdown file in 20 milliseconds.
 -->
 
 ---
@@ -110,7 +158,7 @@ For comparison, here's Zed, a text editor built in Rust known for being fast. It
 <SlidevVideo src="/media/visaurora.mov" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[560px]" />
 
 <!--
-Here's another app I'm making. It's a React Native mac mp3 player.
+Here's another app I'm making. It's a React Native Mac mp3 player.
 -->
 
 ---
@@ -569,7 +617,7 @@ That kills performance.
 # React Compiler!
 
 <!--
-And React Compiler helps a lot, but it can't save you from legitimate changes.
+And React Compiler helps a lot, but it can't save you from actual changes.
 -->
 
 ---
@@ -588,7 +636,7 @@ function ChatScreen() {
 ```
 
 <!--
-Wherever a prop is changed, it has to render to propagate state down. Compiler can't help you there. To update a style in one message we have to cascade state changes through the whole screen.
+Wherever a prop is changed, it has to render to propagate the state down. Compiler can't help you there. To update a style in one message we have to cascade state changes through the whole screen.
 -->
 
 ---
@@ -596,7 +644,7 @@ Wherever a prop is changed, it has to render to propagate state down. Compiler c
 <img src="/media/not-need-useeffect.webp" class="rounded-lg" />
 
 <!--
-Now let's talk about effects. We all know the "You might not need useEffect" meme, but it is still a core tool for orchestrating apps.
+And let's talk about effects. We all know the "You might not need useEffect" meme, but it is still a core tool for orchestrating apps.
 -->
 
 ---
@@ -643,7 +691,7 @@ function ChatScreen() {
 <!--
 Or maybe I want to pause query polling temporarily. I have to set a state to call the useQuery hook again with different parameters.
 
-Setting isPaused doesn't change what renders. But we have to re-render to change it.
+Setting isPaused doesn't change what renders. But we have to re-render to update the query.
 -->
 
 ---
@@ -661,7 +709,7 @@ function ChatScreen() {
 ```
 
 <!--
-Or I want to mark this chat as read, only when the window is focused. The useIsFocused hook re-renders when focus state changes, so we run it in an effect.
+Or I want to mark a chat as read, only when the window is focused. The useIsFocused hook re-renders when focus state changes, so we have to run it in an effect.
 
 That doesn't change what renders. But now this screen re-renders every time focus changes.
 -->
@@ -671,7 +719,7 @@ That doesn't change what renders. But now this screen re-renders every time focu
 # Render is for coordinating
 
 <!--
-This is all because render is needed for coordinating things that aren't even rendering. We're wasting all of this computing to just run side effects.
+This is all because render is needed for coordinating things that aren't even rendering. We're wasting all of this computing to just run side effects and move state around.
 -->
 
 ---
@@ -726,7 +774,7 @@ Now let's talk about callbacks. Shout out if you see the problem here.
 
 ** React to crowd => Nobody did it OR oh wow
 
-1. Well, the deps array needs to have value in it or this callback will become stale when value changes and then we'll an old value.
+1. Well, the deps array needs to have value in it or this callback will become stale when value changes and then we'll log an old value.
 
 2. So we add value to the deps and it's fixed! But now onPress changes whenever value changes, and that means BigComponent re-renders whenever value changes. You can't easily see that by looking at it, it's a hidden performance problem.
 
@@ -799,7 +847,7 @@ function MyText({ text }) {
 ````
 
 <!--
-Say you want to get `fontScale` in your text element. This will re-render every text element whenever fontScale changes. That's not great, but that doesn't happen too often, right?
+Say you want to get `fontScale` in your text element. This will re-render every text element whenever fontScale changes. That's not great, but it doesn't happen too often, right?
 
 2. TRICK!
 
@@ -1039,7 +1087,7 @@ An observe effect can just re-run itself when the state it cares about changes. 
 
 ```tsx
 function ReplyIdProvider({ children }) {
-    const replyState$ = useObservable({ replyId: '', isSending: false })
+    const replyState$ = useObservable({ replyId: '', chars: 0 })
 
     return (
         <ReplyIdContext.Provider value={replyState$}>
@@ -1230,7 +1278,7 @@ And if you use LegendList, you already have this pattern in your app. This is th
 <!--
 LegendList mounts a pool of absolutely positioned containers, and never re-renders the array of containers again. It signals individual containers to re-render themselves as needed.
 
-So while you're scrolling down it's signaling individual containers to re-render at a new position with a new item. This keeps the size of renders as small as possible for best scrolling performance.
+So while you're scrolling down it's signaling one container to re-render at a new position with a new item. This keeps the size of renders as small as possible for best scrolling performance.
 -->
 
 ---
@@ -1246,14 +1294,14 @@ function PositionView({ id, ...rest }) {
 ```
 
 <!--
-When an item's size changes, a tiny PositionView component re-renders itself with a style change.
+When an item's size changes, a tiny wrapper component re-renders itself with a style change.
 -->
 
 ---
 
 ```tsx
 function ContainersSizer({ children }) {
-    const animSize: Animated.Value = useValue$("totalSize");
+    const animSize = useValueAnimated("totalSize");
     const style = {
         height: animSize
     }
@@ -1298,9 +1346,9 @@ clicks: 1
 </h1>
 
 <!--
-LegendList is fast because it's extremely careful do less work. Rendering has a real and significant cost, so for the fastest possible apps, render less, less often.
+LegendList is fast because it's extremely careful do less work. Rendering has a real and significant cost, so for the fastest possible apps, render less, less often. Or, pushed further:
 
-2. Or, pushed further: render once. Use React to create the structure, then update the smallest leaf nodes directly.
+2. render once. Use React to create the structure, then update the smallest leaf nodes directly.
 -->
 
 ---
@@ -1341,9 +1389,8 @@ The first step is to find what's actually slow. Look at your slowest screens and
 <img src="/media/highlight.png" class="rounded-lg" />
 
 <!--
-Or you can use the highlight updates feature in dev tools to just watch the renders.
+Or you can use the highlight updates feature in dev tools to just watch the renders as they happen.
 -->
-
 
 ---
 
@@ -1364,7 +1411,7 @@ The key thing is you want to decouple state creation and subscription, and push 
 <img src="/media/say-state.jpg" class="rounded-lg" />
 
 <!--
-I know this is controversial, everyone has strong opinions about state. I get a ton of pushback that teams prefer to just use the builtin useState and useContext.
+I know this is controversial, everyone has strong opinions about state. I get a ton of pushback that teams don't want to change state libraries, or prefer to just use the builtin useState and useContext.
 -->
 
 ---
@@ -1395,7 +1442,7 @@ If you still have FlatLists in your app talk to me after this.
 
 I hope you're not still using TouchableOpacity.
 
-So why are we clinging onto the built in state and render orchestration workflow?
+So why are we clinging onto the built in state and render orchestration?
 -->
 
 ---
@@ -1416,7 +1463,7 @@ Even if you only want to use built-in state hooks, most modern state libraries a
 For some reason.
 
 <!--
-But some teams just refuse to use a state library, or maybe you're a library developer and don't want to add a dependency, which makes sense. So there's also some lower level things you can do to cut out the renders.
+But some teams just refuse to use a state library, or maybe you're a library developer and don't want to add a dependency, which does make sense. So there's also some lower level things you can do to cut out the renders.
 -->
 
 ---
@@ -1489,7 +1536,7 @@ function ChatScreen() {
 ```
 
 <!--
-Or another pattern I've used is to make hooks take a callback function and return a ref. Then users can use the ref when they need to get the value in a callback or pass it down a tree, or they can just listen to changes with the callback and use it how they want.
+Or another pattern I've used is to make hooks take a callback function and return a ref. Then users can use the ref when they need to get the value, or they can just listen to changes with the callback and use it how they want.
 
 It never sets state so it doesn't need a render.
 -->
@@ -1512,18 +1559,20 @@ function Component() {
 ```
 
 <!--
-You can change your callbacks to useLatestCallback instead of useCallback, which updates them without dependancy arrays. I've seen a few different versions of this, and I've seen a lot of teams rolled their own.
+You can change your callbacks to something like useLatestCallback, which updates them without dependency arrays.
 
-This makes callbacks perfectly stable so they don't trigger render cascades down the tree.
+This makes callbacks perfectly stable so they don't cause render cascades down the tree.
 -->
 
 ---
 
 ```jsx
-import { createContext, useContextSelector } from 'use-context-selector';
+import { useContextSelector } from 'use-context-selector';
 
 function Component() {
-    const width = useContextSelector(windowContext, (window) => window.width);
+    const width = useContextSelector(windowContext,
+        (window) => window.width
+    )
 
     // ...
 }
@@ -1664,4 +1713,6 @@ clicks: 1
 This architecture in my opinion is how you get from "fast for React Native" to REALLY FAST.
 
 2. Render once.
+
+Thank you.
 -->

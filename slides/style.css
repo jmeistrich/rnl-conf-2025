@@ -65,7 +65,7 @@ h3 {
 
 .layout1 {
     grid-template-columns: 1.4fr 1fr !important;
-    grid-template-rows: 1.2fr 1fr min-content !important;
+    grid-template-rows: 1fr 1.1fr min-content !important;
     grid-template-areas: 'main main' 'note next' 'bottom bottom' !important;
 }
 
@@ -85,7 +85,7 @@ h3 {
     display: none;
 }
 
-.grid-section.note > .slidev-note {
+.grid-section.note .slidev-note {
     padding-top: 0.5rem !important;
     font-size: 21px !important;
 }

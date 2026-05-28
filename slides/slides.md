@@ -24,7 +24,7 @@ defaults:
 </div>
 
 <!--
-Hi, I'm Jay.
+Hello React Native developers! Imagine having to follow William. Well, here we go.
 
 Last year's App.js was my first conference talk and it was so much fun! It's great to be back!
 
@@ -37,6 +37,16 @@ That talk was about LegendList which was version 1.0.14 at the time.
 
 <!--
 Since then there's been almost 1400 commits and it has over a million downloads per month, which is absolutely crazy.
+-->
+
+---
+
+<SlidevVideo src="/media/ll3.mp4" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[560px]" />
+
+<!--
+It now supports both React Native and React DOM. So now it's the fastest list library on both mobile and web.
+
+It's been super optimized for chat apps and even has this cool anchoring feature that can scroll user messages to the top.
 -->
 
 ---
@@ -72,9 +82,9 @@ clicks: 1
 </div>
 
 <!--
-And now it's on version 3 beta 56. Version 3 brings full web support, not just react native web but regular ol react dom. So it's now the fastest list library on both mobile and web.
+And now it's on version 3 beta 56.
 
-It's even faster than v2, it's more stable, it works really well for AI chat apps, initial scroll is finally perfect, it supports animated item transitions.
+It's even faster than v2, it's more stable, initial scroll is finally perfect, it supports animated item transitions, tons of bugs were fixed.
 
 I'm really excited about it! But it's just too many betas. So today I'm changing that.
 
@@ -144,9 +154,7 @@ And here's a React Native mac app I'm working on. This video is me double clicki
 <SlidevVideo src="/media/md-open-slow.mp4" autoreset="slide" autoplay mute loop class="rounded-lg max-h-[560px]" />
 
 <!--
-Let's look at that in slow motion at 5% speed to see how crazy it is. It's already fully open, parsed, and rendering rich content before the window finishes animating open.
-
-Ignore the white flash, I just haven't hooked up native theming yet.
+Let's look at that in slow motion at 5% speed to see how crazy it is. It's already fully open, parsed, and rendering rich content before the window even finishes opening.
 -->
 
 ---
@@ -241,9 +249,7 @@ The game has totally changed.
 
 The new architecture unlocks big possibilities.
 
-Hermes keeps getting better.
-
-Nitro Modules are crazy fast.
+Hermes keeps getting better.  Nitro Modules are crazy fast.
 
 Lists are no longer a bottleneck.
 
@@ -398,13 +404,9 @@ function ElapsedText() {
 </div>
 
 <!--
-I did a little benchmark in my music app to compare two things:
+I did a little benchmark in my music app to compare re-rendering from the app root vs. in a medium size component in the middle of the tree vs. just a single text element leaf node.
 
-First, Frequency: Re-rendering 4 times a second vs. 12 times a second
-
-and Second, Size: Re-rendering from the app root vs. in a medium size component in the middle of the tree vs. just a single text element leaf node.
-
-When that state passes all the way down from the top it has to do a lot more work along the way than just updating one text element. But it's a small difference, right?
+When that render passes all the way down from the top it has to do a lot more work along the way than just updating one text element. But it's a small difference, right?
 -->
 
 ---
@@ -413,11 +415,7 @@ When that state passes all the way down from the top it has to do a lot more wor
 
 <div class="flex gap-2 mt-10 text-left">
   <div class="box-not-flashing flex-1 flex-col !items-start">
-    <div class="text-xl text-gray-400">App 12hz</div>
-    <div class="text-5xl font-bold mt-4">20%</div>
-  </div>
-  <div class="box-not-flashing flex-1 flex-col !items-start">
-    <div class="text-xl text-gray-400">App 4hz</div>
+    <div class="text-xl text-gray-400">App</div>
     <div class="text-5xl font-bold mt-4">10%</div>
   </div>
   <div class="box-not-flashing flex-1 flex-col !items-start">
@@ -435,11 +433,9 @@ No, it's huge.
 
 Even I was surprised by this.
 
-Obviously, reducing the update frequency reduced the CPU usage quite a bit.
+Moving the update target from the top level App, down to the tiniest leaf node made a huge difference, reducing the CPU usage 10 times.
 
-But then dropping that update target from the top level down to the tiniest leaf node made a huge difference, reducing the CPU usage 10 times.
-
-So rendering less has a...
+So, rendering less has a...
 -->
 
 ---
@@ -532,7 +528,7 @@ return (
 - It updates query properties
 - It updates external properties
 - It updates subscriptions
-- And of course it renders UI
+- And... it renders UI
 
 That's a lot of responsibility for "render". And that's where so many normal React patterns become a performance problem.
 -->
@@ -542,7 +538,7 @@ That's a lot of responsibility for "render". And that's where so many normal Rea
 <img src="/media/chat-without-reply.png" class="rounded-2xl" />
 
 <!--
-Let's say we're making a chat app. We have a reply feature that changes the background color of a message. That's cool, just re-render the message to update the color.
+Let's say we're making a chat app. We have a reply feature that changes the color of a message. That's cool, just re-render the message to update the color.
 -->
 
 ---
@@ -560,7 +556,7 @@ And then you want to also show in the composer that you're replying. So now we n
 <!--
 Lift state up!
 
-Nobody did it.
+Nobody did it, ok.
 
 Well, you do what the React docs tell you. You lift state up. And as the docs say, it's one of the most common things you'll do writing React code.
 -->
@@ -616,7 +612,7 @@ So you move the state up to the top of the tree and pass it all the way down.
 <!--
 And it re-renders every component all the way down.
 
-It re-renders the chat screen. It re-renders the composer with all of its dialogs and buttons and hooks. It re-renders everything down to the message list. And then it re-renders every single chat message. So that one message can change a background color.
+It re-renders the chat screen. It re-renders the composer with all of its dialogs and buttons and hooks. It re-renders everything down to the message list. And then it re-renders every single chat message. All so that one message can change a background color.
 
 That kills performance.
 -->
@@ -645,7 +641,7 @@ function ChatScreen() {
 ```
 
 <!--
-Wherever a prop is changed, it has to render to propagate the state down. Compiler can't help you there. To update a style in one message we have to cascade state changes through the whole screen.
+Wherever a prop is changed, it has to render to propagate the state down. Compiler can't help you there. So to update a style in one message we have to cascade state changes through the whole screen.
 -->
 
 ---
@@ -675,7 +671,7 @@ function ChatScreen() {
 ```
 
 <!--
-Here's an example from the React docs: controlling a modal dialog. To open a modal on button click, we could just open the modal. But the React pattern is to set state, which triggers a render, then use an effect to open the moda.
+Here's an example from the React docs: controlling a modal dialog. To open a modal on button press, we could just open the modal imperatively. But the React pattern is to set state, which triggers a render, then use an effect to open the modal.
 
 It doesn't change what renders. But it re-renders anyway.
 -->
@@ -718,7 +714,7 @@ function ChatScreen() {
 ```
 
 <!--
-Or I want to mark a chat as read, only when the window is focused. The useIsFocused hook re-renders when focus state changes, so we have to run it in an effect.
+Or I want to mark a chat as read, but only when the window is focused. The useIsFocused hook re-renders when focus state changes, so we have to run it in an effect.
 
 That doesn't change what renders. But now this screen re-renders every time focus changes.
 -->
@@ -785,9 +781,17 @@ Now let's talk about callbacks. Shout out if you see the problem here.
 
 1. Well, the deps array needs to have value in it or this callback will become stale when value changes and then we'll log an old value.
 
-2. So we add value to the deps and it's fixed! But now onPress changes whenever value changes, and that means BigComponent re-renders whenever value changes. You can't easily see that by looking at it, it's a hidden performance problem.
+2. So we add value to the deps and it's fixed! But now onPress changes whenever value changes, and that means this BigComponent also re-renders whenever value changes. You can't easily see that by looking at it, it's a hidden performance problem.
 
-Callbacks accidentally changing is one of the biggest problems I've seen, as it triggers re-renders down a tree for no reason.
+I've seen tons of mistakes like this causing noticeable freezes when some spaghetti path of a state change accidentally re-renders the whole app. This kind of silly mistake can actually have a...
+-->
+
+---
+
+<img src="/media/deep-impact.jpg" class="rounded-t-3xl rounded-b-xl" />
+
+<!--
+really deep impact.
 -->
 
 ---
@@ -805,7 +809,7 @@ const [state, setState] = useState({ stuff })
 ```
 
 <!--
-useState doesn't just create state. It also subscribes the current component to that state.
+useState doesn't just create state. It also subscribes the current component TO that state.
 
 That sounds normal because we're used to it, but it's actually a huge limitation.
 
@@ -860,7 +864,7 @@ Say you want to get `fontScale` in your text element. This will re-render every 
 
 2. TRICK!
 
-You actually subscribed to window size too. So now when an iPad user resizes the window, every single text element re-renders and your app freezes. It doesn't actually need the width, but useContext subscribed to it. So now you have a huge performance problem for no reason.
+You actually subscribed to window size too. So when a tablet or desktop user resizes the window, every single text element re-renders and your app freezes. It doesn't actually need the width, but useContext subscribed to it anyway. So now you have a huge performance problem for no reason.
 -->
 
 ---
@@ -890,7 +894,7 @@ Instead of rendering everything everywhere all at once
 <!--
 We just render once.
 
-We don't even need to change the framework. We just have to think about state differently, and coordinate state separately from render.
+We don't even need to change the framework to do this. We just have to think about state differently, and coordinate state separately from render.
 -->
 
 ---
@@ -940,9 +944,9 @@ clicks: 1
 <!--
 Currently, render coordinates everything and state owners push the state down.
 
-2. Instead, let's let consumers update themselves as needed. All we need to do to change this paradigm is to re-think state.
+2. Instead, let's let consumers update themselves as needed.
 
-And all we need is:
+And all we need for that is:
 -->
 
 ---
@@ -958,11 +962,11 @@ const replyId = useValue(replyId$)
 ```
 
 <!--
-Stable state objects that you can subscribe to
+Stable state objects that you can subscribe to.
 
 Some people call these signals. Some call em observables. Some call them SharedValues.
 
-The key thing here is that useObservable does not subscribe to the value, it just creates it. Any other component can useValue it to subscribe to the value.
+The key thing here is that useObservable does not subscribe to the state, it just creates it. Any other component can useValue it to subscribe to it.
 -->
 
 ---
@@ -993,7 +997,7 @@ function ReplyRow({ replyId$ }) {
 <!--
 This separates ownership from subscription. We lift state ownership up, but push state subscription way down.
 
-ChatScreen passes down stable objects that never change, so it never has to re-render. Then the tiny little ReplyRow subscribes to the state change, and re-renders itself whenever it needs to. It does almost nothing so the cost of updating it is tiny, compared to re-rendering the whole chat screen.
+ChatScreen passes down stable objects that never change, so it never has to re-render. Then the tiny little ReplyRow subscribes to the state, and re-renders itself whenever it needs to. It does almost nothing so the cost of updating it is tiny, compared to re-rendering the whole chat screen.
 -->
 
 ---
@@ -1061,7 +1065,7 @@ So whereas normally the whole app would re-render because the state is owned and
 <!--
 With this setup, only the affected components re-render.
 
-The components that actually use the state subscribe themselves to it and re-render themselves. Render doesn't need to coordinate it and pass it all down.
+Nothing else is visually changing, they don't *need* to re-render. So we can just skip that.
 -->
 
 ---
@@ -1089,7 +1093,7 @@ useObserveEffect(() => {
 ```
 
 <!--
-An observe effect can just re-run itself when the state it cares about changes. It doesn't need a render to update it. It automatically subscribes to any state it accesses. So we can open a modal without any render coordination.
+An observe effect can just re-run itself when the state it cares about changes. It doesn't need a render to update it. It automatically subscribes to any state it accesses. So we can open a modal without any render coordination and still have the state to track it.
 -->
 
 ---
@@ -1115,7 +1119,7 @@ function useIsReplyMessage(messageId) {
 <!--
 useContext is still very useful, but to provide stable state objects. That way, the context provider never re-renders. And consumers can select which specific thing to listen to, to re-render as little as possible.
 
-We could also subscribe to derived values, so rather than subscribing to replyId which would re-render every single message, this re-renders whenever the boolean return value changes. So it will only re-render the one reply message.
+We could also subscribe to derived values, so rather than subscribing to replyId which would re-render every single message, this re-renders only the one reply message.
 -->
 
 ---
@@ -1231,7 +1235,7 @@ So we're actually already doing this to get the best performance with animations
 <img src="/media/list-cpu.png" class="rounded-lg" />
 
 <!--
-And if you use LegendList, you already have this pattern in your app. This is the main reason LegendList is the fastest list library on both web and mobile. Because it just does less rendering work.
+And if you use LegendList, you already have this pattern in your app. This is the main reason LegendList is the fastest list library on both mobile and web. Because it just does less rendering work.
 -->
 
 ---
@@ -1287,7 +1291,7 @@ And if you use LegendList, you already have this pattern in your app. This is th
 <!--
 LegendList mounts a pool of absolutely positioned containers, and never re-renders the array of containers again. It signals individual containers to re-render themselves as needed.
 
-So while you're scrolling down it's signaling one container to re-render at a new position with a new item. This keeps the size of renders as small as possible for best scrolling performance.
+So when you scroll down it signals one container to re-render at a new position with a new item. This keeps the size of renders as small as possible for best scrolling performance.
 -->
 
 ---
@@ -1310,7 +1314,7 @@ When an item's size changes, a tiny wrapper component re-renders itself with a s
 
 ```tsx
 function ContainersSizer({ children }) {
-    const animSize = useValueAnimated("totalSize");
+    const animSize = useValueAnimated("totalSize")
     const style = {
         height: animSize
     }
@@ -1324,9 +1328,9 @@ function ContainersSizer({ children }) {
 ```
 
 <!--
-When the list size changes, it skips rendering entirely and updates an Animated style.
+When the list size changes, it skips rendering entirely and updates an Animated style. It's not actually animating, but it's more performant than going through a full render.
 
-That size changes very often while scrolling as items layout and measure and change the total size.
+That size changes very often while scrolling, as items layout and measure and change the total size.
 
 So it would kill performance if it had to update the outer list component with a new size every time.
 -->
@@ -1384,7 +1388,7 @@ clicks: 1
 </h1>
 
 <!--
-But this isn't just a list trick. This is the model I want you to take back to your apps.
+But this isn't just a list hack. This is the model I want you to take back to your apps.
 
 So try this today. Well, maybe not today since we're at a conference.
 
@@ -1399,6 +1403,8 @@ The first step is to find what's actually slow. Look at your slowest screens and
 
 <!--
 Or you can use the highlight updates feature in dev tools to just watch the renders as they happen.
+
+Then try optimizing that screen.
 -->
 
 ---
@@ -1407,8 +1413,6 @@ Or you can use the highlight updates feature in dev tools to just watch the rend
 
 <!--
 This problem can actually be fully solved with a state library, it doesn't need any framework changes.
-
-But it's honestly tough to do this in raw React.
 
 I obviously recommend Legend State. I'm not aware of others that do all of this, but there are some other signal style state libraries if you prefer. Or you could make your own!
 
@@ -1443,26 +1447,15 @@ I know this is controversial, everyone has strong opinions about state. I get a 
 </div>
 
 <!--
-But you already use Reanimated.
+But you already use Reanimated instead of the builtin Animated because it's better.
 
 You dropped raw StyleSheet for Unistyles or NativeWind or Uniwind
 
-If you still have FlatLists in your app talk to me after this.
+If you still have FlatLists in your app, please talk to me after this.
 
 I hope you're not still using TouchableOpacity.
 
-So why are we clinging onto the built in state and render orchestration?
--->
-
----
-
-<div class="mx-auto grid w-max grid-cols-[250px_max-content] gap-1 text-xl">
-  <div class="box-not-flashing-small">❌ useState</div>
-  <div class="box-not-flashing-small">✅ useSyncExternalStore</div>
-</div>
-
-<!--
-Even if you only want to use built-in state hooks, most modern state libraries are built on useSyncExternalStore, which is a built-in hook, so you're all good.
+So why are we clinging onto the built in state?
 -->
 
 ---
@@ -1523,7 +1516,7 @@ Dimensions.addEventListener('change', ({ window }) => {
 ```
 
 <!--
-And if you're a library author, please support an imperative API as well as a hook, like React Native's Dimensions has.
+And if you're a library author, please support an imperative API as well as a hook, like with Dimensions.
 
 Then users can get the value when they need it, or use an event listener to hook it up to their own state, and don't need to run it through a render.
 -->
@@ -1533,11 +1526,11 @@ Then users can get the value when they need it, or use an event listener to hook
 ```jsx
 function ChatScreen() {
     const widthRef = useWindowWidthRef((width) => {
-        console.log('width changed');
+        console.log('width changed')
     })
 
     const onPress = () => {
-        doSomethingWithWidth(widthRef.current);
+        doSomethingWithWidth(widthRef.current)
     }
 
     // ...
@@ -1546,14 +1539,12 @@ function ChatScreen() {
 
 <!--
 Or another pattern I've used is to make hooks take a callback function and return a ref. Then users can use the ref when they need to get the value, or they can just listen to changes with the callback and use it how they want.
-
-It never sets state so it doesn't need a render.
 -->
 
 ---
 
 ```jsx
-import useLatestCallback from 'use-latest-callback';
+import useLatestCallback from 'use-latest-callback'
 import { useEventCallback } from 'usehooks-ts'
 
 function Component() {
@@ -1568,15 +1559,15 @@ function Component() {
 ```
 
 <!--
-You can change your callbacks to something like useLatestCallback, which updates them without dependency arrays.
+You can change your callbacks to something like useLatestCallback or useEventCallback, which updates them without dependency arrays.
 
-This makes callbacks perfectly stable so they don't cause render cascades down the tree.
+This makes callbacks stable so they don't cause render cascades down the tree.
 -->
 
 ---
 
 ```jsx
-import { useContextSelector } from 'use-context-selector';
+import { useContextSelector } from 'use-context-selector'
 
 function Component() {
     const width = useContextSelector(windowContext,
@@ -1682,7 +1673,7 @@ I know this is a departure from normal React patterns.
 <!--
 But in my experience it really does make apps a lot faster. I think it's worth a try.
 
-I believe state architecture is by far the biggest hidden bottleneck in most apps, so you should care about it and optimize
+I really believe state architecture is by far the biggest hidden bottleneck in most apps, so you should care about it and optimize
 -->
 
 ---

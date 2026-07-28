@@ -316,7 +316,7 @@ But then you end up with these massive provider trees. And they still re-render 
 
 ---
 
-MEME: # Who cares?
+<img src="/media/noonecares.webp" class="rounded-lg" />
 
 <!--
 But how much does this matter? How big of a deal is some extra renders? The React docs say to do this, so it must be fine.
@@ -456,7 +456,13 @@ This is actually very easy to fix.
 
 <!--
 Use a state library. That's it.
+-->
 
+---
+
+<img src="/media/state-meme.jpeg" class="rounded-lg" />
+
+<!--
 But I've worked with many companies who say the built-in state is fine, and they don't want to add a dependency.
 -->
 
@@ -607,11 +613,18 @@ But even this isn't ideal, the whole ChatMessage shouldn't need to re-render, it
 
 ---
 
-Meme? Another state library?
+<img src="/media/state-meme.webp" class="rounded-lg" />
 
 <!--
-Before I even started on LegendList, Legend State was my first love. To try to get the best performance in my app Legend, I was trying to optimize re-renders, and found that it's caused directly by state. So I tried to figure out how to build the fastest possible state system.
+Before I even started on LegendList, Legend State was my first love. To try to get the best performance in my app Legend, I was trying to optimize re-renders, and found that it's caused directly by state. I tried every state library and they couldn't support the right architecture, so I tried to figure out how to build the fastest possible state system.
+-->
 
+---
+
+<img src="/media/jackie-chan.webp" class="rounded-lg" />
+
+
+<!--
 I blacked out for a week. I have no memory of that week but git shows that I tried 18 different approaches. I tried dozens of state libraries, studied their source, and ran a bunch of benchmarks, trying to find the fastest possible solution with the best developer experience.
 
 And this was before AI, so this was real typing code.
@@ -630,11 +643,11 @@ clicks: 1
             class="transition-opacity duration-500"
             :class="$clicks >= 1 ? 'opacity-25' : 'opacity-100'"
         >render() => </span>
-        <span>effects</span>
+        <span>effects re-run</span>
         <span
             class="transition-opacity duration-500"
             :class="$clicks >= 1 ? 'opacity-100' : 'opacity-0'"
-        > re-run themselves</span>
+        > themselves</span>
     </div>
     <div class="text-4xl">
         <span
@@ -905,15 +918,24 @@ The component never has to re-render.
 
 ---
 
-MEME: # Who cares?
+<img src="/media/noonecares.webp" class="rounded-lg" />
 
 <!--
-This is cool and all, but there's so many state libraries out there. And how do you quantify fast state?
+This is cool and all, but it's not magic, it's just a state library.
 
-But it's not about the speed of the state, it's about faster architecture.
+This is possible to get close to in React, but it's hard. It's possible in other state libraries but takes more thinking and boilerplate.
+
+We want fast by default.
+
+It's there's so many state libraries out there. Why is rendering less impotant and why do we need another state library?
+
+But it's not about the state, it's about faster architecture.
 
 So I had AI make a benchmark of a fake music app with regular React state and a bunch of popular state libraries.
 -->
+
+possible in react but it's hard
+easier in other state libraries but still hard
 
 ---
 

@@ -873,7 +873,6 @@ function BrightnessSettings() {
 We can two-way bind to any external data too. So an observable defines its link to an external API and then your components don't need to know anything about it. Just bind your UI to the brightness and it will sync itself.
 -->
 
-
 ---
 
 # Render Once
@@ -925,36 +924,324 @@ This is cool and all, but it's not magic, it's just a state library.
 
 This is possible to get close to in React, but it's hard. It's possible in other state libraries but takes more thinking and boilerplate.
 
-We want fast by default.
-
-It's there's so many state libraries out there. Why is rendering less impotant and why do we need another state library?
-
-But it's not about the state, it's about faster architecture.
-
-So I had AI make a benchmark of a fake music app with regular React state and a bunch of popular state libraries.
--->
-
-possible in react but it's hard
-easier in other state libraries but still hard
-
----
-
-<img src="/media/music-benchmark.png" class="rounded-lg" />
-
-<!--
-You can tell it's made by AI because it looks like AI slop. But it served its purpose.
+We want fast by default. So let's look at how to do it in React and popular state libraries.
 -->
 
 ---
 
-TABLE OF TIMES
+# React useState
+
+```tsx
+function MusicApp() {
+  const [playback, setPlayback] = useState(initialPlayback)
+
+  return (
+    <TrackList activeTrackId={playback.activeTrackId} />
+  );
+}
+
+function TrackList({ activeTrackId }) {
+  return tracks.map((track) => (
+    <TrackRowWrapper key={track.id} track={track} activeTrackId={activeTrackId} />
+  ));
+}
+
+function TrackRowWrapper({ track, activeTrackId }) {
+  const isActive = activeTrackId === track.id
+
+  return <TrackRowView track={track} isActive={isActive} />
+}
+```
+
+<style>
+.slidev-code-wrapper {
+    width: 720px;
+}
+</style>
 
 <!--
-Using fine-grained reactivity, Legend State re-renders only what actually changed, at the tiniest leaf node rather than large components, and the engine is just really optimized. So it uses significantly less CPU than other state libraries, and a ton less than regular React state.
+We'll look at an example of a music app changing the active song. All we need to do is change the background color on 2 tracks, the previous track and the new one.
 
-TODO: Also LOC?
+With useState we can't really optimize it much. We can make a wrapper component that checks if it's active and passes that down. But the active track id has to pass down the track list and all items. But then we do achieve avoiding a full track render except for the two that changed with a memoized track row view.
+-->
 
-So it's really fast. But that's only one of the goals.
+---
+
+# React Context
+
+```tsx
+const PlaybackContext = createContext(initialPlayback)
+
+function PlaybackStateProvider({ children }) {
+  const [playback, setPlayback] = useState(initialPlayback)
+
+  return (
+    <PlaybackContext value={playback}>
+      {children}
+    </PlaybackContext>
+  )
+}
+
+function TrackRowWrapper({ track }) {
+  const playback = useContext(PlaybackContext)
+  const isActive = playback.activeTrackId === track.id
+
+  return <TrackRowView track={track} isActive={isActive} />
+}
+```
+
+<!--
+With Context it still needs the wrapper component to check isActive. It doesn't pass the state all the way down, but it still has to render every wrapper to check if it's active. So as with state, it's still going to render every track, but at least it's not the whole tree between the state and the track.
+-->
+
+---
+
+# useSyncExternalStore
+
+<div class="flex gap-4">
+
+```tsx
+let playback = initialPlayback
+const listeners = new Set()
+
+function subscribe(listener) {
+    listeners.add(listener)
+    return () => listeners.delete(listener)
+}
+function setPlayback(nextPlayback) {
+    if (!Object.is(playback, nextPlayback)) {
+        playback = nextPlayback
+        listeners.forEach((listener) => listener())
+    }
+}
+function usePlaybackSelector(selector) {
+    return useSyncExternalStore(
+        subscribe,
+        () => selector(playback),
+    )
+}
+```
+
+```tsx
+function TrackRow({ track }) {
+    const isActive = usePlaybackSelector(
+        (state) => state.activeTrackId === track.id,
+    )
+
+    return (
+        <View style={[styles.row, isActive && styles.activeRow]}>
+            <Text>{track.title}</Text>
+        </View>
+    )
+}
+```
+
+</div>
+
+<style>
+.slidev-code-wrapper {
+    width: 480px;
+}
+</style>
+
+<!--
+Some teams are so resistant to a state library that they build their own stores on top of useSyncExternalStore.
+
+Don't do this. It's a ton of boiler plate. You'll end up building your own state library.
+
+But this does finally achieve what we want. We don't need a TrackRowWrapper anymore. TrackRow only re-renders when its active state changes, so only two tracks re-render.
+
+Now let's look at some popular state libraries.
+-->
+
+---
+
+# Redux Toolkit
+
+<div class="flex gap-4">
+
+```tsx
+const playbackSlice = createSlice({
+    name: 'playback',
+    initialState: initialPlayback,
+    reducers: {
+        playbackReceived:
+            (_, action) => action.payload,
+    },
+})
+const store = configureStore({
+    reducer: {
+        playback: playbackSlice.reducer,
+    },
+})
+function PlaybackStateProvider({ children }) {
+    return (
+        <Provider store={store}>
+            {children}
+        </Provider>
+    )
+}
+```
+```tsx
+function TrackRow({ track }) {
+  const isActive = useSelector(
+    (state) =>
+      state.playback.activeTrackId === track.id
+  )
+
+  return (
+    <View style={[styles.row, isActive && styles.activeRow]}>
+      <Text>{track.title}</Text>
+    </View>
+  )
+}
+```
+
+</div>
+
+<style>
+.slidev-code-wrapper {
+    width: 480px;
+}
+</style>
+
+<!--
+The redux version gets a bit long but its useSelector makes only the affected rows re-render.
+-->
+
+---
+
+# Zustand
+
+```tsx
+const usePlaybackStore = create((set) => ({
+    playback: initialPlayback,
+    setPlayback: (playback) => {
+        set({ playback })
+    },
+}))
+
+function TrackRow({ track }) {
+    const isActive = usePlaybackStore(
+        (state) => state.playback.activeTrackId === track.id,
+    )
+
+    return (
+        <View style={[styles.row, isActive && styles.activeRow]}>
+            <Text>{track.title}</Text>
+        </View>
+    )
+}
+```
+
+<!--
+Zustand gets shorter and also re-renders only the affected rows.
+-->
+
+---
+
+# Jotai
+
+```tsx
+const playbackAtom = atom(initialPlayback)
+
+const isActiveAtom = atomFamily((trackId) =>
+    atom(
+        (get) => get(playbackAtom).activeTrackId === trackId,
+    ),
+)
+
+function TrackRow({ track }) {
+    const isActive = useAtomValue(isActiveAtom(track.id))
+
+    return (
+        <View style={[styles.row, isActive && styles.activeRow]}>
+            <Text>{track.title}</Text>
+        </View>
+    )
+}
+```
+
+<!--
+With Jotai we can stack atoms and atom families to make a selector to re-render only the affected rows
+-->
+
+---
+
+# MobX
+
+```tsx
+const playback = observable({ ...initialPlayback })
+
+const TrackRow = observer(function TrackRow({ track }) {
+    const isActive = computed(
+        () => playback.activeTrackId === track.id
+    ).get()
+
+    return (
+        <View style={[styles.row, isActive && styles.activeRow]}>
+            <Text>{track.title}</Text>
+        </View>
+    )
+})
+```
+
+<!--
+With MobX we can use a computed to make an isActive selector. Unfortunately the observer wrapper makes it incompatible with React Compiler though.
+-->
+
+---
+
+# Legend State
+
+```tsx
+const playback$ = observable({ ...initialPlayback })
+
+function TrackRow({ track }) {
+    const isActive = useValue(
+        () => playback$.activeTrackId.get() === track.id,
+    )
+
+    return (
+        <View style={[styles.row, isActive && styles.activeRow]}>
+            <Text>{track.title}</Text>
+        </View>
+    )
+}
+```
+
+<!--
+And with Legend State we can just pass a selector function to useValue. This is what I mean by "fast by default".
+
+The efficient way of doing it is the most obvious and easiest way.
+-->
+
+---
+
+# Legend State Fine Grained
+
+```tsx
+function TrackRow({ track }) {
+    return (
+        <$View
+            $style={() =>
+                playback$.activeTrackId.get() === track.id ?
+                    styles.activeRow :
+                    styles.row
+            }
+        />
+    )
+}
+```
+
+<!--
+Legend State lets us go even more fine grained though, in a way that isn't possible in other libraries.
+
+Using a reactive style prop, the TrackRow never re-renders. Only a tiny wrapper around the View updates a style when the activeTrackId changes.
+
+It's possible to do this with regular React state hooks or other state libraries. But it's complex to create special child style wrapper components.
+
+Legend State is all about making it fast by default, and very easy to make it even faster.
 -->
 
 ---
@@ -1054,7 +1341,7 @@ user$.onChange(({ value, changes }) => {
 ```
 
 <!--
-But that was only the second of the three goals of Legend State. And that comes from an interesting property of having deeply nested changes.
+But that was only the second of the three goals of Legend State. The third comes from an interesting property of having deeply nested changes.
 
 onChange gets more information than just that it changed. We know the path of the child within the hierarchy and the details of that change.
 
@@ -1193,25 +1480,4 @@ Check it out at Legend State .com
 I had planned to release 3.0 right now, but my plane from London didn't have wifi. Use 3.0 beta for all the latest features and 3.0 should come next week.
 
 Thanks!
--->
-
-
-<!--So what is Legend State
-Cause => Effect
-Sync
-Benchmarks
-    Legend State + Memo
-The comparison
-Benchmark should use Memo for Legend State
-Why I made Legend State
-Lines of code
-fast by default = remove effects etc
-easier mental model = faster
-fn(state) => UI, fn(state) => sync-->
-
-
-<!--
-A section about what's confusing about react?
-
-Immutable bad and slow
 -->

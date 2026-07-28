@@ -13,1082 +13,1183 @@ defaults:
 
 <div class="pb-12">
 
-# Fast by Default:
-
-# Performance Starts with State ⚡
+# Fast by Default: Legend State
 
 </div>
 
 <div class="absolute bottom-16 gap-y-2 flex flex-col">
   <div>Jay Meistrich</div>
   <div>@jmeistrich</div>
-  <div class="text-gray-400">Chain React 2026</div>
+  <div>Legend, Margelo</div>
 </div>
 
 <!--
-Hi everyone! I'm Jay.
+Hi everyone! I'm Jay. This is my third time at Chain React and I'm really excited to finally be doing a talk here!
 
-I build Legend State and Legend List, and I spend a slightly unhealthy amount of time thinking about performance.
-
-Today I want to show you how one completely normal state decision made a very fast music app slow—and what happened when I built the same feature with six different state architectures.
+You might know me from LegendList. And I work at Margelo helping companies performance optimize their apps. And let me tell you, I've seen some things.
 -->
 
 ---
 
-# I make lists fast
+LegendList video
 
-<div class="media-placeholder aspect-video mt-8">
-  <div class="placeholder-kicker">VIDEO PLACEHOLDER</div>
-  <div class="placeholder-title">LegendList scrolling smoothly in the music app</div>
-  <div class="placeholder-detail">Show a long, image-heavy track list on a slower physical device.</div>
+<!--
+I spent years building the fastest list library to make apps faster, but a slow list is actually not the biggest performance problem in most apps.
+-->
+
+---
+
+MEME?
+
+# Top 10 Performance Problems
+
+<div class="text-3xl text-center pt-8">
+
+<span>1. State</span>
+
 </div>
 
 <!--
-Most of you probably know me from LegendList.
+It's state.
 
-I've spent years trying to make lists render as little as possible. It virtualizes data, recycles rows, and does a lot of weird things so React and native don't have to.
-
-This list is very fast.
+Most of us don't even think about it. We use the built in useState and useContext.
 -->
 
 ---
 
-# Then I made it slow
+<div class="text-3xl pt-8">
 
-<!--
-And then I made it slow with three values.
+1. React Compiler
+2. useCallback
+3. useMemo
 
-Not ten thousand tracks. Not giant images. Not a bad native module.
-
-Three values.
--->
-
----
-
-<div class="media-placeholder aspect-video">
-  <div class="placeholder-kicker">VIDEO PLACEHOLDER</div>
-  <div class="placeholder-title">Music app playing a track</div>
-  <div class="placeholder-detail">Show the playback area and a circular progress indicator on the active row.</div>
 </div>
 
 <!--
-This is a React Native music app I'm building.
-
-The player shows the current track, progress, and duration. The active row also shows a circular progress indicator.
-
-Only one little circle is moving.
+Then just throw in useCallback and useMemo and enable the compiler, and assume that's good enough.
 -->
 
 ---
 
-# One circle is moving
+# React State is slow by default
 
-<div class="mt-12 flex items-center justify-center gap-14">
-  <div class="mock-track-list">
-    <div class="mock-track-row"><span>Track One</span><span>○</span></div>
-    <div class="mock-track-row mock-track-active"><span>Track Two</span><span class="mock-spinner">◔</span></div>
-    <div class="mock-track-row"><span>Track Three</span><span>○</span></div>
-    <div class="mock-track-row"><span>Track Four</span><span>○</span></div>
-  </div>
-  <div class="text-6xl">🤏</div>
+<!--
+But you just fundamentally can't get the best performance with the built in state.
+-->
+
+---
+
+<div class="flex items-center">
+    <div class="flex flex-col gap-4 pt-8">
+        <div class="box-not-flashing">App</div>
+    </div>
+    <div class="flex flex-col gap-4 pt-8">
+        <div class="box-not-flashing">LegendList</div>
+    </div>
+    <div class="flex flex-col gap-4 pt-8">
+        <div class="box-not-flashing">Containers[]</div>
+    </div>
+    <div class="flex flex-col gap-4 pt-8">
+        <div class="container-flashing-1 whitespace-pre">Container 0</div>
+        <div class="container-flashing-2 whitespace-pre">Container 1</div>
+        <div class="container-flashing-3 whitespace-pre">Container 2</div>
+    </div>
+    <div class="phone-container">
+        <img src="/media/phone.png">
+        <div class="absolute inset-x-6 rounded-[16px] top-[22.5px] bottom-[21px] overflow-hidden bg-white">
+            <div class="animate-up">
+                <div class="box border-none absolute inset-x-4 top-0 h-[290px] bg-red-500 font-medium">
+                    Container 0
+                </div>
+                <div class="box border-none absolute inset-x-4 top-[300px] h-[290px] bg-blue-500 font-medium">
+                    Container 1
+                </div>
+                <div class="box border-none absolute inset-x-4 top-[600px] h-[290px] bg-green-500 font-medium">
+                    Container 2
+                </div>
+                <div class="box border-none absolute inset-x-4 top-[900px] h-[290px] bg-purple-500 font-medium">
+                    Container 0
+                </div>
+                <div class="box border-none absolute inset-x-4 top-[1200px] h-[290px] bg-teal-500 font-medium">
+                    Container 1
+                </div>
+                <div class="box border-none absolute inset-x-4 top-[1500px] h-[290px] bg-pink-500 font-medium">
+                    Container 2
+                </div>
+                <div class="box border-none absolute inset-x-4 top-[1800px] h-[290px] bg-red-500 font-medium">
+                    Container 0
+                </div>
+                <div class="box border-none absolute inset-x-4 top-[2100px] h-[290px] bg-blue-500 font-medium">
+                    Container 1
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!--
-Only these pixels need to change.
+The main reason that LegendList is fast is that it skips as much React work as possible.
 
-So let's build it the normal way.
+It never re-renders the outer list, or the array of containers. It signals individual items to re-render themselves as they come onto screen.
 -->
 
 ---
 
-# One cohesive value
+# Render less, less often
 
-```ts
-type PlaybackState = {
-  activeTrackId?: string
-  progress: number
-  duration: number
+<!--
+The key to building the fastest apps is to minimize the amount of work that React and React Native do.
+
+That means having smaller renders and doing it less often.
+
+useState and useContext are fundamentally incompatible with that.
+-->
+
+---
+
+```tsx
+function ChatScreen() {
+  const [replyId, setReplyId] = useState('')
+
+  return (
+    <View>
+      <ChatMessages replyId={replyId} />
+      <ChatComposer replyId={replyId} />
+    </View>
+  )
+}
+
+function ChatMessage({ id, replyId }) {
+  const isReply = id === replyId
+
+  // ...
 }
 ```
 
 <!--
-The native player reports one snapshot containing activeTrackId, progress, and duration.
-
-That is good domain modeling. The values describe one moment in one playback session and arrive atomically from one native system.
-
-So this should be one cohesive value.
+useState both creates and subscribes to state. So whenever the state changes, it re-renders where it was created. If you have state at a high level, it has to pass it all the way down.
 -->
 
 ---
 
-# Start state where it's used
+<div class="flex flex-col gap-2 pt-8">
+  <div class="flex justify-center">
+    <div class="box-flashing ml-10">ChatScreen</div>
+  </div>
+  <div class="flex justify-center items-start">
+      <div>
+    <div class="box-flashing">ChatMessages</div>
+    <div class="flex flex-col flex-1 items-center">
+      <div class="box-flashing">Message</div>
+      <div class="box-flashing">Message</div>
+      <div class="box-flashing">Message</div>
+      <div class="box-flashing">Message</div>
+    </div>
+      </div>
+      <div>
+        <div class="box-flashing">ChatComposer</div>
+      <div class="flex flex-col flex-1 items-center">
+        <div class="box-flashing">ReplyRow</div>
+        <div class="box-flashing">InputRow</div>
+      </div>
+      </div>
+  </div>
+</div>
 
-```tsx {1-8|4-6|10-14}
-function PlaybackArea() {
-  const [playback, setPlayback] = useState(initialPlayback)
+<!--
+And it re-renders every component all the way down.
 
-  useEffect(() => {
-    return NativePlayer.subscribe(setPlayback)
-  }, [])
+Compiler and memoizing can't save you here. The value is actually changing, so React has to do a ton of work rendering and reconciling everything.
+
+That kills performance.
+-->
+
+---
+
+```tsx
+function ChatScreen() {
+  const [replyId, setReplyId] = useState('')
 
   return (
-    <PlaybackControls
-      progress={playback.progress}
-      duration={playback.duration}
-    />
+    <ReplyContextProvider value={{ replyId, setReplyId }}>
+      <View>
+        <ChatMessages />
+        <ChatComposer />
+      </View>
+    </ReplyContextProvider>
+  )
+}
+
+function ChatMessage({ id, replyId }) {
+  const isReply = id === replyId
+
+  // ...
+}
+```
+
+<!--
+Context can be better in some cases, it doesn't have to pass down the tree.
+-->
+
+---
+
+<div class="flex flex-col gap-2 pt-8">
+  <div class="flex justify-center">
+    <div class="box-flashing ml-10">ChatScreen</div>
+  </div>
+  <div class="flex justify-center items-start">
+      <div>
+    <div class="box-not-flashing">ChatMessages</div>
+    <div class="flex flex-col flex-1 items-center">
+      <div class="box-flashing">Message</div>
+      <div class="box-flashing">Message</div>
+      <div class="box-flashing">Message</div>
+      <div class="box-flashing">Message</div>
+    </div>
+      </div>
+      <div>
+        <div class="box-not-flashing">ChatComposer</div>
+      <div class="flex flex-col flex-1 items-center">
+        <div class="box-not-flashing">ReplyRow</div>
+        <div class="box-not-flashing">InputRow</div>
+      </div>
+      </div>
+  </div>
+</div>
+
+<!--
+But instead of going deep it goes wide. Every time the value changes it re-renders every instance of useContext.
+-->
+
+---
+
+```tsx
+function MyText({ text }) {
+  const { fontScale, /*width, height*/ } = useWindowDimensions()
+  const numberOfLines = fontScale >= 1.3 ? 2 : 1
+
+  return (
+    <Text numberOfLines={numberOfLines}>
+      {text}
+    </Text>
   )
 }
 ```
 
 <!--
-We start state close to where it is used. This is exactly what React teaches us.
+I've seen this absolutely destroy performance. If any value in a context changes, it re-renders everything, even if it isn't used.
 
-The effect legitimately synchronizes with an external native system.
+For example, useWindowDimensions re-renders constantly while resizing a window, even if you don't use the window size.
 
-Progress changes, PlaybackArea renders, and nothing else does. Perfect.
+So you could split that out into one concern per provider.
 -->
 
 ---
 
-<div class="render-tree">
-  <div class="render-node quiet">MusicScreen</div>
-  <div class="render-children">
-    <div class="render-node quiet">LegendList</div>
-    <div class="render-node expected">PlaybackArea</div>
+```tsx
+function App() {
+  return (
+    <WidthProvider>
+      <HeightProvider>
+        <FontScaleProvider>
+          <ScaleProvider>
+            <ReplyProvider>
+              <AttachmentProvider>
+                <PhotoProvider>
+                  <UploadProvider>
+                    <MyActualApp />
+                  </UploadProvider>
+                </PhotoProvider>
+              </AttachmentProvider>
+            </ReplyProvider>
+          </ScaleProvider>
+        </FontScaleProvider>
+      </HeightProvider>
+    </WidthProvider>
+  )
+}
+```
+
+<!--
+But then you end up with these massive provider trees. And they still re-render too much anyway.
+-->
+
+---
+
+MEME: # Who cares?
+
+<!--
+But how much does this matter? How big of a deal is some extra renders? The React docs say to do this, so it must be fine.
+
+Right?
+-->
+
+---
+
+<img src="/media/legend-state.png" class="rounded-lg" />
+
+<!--
+Well, we need a good benchmark to know that.
+
+Legend State beats all other state libraries in popular benchmarks, but I wanted a more realistic way to test it.
+-->
+
+---
+
+# Benchmark
+
+<br />
+<div class="flex three-column-code gap-4">
+
+```tsx
+function App() {
+  const [time, setTime] = useState(0)
+
+  return (
+    <Window>
+      <PlaybackArea time={time} />
+        <Playlist />
+        <BottomToolbar />
+      </Window>
+    )
+}
+```
+
+```tsx
+function PlaybackArea() {
+  const [time, setTime] = useState(0)
+
+  return (
+    <View>
+      <PlaybackTime time={time} />
+      <TheRestOfThePlaybackArea />
+    </View>
+  )
+}
+```
+
+```tsx
+function ElapsedText() {
+  const [time, setTime] = useState(0)
+
+  return (
+    <Text>{time}</Text>
+  )
+}
+```
+
+<style>
+.three-column-code {
+    align-items: flex-start;
+
+    .slidev-code-wrapper {
+        width: 310px !important;
+    }
+
+    .slidev-code-wrapper::before {
+        display: block;
+        margin-bottom: 8px;
+        color: #9ca3af;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .slidev-code-wrapper:nth-of-type(1)::before {
+        content: "App root";
+    }
+
+    .slidev-code-wrapper:nth-of-type(2)::before {
+        content: "Playback area";
+    }
+
+    .slidev-code-wrapper:nth-of-type(3)::before {
+        content: "Leaf text";
+    }
+
+    code {
+        font-size: 12px !important;
+        line-height: 18px !important;
+    }
+}
+</style>
+
+</div>
+
+<!--
+I did a little benchmark based on a music app I'm making, which updates the timestamp twice a second based on state coming from a native module. In the first one it passes state down from the root. Or it owns the state in a medium size component in the middle of the tree. Or just a single text element leaf node updates itself.
+
+It's a small difference, right?
+-->
+
+---
+
+# CPU Usage
+
+<div class="flex gap-2 mt-10 text-left">
+  <div class="box-not-flashing flex-1 flex-col !items-start">
+    <div class="text-xl text-gray-400">App</div>
+    <div class="text-5xl font-bold mt-4">10%</div>
+  </div>
+  <div class="box-not-flashing flex-1 flex-col !items-start">
+    <div class="text-xl text-gray-400 whitespace-pre">PlaybackArea</div>
+    <div class="text-5xl font-bold mt-4">8%</div>
+  </div>
+  <div class="box-not-flashing flex-1 flex-col !items-start">
+    <div class="text-xl text-gray-400 whitespace-pre">ElapsedText</div>
+    <div class="text-5xl font-bold mt-4">1%</div>
   </div>
 </div>
 
-<div class="mt-10 flex justify-center gap-8 text-base">
-  <div><span class="legend-dot expected-dot"></span> Needed render</div>
-  <div><span class="legend-dot quiet-dot"></span> No render</div>
+<!--
+No, it's huge.
+
+Re-rendering at the root is 10 times slower.
+
+In my adventures consulting on optimizing apps and list performance I see this problem over and over. Huge trees of components re-render for no real reason. That makes apps feel slow.
+
+This is actually very easy to fix.
+-->
+
+---
+
+# Use a State Library
+
+<!--
+Use a state library. That's it.
+
+But I've worked with many companies who say the built-in state is fine, and they don't want to add a dependency.
+-->
+
+---
+
+<div class="mx-auto grid w-max grid-cols-[250px_max-content] gap-1 text-lg">
+  <div class="box-not-flashing-small">❌ Animated</div>
+  <div class="box-not-flashing-small">✅ Reanimated</div>
+  <div class="box-not-flashing-small">❌ StyleSheet</div>
+  <div class="box-not-flashing-small">✅ NativeWind / Uniwind</div>
+  <div class="box-not-flashing-small">❌ FlatList</div>
+  <div class="box-not-flashing-small">✅ LegendList</div>
+  <div class="box-not-flashing-small">❌ AsyncStorage</div>
+  <div class="box-not-flashing-small">✅ MMKV / SQLite</div>
+  <div class="box-not-flashing-small">❌ SafeAreaView</div>
+  <div class="box-not-flashing-small">✅ react-native-safe-area-context</div>
+  <div class="box-not-flashing-small">❌ Image</div>
+  <div class="box-not-flashing-small">✅ expo-image</div>
+  <div class="box-not-flashing-small">❌ TouchableOpacity</div>
+  <div class="box-not-flashing-small">✅ Design System</div>
 </div>
 
 <!--
-Green means the component needed to change its visible output.
+But you already use Reanimated instead of the builtin Animated because it's better.
 
-Progress updates the playback area. The screen and list stay quiet.
+You dropped raw StyleSheet for Unistyles or NativeWind or Uniwind
 
-This is the ideal update.
+If you still have FlatLists in your app, please talk to me.
+
+I hope you're not still using TouchableOpacity.
+
+So why are you clinging onto the built in state?
 -->
 
 ---
 
-# The list needs `activeTrackId`
-
-<div class="mt-12 text-left mx-auto w-[660px]">
-  <div class="render-node quiet">MusicScreen</div>
-  <div class="render-children">
-    <div class="render-node wanted">TrackList <span class="text-gray-400">needs activeTrackId</span></div>
-    <div class="render-node wanted">PlaybackArea <span class="text-gray-400">needs everything</span></div>
-  </div>
-</div>
+# Use a State Library
 
 <!--
-But now the list needs activeTrackId to show the progress ring on the active row.
+So seriously, please use a state library. They exist because they're better for performance, or they have a better developer experience, or they scale better.
 
-The state is needed by two siblings.
+Just about any popular state library will be a huge win over useState and useContext.
 
-What do the React docs tell us to do?
+But for the absolute best possible performance you want...
 -->
 
 ---
 
-# Lift state up
+# Fine-grained reactivity
 
-<!--
-Lift state up!
+<div class="flex two-column-code gap-4 pt-8">
 
-Move shared state to the closest common ancestor.
+```tsx
+function ChatMessage({ id }) {
+  // Every message re-renders
 
-So that's what we'll do.
--->
+  const replyId = useReplyId()
+  const isReply = id === replyId
 
----
-
-<div class="meme-placeholder">
-  <div class="placeholder-kicker">MEME PLACEHOLDER</div>
-  <div class="placeholder-title">Rafiki holding Simba over Pride Rock</div>
-  <div class="placeholder-detail">Label Simba “playbackState” and Rafiki “React docs”. Caption: “When one more component needs the value.”</div>
-</div>
-
-<!--
-We take our tiny little state and hold it up as high as possible for the whole tree to see.
-
-What could go wrong?
--->
-
----
+  return (
+    <View>
+      {isReply && <ReplyRow />}
+      <MessageContent />
+    </View>
+  )
+}
+```
 
 ````md magic-move
 ```tsx
-function PlaybackArea() {
-  const [playback, setPlayback] = useState(initialPlayback)
-  useEffect(() => NativePlayer.subscribe(setPlayback), [])
+function ChatMessage({ id }) {
+  // 1 message re-renders
 
-  return <PlaybackControls playback={playback} />
+  const isReply = useValue(() => id === replyId$.get())
+
+  return (
+    <View>
+      {isReply && <ReplyRow />}
+      <MessageContent />
+    </View>
+  )
 }
 ```
 ```tsx
-function MusicScreen() {
-  const [playback, setPlayback] = useState(initialPlayback)
-  useEffect(() => NativePlayer.subscribe(setPlayback), [])
+function ChatMessage({ id }) {
+  // No re-renders
 
   return (
-    <>
-      <TrackList playback={playback} />
-      <PlaybackArea playback={playback} />
-    </>
+    <View>
+      <Memo>
+        {() => id === replyId$.get() && <ReplyRow />}
+      </Memo>
+      <MessageContent />
+    </View>
   )
 }
 ```
 ````
 
-<!--
-We move both the state and native subscription into MusicScreen.
-
-Now both children can access it. The ownership problem is solved.
-
-But every progress callback now calls setState at the screen.
--->
-
----
-
-<div class="render-tree wide-tree">
-  <div class="render-node waste">MusicScreen</div>
-  <div class="render-children">
-    <div>
-      <div class="render-node waste">LegendList</div>
-      <div class="render-row-grid">
-        <div class="render-node waste small">TrackRow</div>
-        <div class="render-node waste small">TrackRow</div>
-        <div class="render-node expected small">Active TrackRow</div>
-        <div class="render-node waste small">TrackRow</div>
-      </div>
-    </div>
-    <div class="render-node expected">PlaybackArea</div>
-  </div>
 </div>
 
-<div class="mt-8 flex justify-center gap-8 text-base">
-  <div><span class="legend-dot expected-dot"></span> Visible change</div>
-  <div><span class="legend-dot waste-dot"></span> Same output</div>
-</div>
+<style>
+.two-column-code {
+    align-items: flex-start;
 
-<!--
-Progress changes four times a second.
-
-MusicScreen renders. The list receives a new playback object. The mounted rows are reconsidered. The playback area renders.
-
-Only the active indicator and playback controls changed. Everything red did work to produce the same output it already had.
--->
-
----
-
-<div class="media-placeholder aspect-video">
-  <div class="placeholder-kicker">VIDEO PLACEHOLDER</div>
-  <div class="placeholder-title">Render-flashing app with lifted state</div>
-  <div class="placeholder-detail">Show MusicScreen, LegendList, and mounted TrackRows flashing while playback advances.</div>
-</div>
-
-<!--
-This is where we show it in the real app.
-
-The circle is moving, but the whole screen is having a tiny panic attack four times a second.
--->
-
----
-
-# Moving state up
-
-# moves the render boundary up
-
-<!--
-Moving state up also moved the render boundary up.
-
-Where a useState lives is where its updates begin.
-
-Sharing a value and subscribing to it became the same architectural decision.
--->
-
----
-
-# Let's fix it
-
-<div class="mx-auto mt-10 grid w-max grid-cols-2 gap-4 text-xl text-left">
-  <div class="box-not-flashing-small">Primitive props</div>
-  <div class="box-not-flashing-small">React.memo</div>
-  <div class="box-not-flashing-small">Stable renderItem</div>
-  <div class="box-not-flashing-small">Stable callbacks</div>
-  <div class="box-not-flashing-small">Stable track objects</div>
-  <div class="box-not-flashing-small">Careful extraData</div>
-</div>
-
-<!--
-We know how to optimize React.
-
-Pass narrow primitives. Memoize TrackList and TrackRow. Stabilize renderItem and callbacks. Preserve track identities. Be careful with extraData.
-
-Every one of these is valid. And every future change has to preserve all of them.
--->
-
----
-
-# Context!
-
-```tsx
-<PlaybackContext value={playback}>
-  <TrackList />
-  <PlaybackArea />
-</PlaybackContext>
-```
-
-<!--
-As playback information spreads through the app, prop threading gets annoying.
-
-So we put the cohesive playback snapshot into Context.
-
-This makes access much cleaner.
--->
-
----
-
-# Context solves access to state
-
-# not subscription granularity
-
-```tsx
-function TrackRow({ track }) {
-  const playback = use(PlaybackContext)
-  const isActive = playback.activeTrackId === track.id
-
-  // Reading one field still subscribed to the whole Context
-}
-```
-
-<!--
-But reading one field is not subscribing to one field.
-
-Every row reading PlaybackContext receives the new Context object on every progress update. React.memo does not block Context updates.
-
-Context solved access. It did not solve subscription granularity.
--->
-
----
-
-# Make Context performant
-
-<div class="architecture-compare mt-10">
-  <div class="architecture-column">
-    <div class="architecture-label">Domain</div>
-    <div class="cohesive-object">
-      <div>activeTrackId</div>
-      <div>progress</div>
-      <div>duration</div>
-    </div>
-  </div>
-  <div class="text-5xl text-gray-500">→</div>
-  <div class="architecture-column">
-    <div class="architecture-label">React optimization</div>
-    <div class="split-object active">ActiveTrackContext</div>
-    <div class="split-object progress">ProgressContext</div>
-    <div class="split-object duration">DurationContext</div>
-    <div class="text-sm text-gray-400 mt-3">+ matching component boundaries</div>
-  </div>
-</div>
-
-<!--
-To make Context performant, we split the one value into three Contexts.
-
-Then we split PlaybackArea into TrackDetails, Slider, CurrentTime, and TotalDuration so each component reads only the Contexts it needs.
-
-Then we move the state and effect again into a dedicated provider so MusicScreen itself stays stable.
--->
-
----
-
-# Conditional `use`
-
-```tsx
-function TrackRow({ track }) {
-  const activeTrackId = use(ActiveTrackContext)
-  const isActive = activeTrackId === track.id
-
-  let position = null
-  if (isActive) {
-    position = {
-      progress: use(ProgressContext),
-      duration: use(DurationContext),
+    .slidev-code-wrapper::before {
+        display: block;
+        margin-bottom: 8px;
+        color: #9ca3af;
+        font-size: 16px;
+        font-weight: 500;
     }
+
+    .slidev-code-wrapper:nth-of-type(1) {
+        width: 400px !important;
+    }
+
+    .slidev-code-wrapper:nth-of-type(2) {
+        width: 520px !important;
+    }
+
+    .slidev-code-wrapper:nth-of-type(1)::before {
+        content: "Lame";
+    }
+
+    .slidev-code-wrapper:nth-of-type(2)::before {
+        content: "Fine-grained";
+    }
+
+    code {
+        font-size: 12px !important;
+        line-height: 18px !important;
+    }
+}
+</style>
+
+<!--
+Fine grained reactivity
+
+That means re-renders are targeted at the smallest leaf nodes to keep re-renders small and rare.
+
+In the lame way on the left, every message re-renders when the replyId changes. With fine-grained selectors only one message re-renders.
+
+But even this isn't ideal, the whole ChatMessage shouldn't need to re-render, it's only changing whether one component displays or not.
+
+2. So we can use this LegendState feature, the Memo component, which runs a function in a tiny wrapper component. So now only the ReplyRow toggles, without re-rendering the whole message component.
+-->
+
+---
+
+Meme? Another state library?
+
+<!--
+Before I even started on LegendList, Legend State was my first love. To try to get the best performance in my app Legend, I was trying to optimize re-renders, and found that it's caused directly by state. So I tried to figure out how to build the fastest possible state system.
+
+I blacked out for a week. I have no memory of that week but git shows that I tried 18 different approaches. I tried dozens of state libraries, studied their source, and ran a bunch of benchmarks, trying to find the fastest possible solution with the best developer experience.
+
+And this was before AI, so this was real typing code.
+-->
+
+---
+clicks: 1
+---
+
+<div class="flex flex-col gap-6 pt-8">
+    <div class="text-4xl">
+        render() => render UI
+    </div>
+    <div class="text-4xl">
+        <span
+            class="transition-opacity duration-500"
+            :class="$clicks >= 1 ? 'opacity-25' : 'opacity-100'"
+        >render() => </span>
+        <span>effects</span>
+        <span
+            class="transition-opacity duration-500"
+            :class="$clicks >= 1 ? 'opacity-100' : 'opacity-0'"
+        > re-run themselves</span>
+    </div>
+    <div class="text-4xl">
+        <span
+            class="transition-opacity duration-500"
+            :class="$clicks >= 1 ? 'opacity-25' : 'opacity-100'"
+        >render() => </span>
+        <span>hooks re-run</span>
+        <span
+            class="transition-opacity duration-500"
+            :class="$clicks >= 1 ? 'opacity-100' : 'opacity-0'"
+        > themselves</span>
+    </div>
+    <div class="text-4xl">
+        <span
+            class="transition-opacity duration-500"
+            :class="$clicks >= 1 ? 'opacity-25' : 'opacity-100'"
+        >render() => callbacks update</span>
+    </div>
+    <div class="text-4xl">
+        <span
+            class="transition-opacity duration-500"
+            :class="$clicks >= 1 ? 'opacity-25' : 'opacity-100'"
+        >render() => pass down state</span>
+    </div>
+</div>
+
+<!--
+What I ended up with was a fundamental architecture change. React's model depends on render to run effects, update dependency arrays, re-run hooks, and pass down state.
+
+So if we're going to reduce renders we need to change the whole model.
+
+Currently, render coordinates everything.
+
+2. Instead, let's let consumers update themselves as needed.
+-->
+
+---
+
+# Stable state objects
+
+<br />
+
+```tsx
+// Global
+const replyId$ = observable('')
+const replyId = replyId$.get()
+
+function Component() {
+  // Local
+  const replyId$ = useObservable('')
+  const replyId = useValue(replyId$)
+}
+```
+
+<!--
+To do that we just need stable state objects that we can subscribe to.
+
+Some people call these signals. I call them observables.
+
+The key thing here is that useObservable does not subscribe to the state, it just creates it. Any other component can useValue it to subscribe to it.
+-->
+
+---
+
+# Primitives or stores
+
+```tsx
+const store$ = observable({
+  settings: {
+    theme: 'light',
+    fontSize: 14
+  },
+  messages: [],
+  users: new Map<string, User>()
+})
+
+store$.settings.theme.get()
+store$.users.get('userId')
+store$.messages[4].messageData.userName.get()
+```
+
+<!--
+Observables can be primitives or they can be large objects or stores. It's infinitely nested, so you can access any value anywhere inside any object.
+-->
+
+---
+
+# Observe
+
+```tsx
+const store$ = observable({
+  settings: {
+    theme: 'light',
   }
+})
 
-  return <TrackContent {...{ track, isActive, position }} />
+observe(() => {
+  const isLight = store$.settings.theme.get() === 'light'
+})
+
+function Component() {
+  const isLight = useValue(() => store$.settings.theme.get() === 'light')
 }
 ```
 
+<style>
+.slidev-code-wrapper {
+    width: 720px !important;
+}
+</style>
+
 <!--
-Modern React's use API lets us consume Context conditionally.
-
-Inactive rows read activeTrackId but do not subscribe to progress and duration. Only the active row receives position updates.
-
-This is valid. It works. React can absolutely be made fast.
+Observing contexts auto track dependencies, so just getting a value is all you need to do to set up subscription.
 -->
 
 ---
 
-# Look what we had to do
-
-<div class="mx-auto mt-8 grid grid-cols-2 gap-x-12 gap-y-2 text-left text-[21px] w-[820px]">
-  <div>Lift state and its native effect</div>
-  <div>Design narrow primitive props</div>
-  <div>Add memo boundaries</div>
-  <div>Stabilize callbacks and objects</div>
-  <div>Move state into a provider</div>
-  <div>Split one value into 3 Contexts</div>
-  <div>Split the UI into consumers</div>
-  <div>Conditionally consume Context</div>
-</div>
-
-<!--
-We started with three values and one component.
-
-To make it performant, we lifted the state and effect, designed narrow props, memoized boundaries, stabilized identities, moved ownership again, split one domain value into three Contexts, split the UI, and conditionally consumed Context.
-
-We can keep doing this. Or we can use a state model designed for subscriptions.
--->
-
----
-
-# We need an external store
-
-<div class="mt-12 text-3xl leading-relaxed">
-  Shared ownership
-  <span class="text-gray-500 mx-3">+</span>
-  local subscriptions
-  <span class="text-gray-500 mx-3">+</span>
-  derived values
-</div>
-
-<!--
-The requirement is simple.
-
-State ownership should live outside the React tree. Components should subscribe locally to the smallest leaf or derived answer they display.
-
-So we need an external state library.
-
-But that raises the question everyone already using one is thinking.
--->
-
----
-
-# So any state library?
-
-<!--
-Does any state library solve this equally well?
-
-I could have shown a feature matrix and put green checks in the Legend State column.
-
-That seemed slightly suspicious.
--->
-
----
-
-<div class="meme-placeholder">
-  <div class="placeholder-kicker">MEME PLACEHOLDER</div>
-  <div class="placeholder-title">Obama awarding himself a medal</div>
-  <div class="placeholder-detail">Caption: “Library author benchmarks state libraries. His library wins.”</div>
-</div>
-
-<!--
-Apparently the state library I wrote is the best state library.
-
-Source: me.
-
-So instead of asking you to trust that, I built the same app six times.
--->
-
----
-
-# I built it six times
-
-<div class="implementation-grid mt-10">
-  <div class="implementation-card react">React</div>
-  <div class="implementation-card redux">Redux</div>
-  <div class="implementation-card zustand">Zustand</div>
-  <div class="implementation-card jotai">Jotai</div>
-  <div class="implementation-card mobx">MobX</div>
-  <div class="implementation-card legend">Legend State</div>
-</div>
-
-<!--
-React with no library. Redux Toolkit. Zustand. Jotai. MobX. And Legend State.
-
-They share the presentational components, LegendList setup, track data, native-player simulator, device, and update sequence.
-
-Only the state architecture changes.
--->
-
----
-
-# Same app. Same events. Same device.
-
-<div class="benchmark-rules mt-10">
-  <div>Release build</div>
-  <div>Current stable versions</div>
-  <div>Natural implementation</div>
-  <div>Fully optimized implementation</div>
-  <div>Public source</div>
-  <div>Community review</div>
-</div>
-
-<!--
-The benchmark has to be fair.
-
-Same release build, same physical device, and current stable library versions.
-
-Each library gets two implementations: the natural version someone would write after reading its docs, and the fully optimized version after profiling.
-
-The source and raw results will be public. If I implemented your favorite library incorrectly, please fix it.
--->
-
----
-
-# Three identical updates
-
-<div class="update-sequence mt-10">
-  <div class="update-card">
-    <div class="update-number">1</div>
-    <div class="font-bold">Progress</div>
-    <div class="text-gray-400">Only active playback UI</div>
-  </div>
-  <div class="update-card">
-    <div class="update-number">2</div>
-    <div class="font-bold">Change track</div>
-    <div class="text-gray-400">Old row + new row</div>
-  </div>
-  <div class="update-card">
-    <div class="update-number">3</div>
-    <div class="font-bold">Replace snapshot</div>
-    <div class="text-gray-400">One atomic update</div>
-  </div>
-</div>
-
-<!--
-Every implementation receives the same deterministic native events.
-
-First, progress changes. Only the playback controls and active indicator should update.
-
-Second, the active track changes. Only the old and new rows should change.
-
-Third, the complete native snapshot is replaced, to test batching and atomic updates.
--->
-
----
-
-# State libraries solve different layers
-
-<div class="state-architecture-groups mt-10">
-  <div class="architecture-group">
-    <div class="architecture-group-title">Selector stores</div>
-    <div class="architecture-libraries">Redux · Zustand</div>
-    <div class="architecture-caption">Compare selected output</div>
-  </div>
-  <div class="architecture-group">
-    <div class="architecture-group-title">Atom stores</div>
-    <div class="architecture-libraries">Jotai</div>
-    <div class="architecture-caption">Compose dependency atoms</div>
-  </div>
-  <div class="architecture-group">
-    <div class="architecture-group-title">Tracked observables</div>
-    <div class="architecture-libraries">MobX · Legend State</div>
-    <div class="architecture-caption">Track values actually read</div>
-  </div>
-</div>
-
-<!--
-We do not need six separate code tours. They fall into three broad architectures.
-
-Redux and Zustand are selector stores. Jotai models state as primitive and derived atoms. MobX and Legend State automatically track observable reads.
-
-They can all reduce React renders. But they do not necessarily avoid the same amount of work or require the same architecture.
--->
-
----
-
-# Selector stores
-
-<div class="flex code-cols gap-5 mt-8">
+# Set observables
 
 ```tsx
-const activeProgress = useAppSelector((state) =>
-  state.playback.activeTrackId === track.id
-    ? state.playback.progress
-    : null
-)
-```
+const store$ = observable({
+  settings: {
+    theme: 'light',
+  }
+})
 
-```tsx
-const activeProgress = usePlaybackStore((state) =>
-  state.activeTrackId === track.id
-    ? state.progress
-    : null
-)
-```
+store$.settings.theme.set('dark')
 
-</div>
+store$.settings.assign({ theme: 'dark' })
 
-<div class="mt-5 grid grid-cols-2 gap-5 text-gray-400">
-  <div>Redux: <code>useAppSelector</code></div>
-  <div>Zustand: bound store hook</div>
-</div>
-
-<div class="work-path mt-6">
-  <div class="work-node">Store update</div>
-  <div class="work-arrow">→</div>
-  <div class="work-node many">Selectors checked</div>
-  <div class="work-arrow">→</div>
-  <div class="work-node one">Changed components render</div>
-</div>
-
-<!--
-Selector stores are a huge improvement over Context.
-
-These are the normal APIs users of each library expect: a typed React-Redux selector hook and a bound Zustand store hook.
-
-Every row selects a primitive derived output, and React renders only when that output changes.
-
-The question for the benchmark is what happens before React: how many store subscribers wake up, how many selectors execute, and how much equality work happens for every native update?
--->
-
----
-
-# Atom stores
-
-```tsx
-const activeTrackIdAtom = atom<string | undefined>(undefined)
-const progressAtom = atom(0)
-
-const activeProgressAtom = atomFamily((trackId: string) =>
-  atom((get) =>
-    get(activeTrackIdAtom) === trackId
-      ? get(progressAtom)
-      : null
-  )
-)
-
-const activeProgress = useAtomValue(
-  activeProgressAtom(track.id)
+store$.settings.theme.set((prev) =>
+  prev === 'light' ? 'dark' : 'light
 )
 ```
 
 <!--
-Atom stores can make the dependency graph precise.
-
-We create primitive atoms, then a family of derived atoms for the answers components need. The current Jotai guidance imports atomFamily from the jotai-family package.
-
-The row reads its derived atom with useAtomValue, which is the normal read-only React API.
-
-The performance can be excellent. The design question is how much reactive structure we create around the original domain value to get there.
+Setting a value is easy, you can set or assign any value. It even has that familiar callback version like React.
 -->
 
 ---
 
-# Automatically tracked state
+# No deps
 
-<div class="flex code-cols gap-5 mt-8">
 
 ```tsx
-const TrackRow = observer(({ track }) => {
-  const activeProgress =
-    playback.activeTrackId === track.id
-    ? playback.progress
-    : null
+const onPressReply = useCallback(() => {
+    sendReply(replyToId$.get())
+}, [])
 
-  return <Progress value={activeProgress} />
+useObserveEffect(() => {
+    if (isOpen$.get()) {
+        dialogRef.current?.showModal()
+    } else {
+        dialogRef.current?.close()
+    }
 })
 ```
 
-```tsx
-function TrackRow({ track }) {
-  const activeProgress = useValue(() =>
-    playback$.activeTrackId.get() === track.id
-      ? playback$.progress.get()
-      : null
-  )
+<!--
+Then callbacks can be stable because they don't depend on any local state. Effects can re-run automatically whenever an observable changes. We don't need to coordinate it through render.
+-->
 
-  return <Progress value={activeProgress} />
+---
+
+## Two-way bind to forms
+
+```tsx
+function App() {
+    // Never re-renders
+    const state$ = useObservable({ user: { name: '', email: '' }})
+
+    const onPressSubmit = () => {
+        const user = state$.user.get()
+        submit(user)
+    }
+
+    return (
+        <Form>
+            <Label>Name</Label>
+            <$TextInput $value={user$.name} />
+            <Label>Email</Label>
+            <$TextInput $value={user$.email} />
+            <Button onPress={onPressSubmit}>
+        </Form>
+    );
 }
 ```
 
-</div>
-
-<div class="mt-6 grid grid-cols-2 gap-5 text-gray-400">
-  <div>MobX: component observation</div>
-  <div>Legend: value observation</div>
-</div>
-
 <!--
-MobX is the closest comparison. It already proves automatic fine-grained tracking is an excellent architecture.
+Legend State has components that can two-way bind to observables without going through a render. This can be a big speed improvement for forms, which don't have to set state anywhere or re-render.
 
-MobX typically observes a component and tracks observable properties read during render.
+Just bind inputs to observables and they automatically update while typing.
 
-Legend State makes the tracking boundary an explicit value. It tracks the selector's derived result and its dynamic dependencies without requiring the whole component to become an observer.
-
-Now let's see what those differences actually cost.
+This has great performance because the whole form never re-renders, just the inputs themselves. But it's also just less cumbersome and less code.
 -->
 
 ---
 
-<div class="media-placeholder aspect-video">
-  <div class="placeholder-kicker">VIDEO PLACEHOLDER</div>
-  <div class="placeholder-title">Six-way render-flashing comparison</div>
-  <div class="placeholder-detail">A 2×3 grid of identical apps receiving the same progress and track-change events.</div>
-</div>
-
-<!--
-This should be the big visual payoff.
-
-All six apps receive the same update in lockstep. Render borders and counters show which components actually render.
-
-The recording should show both the natural and optimized variants, but keep the onstage explanation focused on the differences people can see immediately.
--->
-
----
-
-# How much work happened?
-
-<div class="comparison-results mt-8">
-  <div class="comparison-row header">
-    <div>State</div>
-    <div>React renders</div>
-    <div>Selectors / reactions</div>
-    <div>Update time</div>
-  </div>
-  <div class="comparison-row"><div>React</div><div>TBD</div><div>TBD</div><div>TBD</div></div>
-  <div class="comparison-row"><div>Redux</div><div>TBD</div><div>TBD</div><div>TBD</div></div>
-  <div class="comparison-row"><div>Zustand</div><div>TBD</div><div>TBD</div><div>TBD</div></div>
-  <div class="comparison-row"><div>Jotai</div><div>TBD</div><div>TBD</div><div>TBD</div></div>
-  <div class="comparison-row"><div>MobX</div><div>TBD</div><div>TBD</div><div>TBD</div></div>
-  <div class="comparison-row legend"><div>Legend State</div><div>TBD</div><div>TBD</div><div>TBD</div></div>
-</div>
-
-<!--
-Replace every TBD with measured results from the reproducible app.
-
-Render count explains visible React work. Selector and reaction executions expose work that render counts hide. Update time measures the complete state path before React commit.
-
-If another library wins a metric, show it. The comparison becomes more credible when it is not a wall of Legend State victories.
--->
-
----
-
-# Fast by default?
-
-<div class="comparison-results compact mt-8">
-  <div class="comparison-row header">
-    <div>State</div>
-    <div>Natural</div>
-    <div>Optimized</div>
-    <div>Code added</div>
-  </div>
-  <div class="comparison-row"><div>React</div><div>TBD</div><div>TBD</div><div>TBD</div></div>
-  <div class="comparison-row"><div>Redux</div><div>TBD</div><div>TBD</div><div>TBD</div></div>
-  <div class="comparison-row"><div>Zustand</div><div>TBD</div><div>TBD</div><div>TBD</div></div>
-  <div class="comparison-row"><div>Jotai</div><div>TBD</div><div>TBD</div><div>TBD</div></div>
-  <div class="comparison-row"><div>MobX</div><div>TBD</div><div>TBD</div><div>TBD</div></div>
-  <div class="comparison-row legend"><div>Legend State</div><div>TBD</div><div>TBD</div><div>TBD</div></div>
-</div>
-
-<!--
-Performance ceiling is only half the story.
-
-Compare the first natural implementation with the fully optimized version. Then show how much state-specific code and how many concepts were added to reach that ceiling.
-
-That is what Fast by Default means: both the result and the path to it.
--->
-
----
-
-# Performance vs. architecture
-
-<div class="media-placeholder metric-placeholder mt-8">
-  <div class="placeholder-kicker">CHART PLACEHOLDER</div>
-  <div class="placeholder-title">Scatter plot: update time × state-specific code</div>
-  <div class="placeholder-detail">Place each natural and optimized implementation from measured results. Desired position: fast and simple.</div>
-</div>
-
-<!--
-This should be the summary visualization.
-
-The vertical axis is update time or CPU. The horizontal axis is state-specific code and architecture required.
-
-The ideal library is at the bottom-left: fast without requiring the application to be reorganized around the library.
--->
-
----
-
-# The state library I want
-
-<div class="flex flex-col gap-5 text-2xl text-left w-[760px] mx-auto mt-8">
-  <div><span class="text-blue-300 font-bold">1.</span> State follows the domain</div>
-  <div><span class="text-blue-300 font-bold">2.</span> Subscribe to any leaf</div>
-  <div><span class="text-blue-300 font-bold">3.</span> Subscribe to any derived answer</div>
-  <div><span class="text-blue-300 font-bold">4.</span> Track dynamic dependencies</div>
-  <div><span class="text-blue-300 font-bold">5.</span> Persist and sync the same state</div>
-</div>
-
-<!--
-So what do I actually want from a state library?
-
-State should follow the domain, not the component tree. Any leaf or derived answer should become a subscription. Dependencies should change dynamically based on what was actually read. And the same state should extend into effects, persistence, and synchronization.
-
-That is the design target for Legend State.
--->
-
----
-
-# Legend State
-
-<div class="text-3xl mt-8 text-gray-300">Fine-grained state for React</div>
-
-<!--
-This is why I built Legend State.
-
-Not because I wanted another spelling for setState. I wanted state ownership and subscription to be separate decisions, without forcing the domain into an atom graph or the component into an observer wrapper.
-
-And I wanted the fast path to be the obvious path.
--->
-
----
-
-# Keep the cohesive value
+## Two-way bind to device APIs
 
 ```tsx
-const playback$ = observable({
-  activeTrackId: undefined as string | undefined,
-  progress: 0,
-  duration: 0,
-})
+const brightness$ = observable(
+  synced({
+    get: () => Brightness.getBrightnessAsync(),
+    set: ({ value }) => Brightness.setBrightnessAsync(value),
+    subscribe: ({ update }) => {
+      Brightness.addBrightnessListener(({ brightness }) => {
+        update(brightness)
+      })
+    },
+  }),
+);
 
-NativePlayer.subscribe((state) => playback$.set(state))
-```
-
-<!--
-We return to the original domain model.
-
-One native player. One playback snapshot. One cohesive observable.
-
-The native callback updates external state instead of forcing every event through parent React state.
--->
-
----
-
-# Subscribe to any leaf
-
-<div class="flex code-cols gap-5 mt-8">
-
-```tsx
-function CurrentTime() {
-  const progress = useValue(
-    playback$.progress,
-  )
-
-  return <Text>{formatTime(progress)}</Text>
+function BrightnessSettings() {
+  // Never re-renders
+  return (
+    <Slider $value={brightness$} />
+  );
 }
 ```
 
-```tsx
-function TotalDuration() {
-  const duration = useValue(
-    playback$.duration,
-  )
-
-  return <Text>{formatTime(duration)}</Text>
-}
-```
-
-</div>
-
 <!--
-CurrentTime subscribes to progress. TotalDuration subscribes to duration.
-
-They can live wherever the UI structure makes sense. We do not need providers and matching component topology just to create those boundaries.
+We can two-way bind to any external data too. So an observable defines its link to an external API and then your components don't need to know anything about it. Just bind your UI to the brightness and it will sync itself.
 -->
+
 
 ---
 
-# Subscribe to the answer
+# Render Once
 
 ```tsx
-function TrackRow({ track }) {
-  const activeProgress = useValue(() =>
-    playback$.activeTrackId.get() === track.id
-      ? playback$.progress.get()
-      : null
-  )
+function ThisComponentRendersOnce() {
+  const text$ = useObservable('')
 
   return (
-    <TrackContent
-      track={track}
-      activeProgress={activeProgress}
-    />
+    <>
+      <$TextInput $value={text$} />
+
+      <Text>
+        <Memo>{() => text$.get()}</Memo>
+      </Text>
+
+      <$Text
+          $style={() => ({ backgroundColor: text$.get() ? 'black' : 'red' })}
+      >
+        {() => text$.get()}
+      </$Text>
+    </>
   )
 }
 ```
 
+<style>
+.slidev-code-wrapper {
+    width: 720px !important;
+}
+</style>
+
 <!--
-The row subscribes to the answer it actually needs.
+And so if we change the model to not rely on render, we can make components that only render once.
 
-Every row tracks whether it is active. Only the active row reads progress, so only that row subscribes to progress updates.
+So Legend State has components that can two-way bind to observables without going through a render. We can Memo to extract a re-render to a tiny component that just returns a string.
 
-When activeTrackId changes, the old and new selected results change. Every other row still resolves to null, so React does not render them.
+We can have reactive props that update themselves.
+
+The component never has to re-render.
 -->
 
 ---
 
-# Notify the value that changed
+MEME: # Who cares?
 
-<div class="node-notification mt-12">
-  <div class="node-object">
-    <div class="node-row quiet">activeTrackId</div>
-    <div class="node-row active">progress <span>● listener</span></div>
-    <div class="node-row quiet">duration</div>
-  </div>
-  <div class="work-arrow">→</div>
-  <div class="render-node expected">Active progress UI</div>
+<!--
+This is cool and all, but there's so many state libraries out there. And how do you quantify fast state?
+
+But it's not about the speed of the state, it's about faster architecture.
+
+So I had AI make a benchmark of a fake music app with regular React state and a bunch of popular state libraries.
+-->
+
+---
+
+<img src="/media/music-benchmark.png" class="rounded-lg" />
+
+<!--
+You can tell it's made by AI because it looks like AI slop. But it served its purpose.
+-->
+
+---
+
+TABLE OF TIMES
+
+<!--
+Using fine-grained reactivity, Legend State re-renders only what actually changed, at the tiniest leaf node rather than large components, and the engine is just really optimized. So it uses significantly less CPU than other state libraries, and a ton less than regular React state.
+
+TODO: Also LOC?
+
+So it's really fast. But that's only one of the goals.
+-->
+
+---
+
+# Cause => Render => Effect
+
+<div class="flex items-center gap-4 text-2xl">
+    <div class="box-not-flashing">state change</div>
+    =>
+    <div class="box-not-flashing">render</div>
+    =>
+    <div class="box-not-flashing">effects</div>
+</div>
+
+<div class="flex items-center gap-4 opacity-0 text-2xl">
+    <div class="box-not-flashing">state change</div>
+    =>
+    <div class="box-not-flashing">effects</div>
 </div>
 
 <!--
-This is the architectural performance advantage.
+It's also easier to reason about.
 
-Legend State keeps listeners at nodes within the observable tree. A progress write notifies progress listeners rather than broadcasting the whole store.
+Normally in React the cause effect relationship is not clear. You change some state and then some time later the render happens and some time later the render commits and runs the effects.
 
-It creates path metadata lazily, does not modify the underlying data, and tracks only values read by each useValue computation.
-
-That is why it can do less work before React as well as inside React.
+Coordinating everything through render is really confusing.
 -->
 
 ---
 
-# Prove it
+# Cause => Effect
 
-<div class="media-placeholder metric-placeholder mt-8">
-  <div class="placeholder-kicker">BENCHMARK PLACEHOLDER</div>
-  <div class="placeholder-title">Current versions · source · raw results · QR code</div>
-  <div class="placeholder-detail">Show the most relevant measured win and link to the complete reproducible repository.</div>
+<div class="flex items-center gap-4 text-2xl">
+    <div class="box-not-flashing">state change</div>
+    =>
+    <div class="box-not-flashing">render</div>
+</div>
+
+<div class="flex items-center gap-4 text-2xl">
+    <div class="box-not-flashing">state change</div>
+    =>
+    <div class="box-not-flashing">effects</div>
 </div>
 
 <!--
-Put the strongest honest result here, with a QR code to every implementation and the raw measurements.
-
-The talk should not ask people to trust a chart made by the winning library author. Let them inspect it, run it, and improve competing implementations.
-
-If the measurements disagree with the thesis, we change the thesis—not the measurements.
+So instead we just run the effects when state changes. Don't need to go through the render.
 -->
 
 ---
 
-# Rendering is only the beginning
+<div class="flex flex-col gap-6 pt-8">
+    <div class="text-4xl">
+        UI &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = &nbsp;fn(props, state)
+    </div>
+    <div class="text-4xl">
+        effects &nbsp;= &nbsp;fn(props, state)
+    </div>
+    <div class="text-4xl">
+        hooks &nbsp;&nbsp;= &nbsp;fn(props, state)
+    </div>
+</div>
+
+<!--
+Everything is just a function of state. And it feels a lot easier to understand.
+-->
+
+---
+
+# Remove hooks
+
+<div class="mx-auto grid w-max grid-cols-[250px_max-content] gap-1 text-lg pt-8">
+  <div class="box-not-flashing-small">❌ &nbsp;&nbsp;useState</div>
+  <div class="box-not-flashing-small">✅ &nbsp;&nbsp;useObservable</div>
+  <div class="box-not-flashing-small">❌ &nbsp;&nbsp;useEffect</div>
+  <div class="box-not-flashing-small">✅ &nbsp;&nbsp;useObserveEffect</div>
+  <div class="box-not-flashing-small">❌ &nbsp;&nbsp;deps arrays</div>
+  <div class="box-not-flashing-small">✅ &nbsp;&nbsp;[]</div>
+</div>
+
+<!--
+We can remove the confusing hooks. We've replaced useState with useObservable. so now we don't need useEffect, useObserveEffect can observe them without a render. And most importantly, we remove the deps arrays so we don't make mistakes and so that callbacks are stable.
+-->
+
+---
+
+# onChange
 
 ```tsx
-syncObservable(playback$, {
-  persist: {
-    name: 'playback',
-    retrySync: true,
+const user$ = observable({ name: 'Annyong' });
+
+user$.onChange(({ value, changes }) => {
+    changes.forEach((change) => {
+        const { path, valueAtPath, prevAtPath } = change;
+        // ...
+    });
+});
+```
+
+<!--
+But that was only the second of the three goals of Legend State. And that comes from an interesting property of having deeply nested changes.
+
+onChange gets more information than just that it changed. We know the path of the child within the hierarchy and the details of that change.
+
+So it can notify only the nodes that actually changed with the exact details of the change. And we can use that to setup automatic persistence.
+-->
+
+---
+
+# Persistence
+
+```tsx
+const store$ = observable({
+  settings: {
+    theme: 'light',
+    fontSize: 14
   },
+  messages: [],
+  users: new Map<string, User>()
+})
+
+syncObservable(store$, {
+    persist: {
+        name: "store",
+        plugin: ObservablePersistMMKV
+    },
 })
 ```
 
-<div class="mt-8 text-2xl text-gray-300">Render · Persist · Offline · Sync</div>
-
 <!--
-Most state libraries stop once React renders correctly.
+First we can track changes in the observable and save to persistence whenever anything changes. That's easy.
 
-Production state also has to survive a restart, work offline, and often synchronize remotely.
-
-Legend State uses the same observable graph for local persistence, optimistic changes, retrying pending writes after restart, and remote sync. The UI still just reads and writes the same state.
+But what's really cool is that it knows exactly what child changed and how. So we can build a full sync engine.
 -->
 
 ---
 
-# LegendList solves half the problem
+# Sync engine
 
-<div class="mt-12 grid grid-cols-2 gap-10 w-[850px] mx-auto">
-  <div class="choice-card">
-    <div class="text-2xl font-bold">Virtualization</div>
-    <div class="text-gray-300 mt-5">How many rows exist?</div>
-    <div class="text-blue-300 mt-5">LegendList</div>
-  </div>
-  <div class="choice-card">
-    <div class="text-2xl font-bold">Invalidation</div>
-    <div class="text-gray-300 mt-5">Which rows update?</div>
-    <div class="text-green-300 mt-5">Legend State</div>
-  </div>
+````md magic-move
+```tsx
+const profile$ = observable(syncedCrud({
+    get: getProfile,
+    create: createProfile,
+    update: updateProfile,
+    delete: deleteProfile,
+}))
+
+profile$.get() // Triggers sync
+
+profile$.name.set('Annyong') // Saves to server
+```
+```tsx
+const profile$ = observable(syncedCrud({
+    get: getProfile,
+    create: createProfile,
+    update: updateProfile,
+    delete: deleteProfile,
+    persist: {
+        plugin: ObservablePersistMMKV, // Set the persistence plugin
+        name: 'profile', // Set the name of this object in persistence
+        retrySync: true, // Persist pending changes to retry
+    },
+    retry: {
+        infinite: true, // Keep retrying until it saves
+    },
+    changesSince: 'last-sync', // Sync only diffs
+    fieldUpdatedAt: 'updatedAt' // Required for syncing only diffs
+}))
+```
+````
+
+<style>
+.slidev-code-wrapper {
+    width: 720px !important;
+}
+</style>
+
+<!--
+We define in the state how it should sync itself.
+
+We don't have to set up any queries or mutations, or optimistic updates. We just get the value and it downloads, and set it and it saves itself.
+
+2. And even cooler, it can cache saved changes offline and it will sync them whenever it can. It can do partial syncs if you have an updated timestamp to save on bandwidth.
+-->
+
+---
+
+# Just set state
+
+```tsx
+profile$.name.set('Annyong')
+```
+
+<div class="flex flex-col gap-6 pt-8 justify-self-center">
+<div class="flex items-center gap-4 text-2xl">
+    state => render
 </div>
 
-<!--
-This is why LegendList belongs in the story.
-
-Virtualization controls how many rows exist. State invalidation controls which mounted rows update.
-
-A fast list minimizes mounted work. Fine-grained state minimizes update work inside that window.
--->
-
----
-
-# Try one hot path
-
-<div class="mt-12 grid grid-cols-2 gap-10 w-[850px] mx-auto">
-  <div class="choice-card">
-    <div class="text-2xl font-bold">No state library?</div>
-    <div class="text-gray-300 mt-5">Build the next shared feature with Legend State</div>
-  </div>
-  <div class="choice-card">
-    <div class="text-2xl font-bold">Already using one?</div>
-    <div class="text-gray-300 mt-5">Move one hot screen and compare it</div>
-  </div>
+<div class="flex items-center gap-4 text-2xl">
+    state => effects
 </div>
 
-<!--
-You do not need to rewrite your whole app on Monday.
+<div class="flex items-center gap-4 text-2xl">
+    state => sync
+</div>
+</div>
 
-If you do not use a state library, build your next shared feature with Legend State instead of lifting volatile state through the tree.
-
-If you already use one, move one hot screen. Compare renders, state work, CPU, and the amount of architecture required.
--->
-
----
-
-# Keep state cohesive
-
-# Make subscriptions precise
+<style>
+.slidev-code-wrapper {
+    width: 280px !important;
+}
+</style>
 
 <!--
-This is the idea I want you to remember.
+So all you have to do is set state. That triggers rendering, side effects, and sync. It doesn't have to run through render to do any of that.
 
-Keep state cohesive according to the domain. Make subscriptions precise according to the UI.
-
-Those should not be competing goals.
+Skipping render makes it fast. It skips a ton of work and does only what's needed.
 -->
 
 ---
 
 # Fast by Default
 
-<div class="mt-10 text-3xl text-gray-300">Use a state library. Make it Legend State.</div>
+<!--
+And that's why Legend State is Fast by Default.
+-->
 
-<div class="absolute bottom-16 gap-y-2 flex flex-col">
-  <div>Jay Meistrich</div>
-  <div>@jmeistrich</div>
-</div>
+---
 
-<div class="absolute bottom-12 right-16 text-gray-500">legendapp.com</div>
+# www.legendstate.com
+
 
 <!--
-React is fast at rendering what we ask it to render. Broad state asks it to render too much.
+Check it out at Legend State .com
 
-A state library is necessary for the fastest React architecture. Fine-grained state is the fastest category. And Legend State combines precise leaves, derived subscriptions, cohesive objects, and production sync in one system.
+I had planned to release 3.0 right now, but my plane from London didn't have wifi. Use 3.0 beta for all the latest features and 3.0 should come next week.
 
-Use a state library. Make it Legend State.
+Thanks!
+-->
 
-Thank you!
+
+<!--So what is Legend State
+Cause => Effect
+Sync
+Benchmarks
+    Legend State + Memo
+The comparison
+Benchmark should use Memo for Legend State
+Why I made Legend State
+Lines of code
+fast by default = remove effects etc
+easier mental model = faster
+fn(state) => UI, fn(state) => sync-->
+
+
+<!--
+A section about what's confusing about react?
+
+Immutable bad and slow
 -->
